@@ -1,0 +1,212 @@
+import json
+from init_software import correct_file_path
+
+class MidiController():
+
+    # Have function that output midi commands
+                
+    def __init__(self):
+        with open(correct_file_path("data_options_play.json"), "r") as file_options_play:
+            data_options_play = json.load(file_options_play)
+        
+        with open(correct_file_path("data_settings.json"), "r") as file_settings:
+            data_settings = json.load(file_settings)
+
+        self.list_modes = data_options_play["knob_values_playModes"]
+        self.list_play_type = data_options_play["knob_values_playTypes"]
+        self.selected_mode = self.list_modes[0]
+        self.selected_play_type = self.list_play_type[0]
+        self.base_note: 0
+        self.key_note: 0
+        self.key_degree = 0
+        # TODO mixer buffer velocity and state pad
+        self.state_pad = [0,0,0,0,0,0,0,0]
+        self.buffer_velocity = [0,0,0,0,0,0,0,0]
+        self.buffer_note = [[],[],[],[],[],[],[],[]]
+        self.base_note_offset = data_settings["base_note_offset"]
+
+        self.mode_prog_chord = {}    
+        self._init_mode_prog_chord(data_options_play)
+    
+        self.mode_prog_tone = {}
+        self._init_mode_prog_tone(data_options_play)
+
+        self.selected_pad_interval = self.compute_pad_intervals()
+
+        self.chord_major = data_options_play["chord_major"]
+        self.chord_minor = data_options_play["chord_minor"]
+        self.chord_dom7 = data_options_play["chord_dom7"]
+        self.chord_dim = data_options_play["chord_dim"]
+
+        self.pot_max_value = data_settings["pot_max_value"] + 1 # For out of oundary error prevention
+        # Division/quadrant magnitude between each mode or play type
+        self.knob_div_modes = (self.pot_max_value/len(self.list_modes)) 
+        self.knob_div_playType = (self.pot_max_value/len(self.list_play_type))
+
+    def _init_mode_prog_chord(self, data):
+        for key in data["playModes_chordProg"]:
+            self.mode_prog_chord.update({key: []})
+            for val in data["playModes_chordProg"][key]:
+                self.mode_prog_chord[key].append(data[data["ionian_chord_prog"][val]])
+
+
+    def _init_mode_prog_tone(self, data):
+        for key in data["playModes_toneProg"]:
+            self.mode_prog_tone.update({key: []})
+            for val in data["playModes_toneProg"][key]:
+                self.mode_prog_tone[key].append(data["tone_progression"][val])
+    
+
+    #############################
+    # GENERAL LOGIC / UTILITIES #
+    #############################
+    # Check if the note doesn't go below or above the maximum MIDI protocol values
+    # Used to prevent error when computing notes as they can go below and above
+    # those values
+    # min: 0
+    # max: 127
+    def check_note(note):
+        if note > 127:
+            return 127
+        elif note < 0:
+            return 0
+        else:
+            return note
+
+    # Reset the key_degree value from controller settings.
+    # Used when changing the mode
+    def reset_key_degree():
+        self.key_degree = 0
+
+    def compute_pad_intervals(self):
+        if self.selected_mode == "None":
+            self.tone_intervals = list(range(7))
+        else:
+            self.tone_intervals = [-x for x in self.mode_prog_tone[self.selected_mode][:self.key_degree]] + [0] + self.mode_prog_tone[self.selected_mode][self.key_degree:]
+
+    def select_base_note(note_value):
+        self.base_note = note_value
+
+
+    # When using no mode, it is equivalent to select_base_node
+    # When using modes play, the mode stick to the base note to 
+    # determine the key we are in, but you can use the select_key_note
+    # to chose the note the pad will play from within the key.
+    # This allow for play within the key without loosing it.
+    # Easier than changing the mode and base_note and doing the mental acrobat.
+    # Tied to the key_note change, as it gives us an indication of 
+    # where we are in the key. This allow later to compute the adequat intervals
+    # to play the right notes. This is again done to simplify the process 
+    # of playing around in the same key.
+    def select_key_note(self, input_val):
+        temp_note = int((input_val-64)/3)
+        degree = 0
+
+        if state_controller["mode"] == "None":
+            self.key_note = temp_note
+            self.key_degree = degree
+
+        else:
+            octave = int(temp_note/7)*12
+            inter_octave = 0
+            # TODO use pad interval, it is already computed
+            if temp_note >= 0:
+                temp = (temp_note%7)
+                for val in self.mode_prog_tone[self.selected_mode][:temp]:
+                    inter_octave = inter_octave + val
+                    degree = degree + 1
+
+            else:
+                temp = (temp_note%-7)-1
+                for val in self.mode_prog_tone[self.selected_mode][:temp:-1]:
+                    inter_octave = inter_octave - val
+                    degree = degree + 1
+
+            print(f"Key note: {(octave + inter_octave)}")
+            print(f"Key degree: {degree}")
+            self.key_degree = degree
+            self.key_note= octave+inter_octave
+
+
+    # Used to select the modes.
+    # Refer to "./data.py/knob_values_playModes" for more details about the possible values
+    def select_playMode(self, input):
+        self.selected_mode = self.list_modes[int(input.value/self.knob_div_modes)]
+        print(f"Mode: {self.list_modes[int(input.value/self.knob_div_modes)]}\n")
+
+
+    # Used to select the type of play, either chord like or single note.
+    # Refer to "./data.py/knob_values_playTypes" for more details about the possible values
+    def select_playTypes(self, input):
+        self.selected_play_type = self.list_play_type[int(inpuy.value/self.knob_div_playType)]
+        print(f"Play type: {self.list_play_type[int(inpuy.value/self.knob_div_playType)]}\n")
+
+
+    ##################
+    # PHYSICAL LOGIC #
+    ##################
+    # Pad pressed
+    def pad_pressed(self, input):
+        id_pad = input.note - self.base_note_offset
+        self.state_pad[id_pad] = 1
+        
+        note = check_note(input.note - self.base_note_offset + self.base_note + self.key_note)
+        
+        self.buffer_velocity[id_pad] = input.velocity
+
+        note_on(note, input.velocity, id_pad)
+
+    # Pad released
+    def pad_released(self, input):
+        self.state_pad[message.note - self.base_note_offset] = 0
+
+        id_pad = input.note - self.base_note_offset
+
+        for note in self.buffer_note[input.note-self.base_note_offset]:
+            note_off(note, id_pad)   
+                
+        self.buffer_note[id_pad] = []
+        self.buffer_velocity = 0
+
+    # 
+    def knob_base_note(self, input):
+        any_pad_on = False
+        for id_pad, pad_on in enumerate(self.state_pad):
+            if pad_on:
+                any_pad_on = True
+                temp_note = check_note(self.buffer_note[id_pad][0] + input.value-64)
+                note_on(temp_note, id_pad)
+
+        if not any_pad_on:
+            self.select_base_note(input.value)
+
+    #
+    def knob_key_note(self, input):
+        any_pad_on = False
+        for id_pad, pad_on in enumerate(self.state_pad):
+            if pad_on:
+                any_pad_on = True
+                # Ca je peut surement le mettre en class variable ça va rendre les choses beaucoup plus simple
+                array_pad_interval = compute_pad_intervals(state_controller["key_degree"])
+                # WARNING I DON'T THINK THAT IS GOING TO WORKS ONCE THE KEY_NOTE IS CHANGED
+                temp_note = check_note(self.buffer_note[id_pad][0]+ select_key_note(input.value))
+                note_on(temp_note, id_pad)
+
+        if not any_pad_on:
+            state_controller["key_note"] = self.select_key_note(input.value)
+            state_controller["key_degree"] = self.select_key_degree(input.value)
+
+
+    ##########################
+    # MIDI MESSAGES COMMANDS #
+    ##########################
+    def note_off(note, velocity):
+        return ({
+            "message": "note_off", 
+            "note": note,
+            "velocity": velocity
+        })
+        
+    
+if __name__ == '__main__':
+    test = MidiController()
