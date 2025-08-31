@@ -107,6 +107,7 @@ class MidiController:
     # Used when changing the mode
     def reset_key_degree(self):
         self.key_degree = 0
+        self.compute_pad_intervals()
 
     def compute_pad_intervals(self):
         if self.selected_mode == "None":
@@ -119,7 +120,7 @@ class MidiController:
             )
 
     def count_interval(self, id_pad):
-        return sum(self.selected_pad_interval[:id_pad])
+        return sum(self.selected_pad_interval[: id_pad + 1])
 
     ##################
     # PHYSICAL LOGIC #
@@ -128,9 +129,15 @@ class MidiController:
     def pad_pressed(self, input):
         id_pad = input.note - self.base_note_offset
         self.state_pad[id_pad] = 1
-
+        # Should work because, key_degree is always zero when self.selected_mode == "None"
+        print(self.count_interval(id_pad))
         note = self.check_note(
-            input.note - self.base_note_offset + self.base_note + self.key_note
+            input.note
+            - self.base_note_offset
+            + self.base_note
+            + self.key_note
+            + self.count_interval(id_pad)
+            - id_pad
         )
 
         self.buffer_velocity[id_pad] = input.velocity
@@ -164,7 +171,7 @@ class MidiController:
 
         if not any_pad_on:
             self.select_base_note(input.value)
-            print(self.base_note)
+            print(f"Base note: {self.base_note}")
             return []
 
     #
@@ -181,7 +188,7 @@ class MidiController:
 
         if not any_pad_on:
             self.select_key_note(input.value)
-            print(self.key_note)
+            print(f"Key note: {self.key_note}")
             return []
 
     ########################
@@ -204,7 +211,6 @@ class MidiController:
     def select_key_note(self, input_val):
         temp_note = int((input_val - 64) / 3)
         degree = 0
-        print(self.selected_pad_interval)
 
         if self.selected_mode == "None":
             self.key_note = temp_note
@@ -219,21 +225,17 @@ class MidiController:
                 temp = temp_note % 7
                 for val in self.selected_pad_interval[:temp]:
                     inter_octave = inter_octave + abs(val)
-                    print("degree+1")
                     degree = degree + 1
 
             else:
                 temp = temp_note % -7 - 1  # To test
                 for val in self.selected_pad_interval[:temp:-1]:
                     inter_octave = inter_octave - abs(val)
-                    print("degree+1")
                     degree = degree + 1
                 if degree != 0:
                     degree = abs(degree - 7)
 
-            print(
-                f"degree: {degree} | knob: {input_val} | temp: {temp_note} | octave: {octave} | inter: {inter_octave}"
-            )
+            print(f"degree: {degree} | octave: {octave} | inter: {inter_octave}")
             self.key_degree = degree
             self.key_note = octave + inter_octave
             self.compute_pad_intervals()
@@ -246,6 +248,7 @@ class MidiController:
         # Should I reset or not ? good question
         self.reset_key_degree()
         self.selected_mode = self.list_modes[int(input.value / self.knob_div_modes)]
+        self.compute_pad_intervals()
         print(f"Mode: {self.list_modes[int(input.value/self.knob_div_modes)]}\n")
         return []
 
@@ -268,20 +271,18 @@ class MidiController:
 
     def note_on(self, note, velocity, id_pad):
         midi_message_note_on = []
-        # Should work because, key_degree is always zero when self.selected_mode == "None"
-        temp_note = note + self.count_interval(id_pad)
 
         # Isn't the issue with the is not needed, just a problem that mode = "None" is just not where/assessed where it should be ?
         if self.selected_play_type["name"] == "Normal" and self.selected_mode != "None":
             for chord_interval in self.mode_prog_chord[self.selected_mode][id_pad]:
                 midi_message_note_on.append(
-                    self.append_note_on(temp_note + chord_interval, velocity, id_pad)
+                    self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
 
         else:
             for chord_interval in self.selected_play_type["chord"]:
                 midi_message_note_on.append(
-                    self.append_note_on(temp_note + chord_interval, velocity, id_pad)
+                    self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
 
         return midi_message_note_on
