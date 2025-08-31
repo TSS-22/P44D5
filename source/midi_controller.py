@@ -219,16 +219,20 @@ class MidiController:
                 temp = temp_note % 7
                 for val in self.selected_pad_interval[:temp]:
                     inter_octave = inter_octave + abs(val)
+                    print("degree+1")
                     degree = degree + 1
 
             else:
                 temp = temp_note % -7 - 1  # To test
                 for val in self.selected_pad_interval[:temp:-1]:
                     inter_octave = inter_octave - abs(val)
+                    print("degree+1")
                     degree = degree + 1
+                if degree != 0:
+                    degree = abs(degree - 7)
 
             print(
-                f"degree: {self.key_degree} | knob: {input_val} | temp: {temp_note} | octave: {octave} | inter: {inter_octave}"
+                f"degree: {degree} | knob: {input_val} | temp: {temp_note} | octave: {octave} | inter: {inter_octave}"
             )
             self.key_degree = degree
             self.key_note = octave + inter_octave
