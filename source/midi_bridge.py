@@ -8,7 +8,7 @@ from init_software import correct_file_path
 class MidiBridge():
 
     def __init__(self):
-        with open(correct_file_path("data_settings.json"), "r") as file_settings:
+        with open(correct_file_path("../data/data_settings.json"), "r") as file_settings:
             data_settings = json.load(file_settings)
 
         self.input_port = data_settings["name_midi_in"]

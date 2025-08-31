@@ -6,10 +6,10 @@ class MidiController():
     # TODO reorganize the code in subclasses or something else to make the class more digestable
     # TODO replace the rturn message from note_on etc, as a class?     
     def __init__(self):
-        with open(correct_file_path("data_options_play.json"), "r") as file_options_play:
+        with open(correct_file_path("../data/data_options_play.json"), "r") as file_options_play:
             data_options_play = json.load(file_options_play)
         
-        with open(correct_file_path("data_settings.json"), "r") as file_settings:
+        with open(correct_file_path("../data/data_settings.json"), "r") as file_settings:
             data_settings = json.load(file_settings)
 
         self.list_modes = data_options_play["knob_values_playModes"]
