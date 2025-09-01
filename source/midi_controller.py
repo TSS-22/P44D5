@@ -39,6 +39,10 @@ class MidiController:
         self.selected_pad_interval = []
         self.compute_pad_intervals()
 
+        # TODO I think that the base list for chord should be just 7 chord as the 8th is always a repeat of the first one (and not twice a Major chord as it is now)
+        self.selected_mode_chord_prog = []
+        self.compute_mode_chord_prog()
+
         self.chord_play_type = (
             []
         )  # This architecture is prone to error, put list_play_type and chord_play_style together
@@ -47,7 +51,7 @@ class MidiController:
         # TODO Put the user file parser into a function when the need arise once the GUI is in working
         self._init_chord_play_style(data_options_play)
 
-        # Most likely will need to put that into a function to allow for user to changethos settings.
+        # Most likely will need to put that into a function to allow for user to change the settings.
         self.pot_max_value = (
             data_settings["pot_max_value"] + 1
         )  # For out of oundary error prevention
@@ -120,6 +124,17 @@ class MidiController:
                 + self.mode_prog_tone[self.selected_mode][: self.key_degree]
             )
         print(f"prog : {self.selected_pad_interval}")
+
+    def compute_mode_chord_prog(self):
+        if self.selected_mode != "None":
+            self.selected_mode_chord_prog = (
+                self.mode_prog_chord[self.selected_mode][:-1][
+                    self.key_degree :
+                ]  # -1 to discard the double major atm
+                + self.mode_prog_chord[self.selected_mode][:-1][: self.key_degree]
+                + [self.mode_prog_chord[self.selected_mode][:-1][self.key_degree]]
+            )
+            print(self.selected_mode_chord_prog)
 
     def count_interval(self, id_pad):
         return sum(self.selected_pad_interval[: id_pad + 1])
@@ -243,6 +258,7 @@ class MidiController:
             self.key_degree = degree
             self.key_note = octave + inter_octave
             self.compute_pad_intervals()
+            self.compute_mode_chord_prog()
             print("\n\n")
 
             return octave + inter_octave
@@ -278,7 +294,7 @@ class MidiController:
 
         # Isn't the issue with the is not needed, just a problem that mode = "None" is just not where/assessed where it should be ?
         if self.selected_play_type["name"] == "Normal" and self.selected_mode != "None":
-            for chord_interval in self.mode_prog_chord[self.selected_mode][id_pad]:
+            for chord_interval in self.selected_mode_chord_prog[id_pad]:
                 midi_message_note_on.append(
                     self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
