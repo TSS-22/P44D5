@@ -110,17 +110,16 @@ class MidiController:
         self.compute_pad_intervals()
 
     def compute_pad_intervals(self):
-
         if self.selected_mode == "None":
             self.selected_pad_interval = [0] + [1] * 7
         else:
             print(f"prog selected : {self.mode_prog_tone[self.selected_mode]}")
             self.selected_pad_interval = (
                 [0]
-                + self.mode_prog_tone[self.selected_mode][: 7 - self.key_degree]
-                + self.mode_prog_tone[self.selected_mode][::-1][: self.key_degree]
+                + self.mode_prog_tone[self.selected_mode][self.key_degree :]
+                + self.mode_prog_tone[self.selected_mode][: self.key_degree]
             )
-        print(self.selected_pad_interval)
+        print(f"prog : {self.selected_pad_interval}")
 
     def count_interval(self, id_pad):
         return sum(self.selected_pad_interval[: id_pad + 1])
@@ -191,7 +190,7 @@ class MidiController:
 
         if not any_pad_on:
             self.select_key_note(input.value)
-            print(f"Key note: {self.key_note}")
+            # print(f"Key note: {self.key_note}")
             return []
 
     ########################
@@ -215,7 +214,7 @@ class MidiController:
         print(f"input key note: {input_val}")
         temp_note = int((input_val - 64) / 3)
         degree = 0
-
+        print(f"temp_note: {temp_note}")
         if self.selected_mode == "None":
             self.key_note = temp_note
             self.reset_key_degree()
@@ -227,13 +226,14 @@ class MidiController:
 
             if temp_note >= 0:
                 temp = temp_note % 7
-                for val in self.selected_pad_interval[:temp]:
+                print(f"temp: {temp}")
+                for val in self.mode_prog_tone[self.selected_mode][:temp]:
                     inter_octave = inter_octave + abs(val)
                     degree = degree + 1
 
             else:
                 temp = temp_note % -7 - 1  # To test
-                for val in self.selected_pad_interval[:temp:-1]:
+                for val in self.mode_prog_tone[self.selected_mode][:temp:-1]:
                     inter_octave = inter_octave - abs(val)
                     degree = degree + 1
                 if degree != 0:
@@ -243,6 +243,7 @@ class MidiController:
             self.key_degree = degree
             self.key_note = octave + inter_octave
             self.compute_pad_intervals()
+            print("\n\n")
 
             return octave + inter_octave
 
@@ -252,7 +253,6 @@ class MidiController:
         # Should I reset or not ? good question
         self.reset_key_degree()
         self.selected_mode = self.list_modes[int(input.value / self.knob_div_modes)]
-        self.compute_pad_intervals()
         print(f"Mode: {self.list_modes[int(input.value/self.knob_div_modes)]}\n")
         return []
 
