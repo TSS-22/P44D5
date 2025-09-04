@@ -1,17 +1,10 @@
 import json
 from utilities import correct_file_path as correct_file_path
-<<<<<<< HEAD
 from midi_controller_output import MidiControllerOutput
 
 
 class MidiController:
     # TODO change the name of some function like knob_playMode()as the plya might not be necessary. Make them more intuitive and simple
-=======
-
-
-class MidiController:
-    # TODO change the name of some function like select_playmode()as the plya might not be necessary. Make them more intuitive and simple
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
     # TODO reorganize the code in subclasses or something else to make the class more digestable
     # TODO replace the rturn message from note_on etc, as a class?
     def __init__(self):
@@ -165,11 +158,7 @@ class MidiController:
 
         self.buffer_velocity[id_pad] = input.velocity
 
-<<<<<<< HEAD
         return MidiControllerOutput(self.note_on(note, input.velocity, id_pad))
-=======
-        return self.note_on(note, input.velocity, id_pad)
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
     # Pad released
     def pad_released(self, input):
@@ -196,11 +185,7 @@ class MidiController:
         self.buffer_note[id_pad] = []
         self.buffer_velocity[id_pad] = 0
 
-<<<<<<< HEAD
         return MidiControllerOutput(list_note_off)
-=======
-        return list_note_off
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
     #
     def knob_base_note(self, input):
@@ -211,22 +196,14 @@ class MidiController:
                 temp_note = self.check_note(
                     self.buffer_note[id_pad][0] + input.value - 64
                 )
-<<<<<<< HEAD
                 return MidiControllerOutput(
                     self.note_on(temp_note, self.buffer_velocity[id_pad], id_pad)
                 )
-=======
-                return self.note_on(temp_note, self.buffer_velocity[id_pad], id_pad)
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
         if not any_pad_on:
             self.select_base_note(input.value)
             print(f"Base note: {self.base_note}")
-<<<<<<< HEAD
             return MidiControllerOutput()
-=======
-            return []
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
     #
     def knob_key_note(self, input):
@@ -238,34 +215,22 @@ class MidiController:
                 temp_note = self.check_note(
                     self.buffer_note[id_pad][0] + self.select_key_note(input.value)
                 )
-<<<<<<< HEAD
                 return MidiControllerOutput(
                     self.note_on(temp_note, self.buffer_velocity[id_pad], id_pad)
                 )
-=======
-                return self.note_on(temp_note, self.buffer_velocity[id_pad], id_pad)
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
         if not any_pad_on:
             self.select_key_note(input.value)
             print(f"Key note: {self.key_note}")
             print(f"Key degree: {self.key_degree}")
-<<<<<<< HEAD
             return MidiControllerOutput()
-=======
-            return []
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
     ########################
     # BUSINESS LOGIC LAYER #
     ########################
     def select_base_note(self, note_value):
         self.base_note = note_value
-<<<<<<< HEAD
         return MidiControllerOutput()
-=======
-        return []
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
     # When using no mode, it is equivalent to select_base_node
     # When using modes play, the mode stick to the base note to
@@ -312,39 +277,23 @@ class MidiController:
 
     # Used to select the modes.
     # Refer to "./data.py/knob_values_playModes" for more details about the possible values
-<<<<<<< HEAD
     def knob_playMode(self, input):
-=======
-    def select_playMode(self, input):
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
         # Should I reset or not ? good question
         self.reset_key_degree()
         self.selected_mode = self.list_modes[int(input.value / self.knob_div_modes)]
         print(f"Mode: {self.list_modes[int(input.value/self.knob_div_modes)]}\n")
-<<<<<<< HEAD
         return MidiControllerOutput()
 
     # Used to select the type of play, either chord like or single note.
     # Refer to "./data.py/knob_values_playTypes" for more details about the possible values
     def knob_playTypes(self, input):
-=======
-        return []
-
-    # Used to select the type of play, either chord like or single note.
-    # Refer to "./data.py/knob_values_playTypes" for more details about the possible values
-    def select_playTypes(self, input):
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
         self.selected_play_type = self.list_play_type[
             int(input.value / self.knob_div_playType)
         ]
         print(
             f"Play type: {self.list_play_type[int(input.value/self.knob_div_playType)]}\n"
         )
-<<<<<<< HEAD
         return MidiControllerOutput()
-=======
-        return []
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
     ##########################
     # MIDI MESSAGES COMMANDS #
@@ -380,11 +329,7 @@ class MidiController:
     #######################
     # C'est un peu degueux ce manque de standardisation de l'ouput : empty/message
     def receive_message(self, message):
-<<<<<<< HEAD
         output = MidiControllerOutput()
-=======
-        output = []
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
         # Note pressed
         if message.type == "note_on":
             output = self.pad_pressed(message)
@@ -403,19 +348,11 @@ class MidiController:
 
             # Knob 4: select_playMode
             elif message.control == self.id_knob_mode:
-<<<<<<< HEAD
                 output = self.knob_playMode(message)
 
             # Knob 8: select_playType
             elif message.control == self.id_knob_play_type:
                 output = self.knob_playTypes(message)
-=======
-                output = self.select_playMode(message)
-
-            # Knob 8: select_playType
-            elif message.control == self.id_knob_play_type:
-                output = self.select_playTypes(message)
->>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
             # Unassigned command
             else:
