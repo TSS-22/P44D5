@@ -1,5 +1,5 @@
 import json
-from init_software import correct_file_path as correct_file_path
+from utilities import correct_file_path as correct_file_path
 
 
 class MidiController:
