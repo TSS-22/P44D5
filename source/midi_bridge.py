@@ -4,6 +4,10 @@ import rtmidi
 import mido
 import json
 from utilities import correct_file_path
+<<<<<<< HEAD
+from midi_controller_output import MidiControllerOutput
+=======
+>>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
 
 
 class MidiBridge:
@@ -76,9 +80,15 @@ class MidiBridge:
         print("Shutdown.")
         # input("Press ENTER to exit...")
 
+<<<<<<< HEAD
+    def bridge_out(self, midi_controller_ouput):
+        if midi_controller_ouput.messages:
+            for msg in midi_controller_ouput.messages:
+=======
     def bridge_out(self, list_message):
         if list_message:
             for msg in list_message:
+>>>>>>> 83e17211cb4b3049a7d3075dfb3f091beb2d72a2
                 if msg["message"] == "note_on" or msg["message"] == "note_off":
                     self.output.send(
                         mido.Message(
