@@ -5,6 +5,7 @@ import mido
 import json
 from utilities import correct_file_path
 from midi_controller_output import MidiControllerOutput
+import asyncio
 
 
 class MidiBridge:
@@ -58,7 +59,7 @@ class MidiBridge:
             input("Press ENTER to exit...")
             sys.exit(1)
 
-    def start(self, midi_controller):
+    async def start(self, midi_controller):
         print(
             f"Routing MIDI from {self.input_port} to virtual port {self.output_port}..."
         )
