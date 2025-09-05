@@ -1,6 +1,7 @@
 import json
 from utilities import correct_file_path as correct_file_path
 from midi_controller_output import MidiControllerOutput
+from midi_controller_buffer import MidiControllerBuffer
 
 
 class MidiController:
@@ -20,21 +21,21 @@ class MidiController:
 
         self.list_modes = data_options_play["knob_values_playModes"]
         self.list_play_type = data_options_play["knob_values_playTypes"]
+
         self.selected_mode = self.list_modes[0]
         self.selected_play_type = self.list_play_type[0]
         self.base_note = 0
         self.key_note = 0
         self.key_degree = 0
-        # TODO mixer buffer velocity and state pad
-        self.state_pad = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.buffer_velocity = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.buffer_note = [[], [], [], [], [], [], [], []]
+
+        self.buffer = MidiControllerBuffer()
+
         self.base_note_offset = data_settings["base_note_offset"]
 
         self.mode_prog_chord = {}
         self._init_mode_prog_chord(data_options_play)
 
-        self.mode_prog_tone = {}  # Still usefull with pad intervals ?
+        self.mode_prog_tone = {}
         self._init_mode_prog_tone(data_options_play)
 
         self.selected_pad_interval = []
@@ -145,8 +146,7 @@ class MidiController:
     # Pad pressed
     def pad_pressed(self, input):
         id_pad = input.note - self.base_note_offset
-        self.state_pad[id_pad] = 1
-        # Should work because, key_degree is always zero when self.selected_mode == "None"
+        self.buffer.velocity[id_pad] = input.velocity
         note = self.check_note(
             input.note
             - self.base_note_offset
@@ -155,22 +155,18 @@ class MidiController:
             + self.count_interval(id_pad)
             - id_pad
         )
-
-        self.buffer_velocity[id_pad] = input.velocity
-
         return MidiControllerOutput(self.note_on(note, input.velocity, id_pad))
 
     # Pad released
     def pad_released(self, input):
         id_pad = input.note - self.base_note_offset
-        self.state_pad[id_pad] = 0
+        self.buffer.velocity[id_pad] = 0
         list_note_off = []
-
-        for note in self.buffer_note[id_pad]:
+        for note in self.buffer.note[id_pad]:
             skip = False
-            for idx, pad in enumerate(self.state_pad):
-                if pad == 1:
-                    for note_other_pad in self.buffer_note[idx]:
+            for idx, pad in enumerate(self.buffer.velocity):
+                if pad > 0:
+                    for note_other_pad in self.buffer.note[idx]:
                         if note_other_pad == note:
                             skip = True
                             break
@@ -179,25 +175,20 @@ class MidiController:
             if skip:
                 continue
             list_note_off.append(self.note_off(note, id_pad))
-
-        # Check if any of the note are note in the other pad
-
-        self.buffer_note[id_pad] = []
-        self.buffer_velocity[id_pad] = 0
-
+        self.buffer.note[id_pad] = []
         return MidiControllerOutput(list_note_off)
 
     #
     def knob_base_note(self, input):
         any_pad_on = False
-        for id_pad, pad_on in enumerate(self.state_pad):
-            if pad_on:
+        for id_pad, pad in enumerate(self.buffer.velocity):
+            if pad > 0:
                 any_pad_on = True
                 temp_note = self.check_note(
-                    self.buffer_note[id_pad][0] + input.value - 64
+                    self.buffer.note[id_pad][0] + input.value - 64
                 )
                 return MidiControllerOutput(
-                    self.note_on(temp_note, self.buffer_velocity[id_pad], id_pad)
+                    self.note_on(temp_note, self.buffer.velocity[id_pad], id_pad)
                 )
 
         if not any_pad_on:
@@ -208,15 +199,14 @@ class MidiController:
     #
     def knob_key_note(self, input):
         any_pad_on = False
-        for id_pad, pad_on in enumerate(self.state_pad):
-            if pad_on:
+        for id_pad, pad in enumerate(self.buffer.velocity):
+            if pad > 0:
                 any_pad_on = True
-                # WARNING I DON'T THINK THAT IS GOING TO WORKS ONCE THE KEY_NOTE IS CHANGED
                 temp_note = self.check_note(
-                    self.buffer_note[id_pad][0] + self.select_key_note(input.value)
+                    self.buffer.note[id_pad][0] + self.select_key_note(input.value)
                 )
                 return MidiControllerOutput(
-                    self.note_on(temp_note, self.buffer_velocity[id_pad], id_pad)
+                    self.note_on(temp_note, self.buffer.velocity[id_pad], id_pad)
                 )
 
         if not any_pad_on:
@@ -320,7 +310,7 @@ class MidiController:
         return midi_message_note_on
 
     def append_note_on(self, note, velocity, id_pad):
-        self.buffer_note[id_pad].append(note)
+        self.buffer.note[id_pad].append(note)
         print(f"Note on: {note} | Pad: {id_pad + 1}")
         return {"message": "note_on", "note": note, "velocity": velocity}
 
