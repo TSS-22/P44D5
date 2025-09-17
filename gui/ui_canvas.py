@@ -38,9 +38,12 @@ class UiCanvas(tk.Canvas):
             y=canvas_height * 0.5,
         )
 
-        widget_base_note = WidgetBaseNote(master=master, canvas=self)
-        widget_key_note = WidgetKeyNote(master=master, canvas=self)
-        widget_panel_mode = WidgetPanelMode(master=master, canvas=self)
-        widget_panel_play_type = WidgetPanelPlayType(master=master, canvas=self)
-        widget_panel_chord_type = WidgetPanelChordType(master=master, canvas=self)
-        widget_pad_grid = WidgetPadGrid(master=master, canvas=self)
+        self.widget_base_note = WidgetBaseNote(master=master, canvas=self)
+        self.widget_key_note = WidgetKeyNote(master=master, canvas=self)
+        self.widget_panel_mode = WidgetPanelMode(master=master, canvas=self)
+        self.widget_panel_play_type = WidgetPanelPlayType(master=master, canvas=self)
+        self.widget_panel_chord_type = WidgetPanelChordType(master=master, canvas=self)
+        self.widget_pad_grid = WidgetPadGrid(master=master, canvas=self)
+
+    def update(self):
+        pass
