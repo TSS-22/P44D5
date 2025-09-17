@@ -1,9 +1,9 @@
 import tkinter as tk
-from widget_utilities import WidgetUtilities
 import math
+from image_item import ImageItem
 
 
-class WidgetPad(tk.Frame, WidgetUtilities):
+class WidgetPad(tk.Frame):
 
     def __init__(
         self,
@@ -24,39 +24,41 @@ class WidgetPad(tk.Frame, WidgetUtilities):
         self.pos_y = pos_y
         self.note = pad_note
         self.is_root = is_root
+        self.widget_width = widget_width
+        self.widget_height = widget_height
 
         # Active state image
-        self.tk_pad_active_img = self.load_image(
+        self.img_pad_active = ImageItem(
+            canvas=canvas,
             image_path="./res_2/png/bckgnd-pad_active.png",
-            width=widget_width,
-            height=widget_height,
-        )
-        self.img_pad_active = canvas.create_image(
-            self.pos_x,
-            self.pos_y,
-            anchor=tk.CENTER,
-            image=self.tk_pad_active_img,
+            x=self.pos_x,
+            y=self.pos_y,
+            width=self.widget_width,
+            height=self.widget_height,
         )
 
         # Pad image
-        self.tk_pad_img = self.load_image(
-            image_path=(
-                "./res_2/png/bckgnd-pad_root.png"
-                if is_root
-                else "./res_2/png/bckgnd-pad.png"
-            ),
-            width=widget_width,
-            height=widget_height,
+        self.img_pad = ImageItem(
+            canvas=canvas,
+            image_path="./res_2/png/bckgnd-pad.png",
+            x=self.pos_x,
+            y=self.pos_y,
+            width=self.widget_width,
+            height=self.widget_height,
         )
-        self.pad_img = canvas.create_image(
-            self.pos_x,
-            self.pos_y,
-            anchor=tk.CENTER,
-            image=self.tk_pad_img,
+        self.img_pad_root = ImageItem(
+            canvas=canvas,
+            image_path="./res_2/png/bckgnd-pad_root.png",
+            x=self.pos_x,
+            y=self.pos_y,
+            width=self.widget_width,
+            height=self.widget_height,
         )
+        if not self.is_root:
+            self.img_pad_root.hide()
 
         # Note label
-        canvas.create_text(
+        self.note_label = canvas.create_text(
             self.pos_x,
             self.pos_y,  # Center of the image
             text=self.note,  # Your label text

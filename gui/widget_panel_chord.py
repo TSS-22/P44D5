@@ -1,9 +1,9 @@
 import tkinter as tk
-from widget_utilities import WidgetUtilities
 import math
+from image_item import ImageItem
 
 
-class WidgetPanelChordType(tk.Frame, WidgetUtilities):
+class WidgetPanelChordType(tk.Frame):
 
     list_play_type = [
         "5",
@@ -32,57 +32,37 @@ class WidgetPanelChordType(tk.Frame, WidgetUtilities):
         super().__init__(master=master, width=widget_width, height=widget_height)
         self.pos_x = int(canvas_width * rel_x) + 244  # HARDCODED
         self.pos_y = int(canvas_height * rel_y)
-
-        # # Background image
-        # self.tk_bckgnd_img = self.load_image(
-        #     image_path="./res_2/png/bckgnd-chord_type.png",
-        #     width=widget_width,
-        #     height=widget_height,
-        # )
-        # self.bckgnd = canvas.create_image(
-        #     self.pos_x,
-        #     self.pos_y,
-        #     anchor=tk.CENTER,
-        #     image=self.tk_bckgnd_img,
-        # )
+        self.widget_width = widget_width
+        self.widget_height = widget_height
 
         # Wheel slice image
-        self.tk_wheel_slice_img = self.load_image(
+        self.img_wheel_slice = ImageItem(
+            canvas=canvas,
             image_path="./res_2/png/camembert_chord_type.png",
             width=int(widget_height * 0.6),  # HARDCODED
             height=int(widget_height * 0.6),  # HARDCODED
-        )
-        self.wheel_slice_img = canvas.create_image(
-            self.pos_x,
-            self.pos_y + int(widget_height * 0.118),
-            anchor=tk.CENTER,
-            image=self.tk_wheel_slice_img,
+            x=self.pos_x,
+            y=self.pos_y + int(widget_height * 0.118),
         )
 
         # Wheel image
-        self.tk_wheel_img = self.load_image(
+        self.img_wheel = ImageItem(
+            canvas=canvas,
             image_path="./res_2/png/wheel_chord_type_225.png",
             width=int(widget_height * 0.6),  # HARDCODED
             height=int(widget_height * 0.6),  # HARDCODED
-        )
-        self.wheel_img = canvas.create_image(
-            self.pos_x,
-            self.pos_y + int(widget_height * 0.118),
-            anchor=tk.CENTER,
-            image=self.tk_wheel_img,
+            x=self.pos_x,
+            y=self.pos_y + int(widget_height * 0.118),
         )
 
         # Knob image
-        self.tk_knob_img = self.load_image(
+        self.img_knob = ImageItem(
+            canvas=canvas,
             image_path="./res_2/png/knob.png",
             width=int(168 * 0.7),  # HARDCODED
             height=int(168 * 0.7),  # HARDCODED
-        )
-        self.knob_img = canvas.create_image(
-            self.pos_x,
-            self.pos_y + int(widget_height * 0.118),
-            anchor=tk.CENTER,
-            image=self.tk_knob_img,
+            x=self.pos_x,
+            y=self.pos_y + int(widget_height * 0.118),
         )
 
         # Labels background play
