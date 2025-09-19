@@ -7,6 +7,7 @@ from gui.widget_panel_mode import WidgetPanelMode
 from gui.widget_panel_play_type import WidgetPanelPlayType
 from gui.widget_panel_chord import WidgetPanelChordType
 from gui.widget_pad_grid import WidgetPadGrid
+from source.midi_controller_state import MidiControllerState
 
 
 class UiCanvas(tk.Canvas):
@@ -45,5 +46,12 @@ class UiCanvas(tk.Canvas):
         self.widget_panel_chord_type = WidgetPanelChordType(master=master, canvas=self)
         self.widget_pad_grid = WidgetPadGrid(master=master, canvas=self)
 
-    def update(self):
-        pass
+    def update(self, midi_controller_state):
+        self.widget_key_note.update(
+            key_degree=midi_controller_state.key_degree,
+            raw_key_knob=midi_controller_state.raw_key_knob,
+        )
+        self.widget_base_note.update(base_note=midi_controller_state.base_note)
+        self.widget_panel_chord_type.update(
+            raw_knob=midi_controller_state.raw_knob_chord_type
+        )

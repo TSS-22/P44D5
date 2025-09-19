@@ -5,6 +5,8 @@ from gui.image_item import ImageItem
 
 class WidgetPanelPlayType(tk.Frame):
 
+    arc_division = -(270 / 128)
+
     list_play_type = [
         "Single",
         "Normal",

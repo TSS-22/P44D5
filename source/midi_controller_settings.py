@@ -8,6 +8,7 @@ class MidiControllerSettings:
         self.id_knob_key_note = data_settings["id_knob_key_note"]
         self.id_knob_mode = data_settings["id_knob_mode"]
         self.id_knob_play_type = data_settings["id_knob_play_type"]
+        self.id_knob_chord_type = data_settings["id_knob_chord_type"]
 
         # Most likely will need to put that into a function to allow for user to change the settings.
         self.pot_max_value = (

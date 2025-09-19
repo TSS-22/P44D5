@@ -1,8 +1,8 @@
 import json
 from source.utilities import correct_file_path as correct_file_path
 from source.midi_controller_output import MidiControllerOutput
-from source.midi_controller_buffer import MidiControllerBuffer
 from source.midi_controller_settings import MidiControllerSettings
+from source.midi_controller_state import MidiControllerState
 
 
 class MidiController:
@@ -24,13 +24,17 @@ class MidiController:
             data_options_play, data_settings
         )
 
-        self.buffer = MidiControllerBuffer()
+        # self.buffer = MidiControllerBuffer()
 
-        self.selected_mode = self.controller_settings.list_modes[0]
-        self.selected_play_type = self.controller_settings.list_play_type[0]
-        self.base_note = 0
-        self.key_note = 0
-        self.key_degree = 0
+        # self.selected_mode = self.controller_settings.list_modes[0]
+        # self.selected_play_type = self.controller_settings.list_play_type[0]
+        # self.base_note = 0
+        # self.key_note = 0
+        # self.key_degree = 0
+        self.state = MidiControllerState(
+            selected_mode=self.controller_settings.list_modes[0],
+            selected_play_type=self.controller_settings.list_play_type[0],
+        )
 
         self.base_note_offset = data_settings["base_note_offset"]
 
@@ -83,6 +87,9 @@ class MidiController:
         )
         # Add user play style chord file processing here
 
+    def get_state(self):
+        return self.state
+
     #############################
     # GENERAL LOGIC / UTILITIES #
     #############################
@@ -102,28 +109,35 @@ class MidiController:
     # Reset the key_degree value from controller settings.
     # Used when changing the mode
     def reset_key_degree(self):
-        self.key_degree = 0
+        self.state.key_degree = 0
+        self.state.key_note = 0
         self.compute_pad_intervals()
         self.compute_mode_chord_prog()
 
     def compute_pad_intervals(self):
-        if self.selected_mode == "None":
+        if self.state.selected_mode == "None":
             self.selected_pad_interval = [0] + [1] * 7
         else:
             self.selected_pad_interval = (
                 [0]
-                + self.mode_prog_tone[self.selected_mode][self.key_degree :]
-                + self.mode_prog_tone[self.selected_mode][: self.key_degree]
+                + self.mode_prog_tone[self.state.selected_mode][self.state.key_degree :]
+                + self.mode_prog_tone[self.state.selected_mode][: self.state.key_degree]
             )
 
     def compute_mode_chord_prog(self):
-        if self.selected_mode != "None":
+        if self.state.selected_mode != "None":
             self.selected_mode_chord_prog = (
-                self.mode_prog_chord[self.selected_mode][:-1][
-                    self.key_degree :
+                self.mode_prog_chord[self.state.selected_mode][:-1][
+                    self.state.key_degree :
                 ]  # -1 to discard the double major atm
-                + self.mode_prog_chord[self.selected_mode][:-1][: self.key_degree]
-                + [self.mode_prog_chord[self.selected_mode][:-1][self.key_degree]]
+                + self.mode_prog_chord[self.state.selected_mode][:-1][
+                    : self.state.key_degree
+                ]
+                + [
+                    self.mode_prog_chord[self.state.selected_mode][:-1][
+                        self.state.key_degree
+                    ]
+                ]
             )
 
     def count_interval(self, id_pad):
@@ -135,12 +149,12 @@ class MidiController:
     # Pad pressed
     def pad_pressed(self, input):
         id_pad = input.note - self.base_note_offset
-        self.buffer.velocity[id_pad] = input.velocity
+        self.state.buffer.velocity[id_pad] = input.velocity
         note = self.check_note(
             input.note
             - self.base_note_offset
-            + self.base_note
-            + self.key_note
+            + self.state.base_note
+            + self.state.key_note
             + self.count_interval(id_pad)
             - id_pad
         )
@@ -149,13 +163,13 @@ class MidiController:
     # Pad released
     def pad_released(self, input):
         id_pad = input.note - self.base_note_offset
-        self.buffer.velocity[id_pad] = 0
+        self.state.buffer.velocity[id_pad] = 0
         list_note_off = []
-        for note in self.buffer.note[id_pad]:
+        for note in self.state.buffer.notes[id_pad]:
             skip = False
-            for idx, pad in enumerate(self.buffer.velocity):
+            for idx, pad in enumerate(self.state.buffer.velocity):
                 if pad > 0:
-                    for note_other_pad in self.buffer.note[idx]:
+                    for note_other_pad in self.state.buffer.notes[idx]:
                         if note_other_pad == note:
                             skip = True
                             break
@@ -164,51 +178,53 @@ class MidiController:
             if skip:
                 continue
             list_note_off.append(self.note_off(note, id_pad))
-        self.buffer.note[id_pad] = []
+        self.state.buffer.notes[id_pad] = []
         return MidiControllerOutput(list_note_off)
 
     #
     def knob_base_note(self, input):
         any_pad_on = False
-        for id_pad, pad in enumerate(self.buffer.velocity):
+        for id_pad, pad in enumerate(self.state.buffer.velocity):
             if pad > 0:
                 any_pad_on = True
                 temp_note = self.check_note(
-                    self.buffer.note[id_pad][0] + input.value - 64
+                    self.state.buffer.notes[id_pad][0] + input.value - 64
                 )
                 return MidiControllerOutput(
-                    self.note_on(temp_note, self.buffer.velocity[id_pad], id_pad)
+                    self.note_on(temp_note, self.state.buffer.velocity[id_pad], id_pad)
                 )
 
         if not any_pad_on:
             self.select_base_note(input.value)
-            print(f"Base note: {self.base_note}")
+            print(f"Base note: {self.state.base_note}")
             return MidiControllerOutput()
 
     #
     def knob_key_note(self, input):
         any_pad_on = False
-        for id_pad, pad in enumerate(self.buffer.velocity):
+        for id_pad, pad in enumerate(self.state.buffer.velocity):
             if pad > 0:
                 any_pad_on = True
                 temp_note = self.check_note(
-                    self.buffer.note[id_pad][0] + self.select_key_note(input.value)
+                    self.state.buffer.notes[id_pad][0]
+                    + self.select_key_note(input.value)
                 )
                 return MidiControllerOutput(
-                    self.note_on(temp_note, self.buffer.velocity[id_pad], id_pad)
+                    self.note_on(temp_note, self.state.buffer.velocity[id_pad], id_pad)
                 )
 
         if not any_pad_on:
             self.select_key_note(input.value)
-            print(f"Key note: {self.key_note}")
-            print(f"Key degree: {self.key_degree}")
+            self.state.raw_key_knob = input.value
+            print(f"Key note: {self.state.key_note}")
+            print(f"Key degree: {self.state.key_degree}")
             return MidiControllerOutput()
 
     ########################
     # BUSINESS LOGIC LAYER #
     ########################
     def select_base_note(self, note_value):
-        self.base_note = note_value
+        self.state.base_note = note_value
         return MidiControllerOutput()
 
     # When using no mode, it is equivalent to select_base_node
@@ -224,8 +240,8 @@ class MidiController:
     def select_key_note(self, input_val):
         temp_note = int((input_val - 64) / 3)
         degree = 0
-        if self.selected_mode == "None":
-            self.key_note = temp_note
+        if self.state.selected_mode == "None":
+            self.state.key_note = temp_note
             self.reset_key_degree()
             return temp_note
 
@@ -235,20 +251,20 @@ class MidiController:
 
             if temp_note >= 0:
                 temp = temp_note % 7
-                for val in self.mode_prog_tone[self.selected_mode][:temp]:
+                for val in self.mode_prog_tone[self.state.selected_mode][:temp]:
                     inter_octave = inter_octave + abs(val)
                     degree = degree + 1
 
             else:
                 temp = temp_note % -7 - 1  # To test
-                for val in self.mode_prog_tone[self.selected_mode][:temp:-1]:
+                for val in self.mode_prog_tone[self.state.selected_mode][:temp:-1]:
                     inter_octave = inter_octave - abs(val)
                     degree = degree + 1
                 if degree != 0:
                     degree = abs(degree - 7)
 
-            self.key_degree = degree
-            self.key_note = octave + inter_octave
+            self.state.key_degree = degree
+            self.state.key_note = octave + inter_octave
             self.compute_pad_intervals()
             self.compute_mode_chord_prog()
 
@@ -259,7 +275,8 @@ class MidiController:
     def knob_playMode(self, input):
         # Should I reset or not ? good question
         self.reset_key_degree()
-        self.selected_mode = self.controller_settings.list_modes[
+        self.state.raw_knob_mode = input.value
+        self.state.selected_mode = self.controller_settings.list_modes[
             int(input.value / self.controller_settings.knob_div_modes)
         ]
         print(
@@ -270,12 +287,17 @@ class MidiController:
     # Used to select the type of play, either chord like or single note.
     # Refer to "./data.py/knob_values_playTypes" for more details about the possible values
     def knob_playTypes(self, input):
-        self.selected_play_type = self.controller_settings.list_play_type[
+        self.state.raw_knob_play_type = input.value
+        self.state.selected_play_type = self.controller_settings.list_play_type[
             int(input.value / self.controller_settings.knob_div_playType)
         ]
         print(
             f"Play type: {self.controller_settings.list_play_type[int(input.value/self.controller_settings.knob_div_playType)]}\n"
         )
+        return MidiControllerOutput()
+
+    def knob_chordType(self, input):
+        self.state.raw_knob_chord_type = input.value
         return MidiControllerOutput()
 
     ##########################
@@ -288,14 +310,17 @@ class MidiController:
         midi_message_note_on = []
 
         # Isn't the issue with the is not needed, just a problem that mode = "None" is just not where/assessed where it should be ?
-        if self.selected_play_type["name"] == "Normal" and self.selected_mode != "None":
+        if (
+            self.state.selected_play_type["name"] == "Normal"
+            and self.state.selected_mode != "None"
+        ):
             for chord_interval in self.selected_mode_chord_prog[id_pad]:
                 midi_message_note_on.append(
                     self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
 
         else:
-            for chord_interval in self.selected_play_type["chord"]:
+            for chord_interval in self.state.selected_play_type["chord"]:
                 midi_message_note_on.append(
                     self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
@@ -303,7 +328,7 @@ class MidiController:
         return midi_message_note_on
 
     def append_note_on(self, note, velocity, id_pad):
-        self.buffer.note[id_pad].append(note)
+        self.state.buffer.notes[id_pad].append(note)
         print(f"Note on: {note} | Pad: {id_pad + 1}")
         return {"message": "note_on", "note": note, "velocity": velocity}
 
@@ -337,6 +362,9 @@ class MidiController:
             elif message.control == self.controller_settings.id_knob_play_type:
                 output = self.knob_playTypes(message)
 
+            # Knob 7:select_chordType
+            elif message.control == self.controller_settings.id_knob_chord_type:
+                output = self.knob_chordType(message)
             # Unassigned command
             else:
                 # output = MidiControllerOutputmessage

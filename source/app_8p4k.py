@@ -29,10 +29,12 @@ class App8P4K:
             self.midi_bridge.bridge_out(
                 self.midi_controller.receive_message(polled_msg)
             )
-        # main_canvas.update(midi_controller.get_state())
+            self.main_canvas.update(self.midi_controller.get_state())
         self.root.update_idletasks()
         self.root.update()
         time.sleep(0.016)  # ~60 FPS
+        # time.sleep(0.008)  # ~120 FPS
+        # time.sleep(0.032)  # ~30 FPS
 
     def on_close(self):
         self.app_running = False

@@ -23,9 +23,8 @@ class ImageItem:
 
     def rotate(self, angle):
         """Rotate the image by the specified angle (in degrees)."""
-        self.current_angle += angle
         # Rotate the PIL image
-        rotated_img = self.pil_image.rotate(-self.current_angle, expand=True)
+        rotated_img = self.pil_image.rotate(angle, expand=True)
         # Update the Tkinter PhotoImage
         self.tk_image = ImageTk.PhotoImage(rotated_img)
         # Update the canvas item

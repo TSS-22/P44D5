@@ -5,6 +5,8 @@ from gui.image_item import ImageItem
 
 class WidgetPanelMode(tk.Frame):
 
+    arc_division = -(270 / 128)
+
     list_mode = [
         "None",
         "Ionian",

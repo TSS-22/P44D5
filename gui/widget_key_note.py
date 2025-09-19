@@ -1,10 +1,11 @@
+import math
 import tkinter as tk
 from gui.image_item import ImageItem
 
 
 class WidgetKeyNote(tk.Frame):
 
-    arc_division = -(315 / 128)
+    arc_division = -(270 / 128)
     arc_height = 72
     arc_width = arc_height
 
@@ -29,6 +30,7 @@ class WidgetKeyNote(tk.Frame):
         self.pos_y = int(canvas_height * rel_y)
         self.widget_width = widget_width
         self.widget_height = widget_height
+        self.canvas = canvas
 
         # Background arc
         canvas.create_rectangle(
@@ -42,7 +44,7 @@ class WidgetKeyNote(tk.Frame):
         )
 
         # Indicator key note knob position
-        self.kob_arc = canvas.create_arc(
+        self.knob_arc = canvas.create_arc(
             # Bouding box
             self.pos_x - self.arc_height,  # x0
             self.pos_y - int(widget_height * 0.475),  # y0
@@ -93,7 +95,7 @@ class WidgetKeyNote(tk.Frame):
         )
 
         # Label key degree value
-        self.label_key_note_val = canvas.create_text(
+        self.label_key_degree_val = canvas.create_text(
             self.pos_x,
             self.pos_y + int(widget_height * 0.07),  # Center of the image
             text="7",  # Your label text
@@ -109,3 +111,19 @@ class WidgetKeyNote(tk.Frame):
             fill=arc_color,  # Text color
             font=(label_font, label_font_size, "bold"),  # Font style
         )
+
+    def update(self, key_degree, raw_key_knob):
+        self.canvas.itemconfig(
+            self.knob_arc, extent=(self.arc_division * raw_key_knob + self.arc_division)
+        )
+        self.img_knob.rotate(self.arc_division * raw_key_knob)
+        self.canvas.itemconfig(self.label_key_degree_val, text=f"{key_degree}")
+        self.canvas.itemconfig(
+            self.label_octave_val, text=self.compute_octave(raw_key_knob)
+        )
+
+    def compute_octave(self, raw_key_knob):
+        temp_note = int((raw_key_knob - 64) / 3)
+        octave = int(temp_note / 7) * 12
+        octave = math.floor(octave / 12) if octave >= 0 else math.ceil(octave / 12)
+        return f"{octave}"
