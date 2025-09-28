@@ -1,8 +1,5 @@
-from midi_controller import MidiController
-from midi_bridge import MidiBridge
-
-# from nicegui import ui
-import asyncio
+from source.midi_controller import MidiController
+from source.midi_bridge import MidiBridge
 
 midi_controller = MidiController()
 

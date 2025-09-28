@@ -44,6 +44,16 @@ class WidgetPanelChordType(tk.Frame):
         self.widget_height = widget_height
         self.canvas = canvas
 
+        # Wheel slice image
+
+        # self.img_wheel_slice = ImageItem(
+        #     canvas=canvas,
+        #     image_path="./res_2/png/camembert_chord_type.png",
+        #     width=int(widget_height * 0.6),  # HARDCODED
+        #     height=int(widget_height * 0.6),  # HARDCODED
+        #     x=self.pos_x,
+        #     y=self.pos_y + int(widget_height * 0.118),
+        # )
         # Wheel slice
         self.knob_arc = canvas.create_arc(
             # Bouding box
