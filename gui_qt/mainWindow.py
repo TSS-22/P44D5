@@ -2,6 +2,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow
 from gui_qt.widgetBaseNote import WidgetBaseNote
+from gui_qt.widgetKeyNote import WidgetKeyNote
 
 
 class MainWindow(QMainWindow):
@@ -10,4 +11,5 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("8P4K PowerHouse")
         wdgt_base_note = WidgetBaseNote(self)
-        self.setCentralWidget(wdgt_base_note)
+        wdgt_key_note = WidgetKeyNote(self)
+        self.setCentralWidget(wdgt_key_note)

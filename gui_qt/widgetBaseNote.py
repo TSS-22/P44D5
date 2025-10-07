@@ -109,6 +109,7 @@ class WidgetBaseNote(QFrame):
             self.lbl_note_properties["size_x"], self.lbl_note_properties["size_y"]
         )
 
+        # Widget placement
         self.knob.move(self.knob_properties["x"], self.knob_properties["y"])
         self.lbl_txt.move(self.lbl_txt_properties["x"], self.lbl_txt_properties["y"])
         self.lbl_note.move(self.lbl_note_properties["x"], self.lbl_note_properties["y"])
