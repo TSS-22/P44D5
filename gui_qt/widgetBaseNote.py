@@ -10,7 +10,7 @@ class WidgetBaseNote(QFrame):
         self,
         parent=None,
         widget_width=168,
-        widget_height=415,
+        widget_height=416,
         canvas_width=1200,
         canvas_height=760,
         knob_color="#eeeeee",
@@ -43,13 +43,19 @@ class WidgetBaseNote(QFrame):
         self.knob_size_ratio = 0.65
         self.knob_properties = {
             "size": self.widget_width * self.knob_size_ratio,
-            "x": self.widget_width * (1 - self.knob_size_ratio) / 2,
-            "y": self.widget_height * 0.05,
+            "val_min": 0,
+            "val_max": 127,
+            "val_start": 0,
         }
         self.knob = KnobShow(parent=self, notchesVisible=True)
         self.knob.setFixedSize(
             self.knob_properties["size"], self.knob_properties["size"]
         )
+
+        self.knob.setMinimum(self.knob_properties["val_min"])
+        self.knob.setMaximum(self.knob_properties["val_max"])
+        self.knob.setValue(self.knob_properties["val_start"])
+
         self.knob_palette = self.knob.palette()
         self.knob_palette.setColor(QPalette.Button, QColor(knob_color))
         self.knob_palette.setColor(QPalette.Dark, QColor(lbl_txt_color))
@@ -63,8 +69,6 @@ class WidgetBaseNote(QFrame):
             "font": lbl_font,
             "font_size": lbl_txt_size,
             "color": lbl_txt_color,
-            "x": self.widget_width * (1 - self.lbl_txt_size_ratio) / 2,
-            "y": self.widget_height * 0.4,
         }
         self.lbl_txt = QLabel("Base note", parent=self)
         self.font_txt = self.lbl_txt.font()
@@ -90,8 +94,6 @@ class WidgetBaseNote(QFrame):
             "font": lbl_font,
             "font_size": lbl_note_size,
             "color": lbl_note_color,
-            "x": self.widget_width * (1 - self.lbl_note_size_ratio) / 2,
-            "y": self.widget_height * 0.65,
         }
         self.lbl_note = QLabel("C -3", parent=self)
         self.font_txt = self.lbl_note.font()
@@ -109,7 +111,20 @@ class WidgetBaseNote(QFrame):
             self.lbl_note_properties["size_x"], self.lbl_note_properties["size_y"]
         )
 
+        # Widget position
+        self.knob_position = {
+            "x": self.widget_width * (1 - self.knob_size_ratio) / 2,
+            "y": self.widget_height * 0.05,
+        }
+        self.lbl_txt_position = {
+            "x": self.widget_width * (1 - self.lbl_txt_size_ratio) / 2,
+            "y": self.widget_height * 0.4,
+        }
+        self.lbl_note_position = {
+            "x": self.widget_width * (1 - self.lbl_note_size_ratio) / 2,
+            "y": self.widget_height * 0.65,
+        }
         # Widget placement
-        self.knob.move(self.knob_properties["x"], self.knob_properties["y"])
-        self.lbl_txt.move(self.lbl_txt_properties["x"], self.lbl_txt_properties["y"])
-        self.lbl_note.move(self.lbl_note_properties["x"], self.lbl_note_properties["y"])
+        self.knob.move(self.knob_position["x"], self.knob_position["y"])
+        self.lbl_txt.move(self.lbl_txt_position["x"], self.lbl_txt_position["y"])
+        self.lbl_note.move(self.lbl_note_position["x"], self.lbl_note_position["y"])

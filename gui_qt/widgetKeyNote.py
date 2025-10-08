@@ -10,7 +10,7 @@ class WidgetKeyNote(QFrame):
         self,
         parent=None,
         widget_width=168,
-        widget_height=415,
+        widget_height=416,
         canvas_width=1200,
         canvas_height=760,
         knob_color="#eeeeee",
@@ -43,13 +43,18 @@ class WidgetKeyNote(QFrame):
         self.knob_size_ratio = 0.65
         self.knob_properties = {
             "size": self.widget_width * self.knob_size_ratio,
-            "x": self.widget_width * (1 - self.knob_size_ratio) / 2,
-            "y": self.widget_height * 0.05,
+            "val_min": 0,
+            "val_max": 127,
+            "val_start": 0,
         }
         self.knob = KnobShow(parent=self, notchesVisible=True)
         self.knob.setFixedSize(
             self.knob_properties["size"], self.knob_properties["size"]
         )
+        self.knob.setMinimum(self.knob_properties["val_min"])
+        self.knob.setMaximum(self.knob_properties["val_max"])
+        self.knob.setValue(self.knob_properties["val_start"])
+
         self.knob_palette = self.knob.palette()
         self.knob_palette.setColor(QPalette.Button, QColor(knob_color))
         self.knob_palette.setColor(QPalette.Dark, QColor(lbl_txt_color))
@@ -141,6 +146,10 @@ class WidgetKeyNote(QFrame):
         self.lbl_octave_val.setFont(self.font_val)
 
         # Widget position
+        self.knob_position = {
+            "x": self.widget_width * (1 - self.knob_size_ratio) / 2,
+            "y": self.widget_height * 0.05,
+        }
         self.lbl_key_info_position = {
             "x": self.widget_width * (1 - self.lbl_info_size_ratio) / 2,
             "y": self.widget_height * 0.36,
@@ -159,7 +168,7 @@ class WidgetKeyNote(QFrame):
         }
 
         # Widget placement
-        self.knob.move(self.knob_properties["x"], self.knob_properties["y"])
+        self.knob.move(self.knob_position["x"], self.knob_position["y"])
         self.lbl_key_info.move(
             self.lbl_key_info_position["x"], self.lbl_key_info_position["y"]
         )
