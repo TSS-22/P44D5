@@ -96,7 +96,7 @@ class WidgetWheelChoice(QFrame):
             elif self.radio_button_properties["font_size"] * len(mode) > size_x:
                 size_x = self.radio_button_properties["font_size"] * len(mode)
 
-        size_x = size_x + self.radio_button_properties["font_size"] * 1.5
+        size_x = size_x + self.radio_button_properties["font_size"]
 
         for idx, mode in enumerate(self.list_val):
             radio = QRadioButton(mode, self)
