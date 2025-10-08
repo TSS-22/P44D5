@@ -76,6 +76,9 @@ class WidgetWheelChoice(QFrame):
                     background:transparent;
                     text-align: center;
                 }
+                QRadioButton:checked {
+                    color: #00ff00;
+                }
             """,
         }
         # color: {lbl_font_color};

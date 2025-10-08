@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QFrame
+from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
+from gui_qt.widgetPad import WidgetPad
 
 
 class WidgetPadGrid(QFrame):
@@ -46,3 +47,16 @@ class WidgetPadGrid(QFrame):
             background-image: url(qt-ressources/png/qt-bckgnd-pad_grid.png);
             """
         )
+        self.pads = []
+        self.grid_layout = QGridLayout(self)
+        for row in range(2):
+            for col in range(4):
+                pad = WidgetPad(parent=self)
+                self.pads.append(
+                    {
+                        "pad": pad,
+                        "row": row,
+                        "col": col,
+                    }
+                )
+                self.grid_layout.addWidget(pad, row, col)
