@@ -51,7 +51,10 @@ class WidgetPadGrid(QFrame):
         self.grid_layout = QGridLayout(self)
         for row in range(2):
             for col in range(4):
-                pad = WidgetPad(parent=self)
+                if row == 0 and col == 0:
+                    pad = WidgetPad(parent=self, root=True, pad_pressed=True)
+                else:
+                    pad = WidgetPad(parent=self)
                 self.pads.append(
                     {
                         "pad": pad,

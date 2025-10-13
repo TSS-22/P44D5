@@ -4,6 +4,7 @@ import json
 import rtmidi
 import mido
 from source.utilities import correct_file_path
+from source.midi_bridge_message_out import MidiBridgeMessageOut
 
 
 class MidiBridge:
@@ -77,11 +78,16 @@ class MidiBridge:
         # input("Press ENTER to exit...")
 
     def bridge_out(self, midi_controller_ouput):
+        message_out = MidiBridgeMessageOut()
+
         if midi_controller_ouput.messages:
             for msg in midi_controller_ouput.messages:
                 self.output.send(msg)
+                message_out.add(msg)
         else:
-            pass  # empty message list
+            pass
+
+        return message_out
 
     def get_selected_input(self):
         return self.input

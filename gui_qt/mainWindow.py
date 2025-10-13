@@ -7,16 +7,29 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from PySide6.QtCore import QThread, QThreadPool
+
 from gui_qt.widgetBaseNote import WidgetBaseNote
 from gui_qt.widgetKeyNote import WidgetKeyNote
 from gui_qt.widgetPanelMode import WidgetPanelMode
 from gui_qt.widgetPanelChord import WidgetPanelChord
 from gui_qt.widgetPadGrid import WidgetPadGrid
 
+from qt_logic.qt_midi_connector import QtMidiConnector
+from qt_logic.main_logic import MainLogic
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.logic = MainLogic()
+
+        # Connecting the MidiCOntroller and MidiBridge to the UI
+        self.threadpool = QThreadPool()
+        thread_count = self.threadpool.maxThreadCount()
+        self.worker = QtMidiConnector()
+        self.threadpool.start(self.worker)
 
         self.setWindowTitle("8P4K PowerHouse")
         self.setStyleSheet(
