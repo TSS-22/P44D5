@@ -2,6 +2,7 @@ from PySide6.QtCore import QRunnable, Signal, Slot
 
 from source.midi_controller import MidiController
 from source.midi_bridge import MidiBridge
+from source.midi_bridge_message_out import MidiBridgeMessageOut
 
 
 class QtMidiConnector(QRunnable):
@@ -28,3 +29,7 @@ class QtMidiConnector(QRunnable):
 
         self.midi_bridge.stop()
         #     # self.midi_message.emit(message)
+
+    def process_messages(self, messages):
+        # Process the MidiBridgeMessageOut into a Signal that will send the new states for the widgets
+        return
