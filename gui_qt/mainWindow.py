@@ -116,8 +116,8 @@ class MainWindow(QMainWindow):
             (panel_chord_val["raw_knob_chord_type"] / 127)
             * len(self.wdgt_panel_chord.list_chord_comp)
         )
-        idx = self.wdgt_panel_chord.list_chord_comp.index(panel_chord_val["chord_type"])
-        self.wdgt_panel_chord.wheel_comp.radio_button[idx].setChecked(True)
+        # idx = self.wdgt_panel_chord.list_chord_comp.index(panel_chord_val["chord_type"])
+        # self.wdgt_panel_chord.wheel_comp.radio_button[idx].setChecked(True)
 
     @Slot()
     def updt_panel_play(self, panel_play_val):
