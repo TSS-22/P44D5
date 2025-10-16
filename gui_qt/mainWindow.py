@@ -30,6 +30,7 @@ class MainWindow(QMainWindow):
         self.logic.signal.panel_mode_changed.connect(self.updt_panel_mode)
         self.logic.signal.panel_chord_changed.connect(self.updt_panel_chord)
         self.logic.signal.panel_play_changed.connect(self.updt_panel_play)
+        self.logic.signal.pad_grid_changed.connect(self.updt_pad_grid)
 
         # Connecting the MidiCOntroller and MidiBridge to the UI
         self.threadpool = QThreadPool()
@@ -88,7 +89,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def updt_key_degree(self, key_deg_val):
-        self.wdgt_key_note.lbl_key_val.setText(f"{key_deg_val["key_degree"]}")
+        self.wdgt_key_note.lbl_key_val.setText(f"{key_deg_val["key_degree"]+1}")
         if key_deg_val["key_note"] >= 0:
             self.wdgt_key_note.lbl_octave_val.setText(
                 f"{int(key_deg_val["key_degree_octave"]/12)}"
@@ -133,3 +134,44 @@ class MainWindow(QMainWindow):
                 panel_play_val["selected_play_type"]["name"]
             )
         self.wdgt_panel_chord.wheel_type.radio_button[idx].setChecked(True)
+
+    @Slot()
+    def updt_pad_grid(self, pad_grid_val):
+        idx_base_note = pad_grid_val["base_note"] % 12
+        base_octave = int(pad_grid_val["base_note"] / 12) - 3
+        if pad_grid_val["key_note"] >= 0:
+            key_octave = pad_grid_val["key_degree_octave"] / 12
+        else:
+            key_octave = int(pad_grid_val["key_degree_octave"] / 12 - 1)
+        octave_corrected = base_octave + key_octave
+        for idx, velocity in enumerate(pad_grid_val["velocity"]):
+            # Root
+            if idx == pad_grid_val["key_degree"]:
+                self.wdgt_pad_grid.pads[idx]["pad"].put_root_backgrnd(True)
+            else:
+                self.wdgt_pad_grid.pads[idx]["pad"].put_root_backgrnd(False)
+            # Pressed
+            if velocity > 0:
+                print("test")
+                self.wdgt_pad_grid.pads[idx]["pad"].put_pressed_backgrnd(True)
+            else:
+                self.wdgt_pad_grid.pads[idx]["pad"].put_pressed_backgrnd(False)
+            # Note
+            if idx < pad_grid_val["key_degree"]:
+                note_correction = -sum(
+                    pad_grid_val["pad_intervals"][idx : pad_grid_val["key_degree"] + 1]
+                )
+
+                self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+                    map_note[idx_base_note + note_correction]
+                )
+            elif idx == pad_grid_val["key_degree"]:
+                self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+                    map_note[idx_base_note]
+                )
+            else:
+                # print(f"correction: {pad_grid_val["pad_intervals"]}\n")
+                note_correction = sum(pad_grid_val["pad_intervals"][: idx + 1])
+                self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+                    map_note[(idx_base_note + note_correction) % 12]
+                )

@@ -123,6 +123,7 @@ class MidiController:
                 + self.mode_prog_tone[self.state.selected_mode][self.state.key_degree :]
                 + self.mode_prog_tone[self.state.selected_mode][: self.state.key_degree]
             )
+        self.state.pad_intervals = self.selected_pad_interval
 
     def compute_mode_chord_prog(self):
         if self.state.selected_mode != "None":

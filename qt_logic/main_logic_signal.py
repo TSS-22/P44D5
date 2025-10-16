@@ -7,3 +7,4 @@ class MainLogicSignal(QObject):
     panel_mode_changed = Signal(dict)
     panel_chord_changed = Signal(dict)
     panel_play_changed = Signal(dict)
+    pad_grid_changed = Signal(dict)

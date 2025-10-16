@@ -17,6 +17,7 @@ class MidiControllerState:
         self.raw_knob_mode = 0
         self.raw_knob_play_type = 0
         self.raw_knob_chord_type = 0
+        self.pad_intervals = []
 
     def to_dict(self):
         return {
@@ -32,6 +33,7 @@ class MidiControllerState:
             "raw_knob_mode": self.raw_knob_mode,
             "raw_knob_play_type": self.raw_knob_play_type,
             "raw_knob_chord_type": self.raw_knob_chord_type,
+            "pad_intervals": self.pad_intervals,
         }
 
     def to_tuple(self):
@@ -48,4 +50,5 @@ class MidiControllerState:
             ("raw_knob_mode", self.raw_knob_mode),
             ("raw_knob_play_type", self.raw_knob_play_type),
             ("raw_knob_chord_type", self.raw_knob_chord_type),
+            ("pad_intervals", self.pad_intervals),
         )

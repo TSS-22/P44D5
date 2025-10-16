@@ -36,7 +36,7 @@ class WidgetPad(QFrame):
         if self.pad_pressed:
             self.bckgnd_active = "bckgnd-pad_active.png"
         else:
-            self.bckgnd_active = ""
+            self.bckgnd_active = "bckgnd-pad_inactive.png"
 
         self.lbl_note_properties = {
             "font": font,
@@ -81,3 +81,37 @@ class WidgetPad(QFrame):
         )
 
         self.stack = QStackedLayout()
+
+    def update_bckgrnd_only(self, widget, background_style):
+        current_style = widget.styleSheet()
+        properties = [p.strip() for p in current_style.split(";") if p.strip()]
+        # Remove any existing border property
+        properties = [p for p in properties if not p.startswith("background-image:")]
+        # Add the new border style
+        properties.append(background_style)
+        # Rejoin and set
+        widget.setStyleSheet(";".join(properties))
+
+    #  Redo the whole structure of the pad background and stuff/ most likely resort to border in order to lower the computationnal cost
+    def put_root_backgrnd(self, is_root):
+        # Reapply the style sheet
+        if is_root:
+            background_style = (
+                "background-image: url(qt-ressources/png/bckgnd-pad_root.png);"
+            )
+        else:
+            background_style = (
+                "background-image: url(qt-ressources/png/bckgnd-pad.png);"
+            )
+        self.update_bckgrnd_only(self.button, background_style)
+
+    def put_pressed_backgrnd(self, is_pressed):
+        if is_pressed:
+            background_style = (
+                "background-image: url(qt-ressources/png/bckgnd-pad_active.png);"
+            )
+        else:
+            background_style = (
+                "background-image: url(qt-ressources/png/bckgnd-pad_inactive.png);"
+            )
+        self.update_bckgrnd_only(self.active, background_style)

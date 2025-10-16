@@ -37,6 +37,18 @@ class MainLogic(QObject):
                 "selected_play_type": midi_controller_state["selected_play_type"],
             }
         )
+        self.signal.pad_grid_changed.emit(
+            {
+                "velocity": midi_controller_state["buffer"]["velocity"],
+                "key_degree": midi_controller_state["key_degree"],
+                "base_note": midi_controller_state["base_note"],
+                "key_note": midi_controller_state["key_note"],
+                "pad_intervals": midi_controller_state["pad_intervals"],
+                "key_degree_octave": midi_controller_state[
+                    "key_degree_octave"
+                ],  # Probably key_note and key_degree_octave are redundant
+            }
+        )
 
     def do_work(self):
         # Simulate logic
