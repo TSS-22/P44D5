@@ -19,6 +19,24 @@ class MainLogic(QObject):
                 "raw_key_knob": midi_controller_state["raw_key_knob"],
             }
         )
+        self.signal.panel_mode_changed.emit(
+            {
+                "raw_knob_mode": midi_controller_state["raw_knob_mode"],
+                "selected_mode": midi_controller_state["selected_mode"],
+            }
+        )
+        self.signal.panel_chord_changed.emit(
+            {
+                "raw_knob_chord_type": midi_controller_state["raw_knob_chord_type"],
+                "chord_type": midi_controller_state["chord_type"],
+            }
+        )
+        self.signal.panel_play_changed.emit(
+            {
+                "raw_knob_play_type": midi_controller_state["raw_knob_play_type"],
+                "selected_play_type": midi_controller_state["selected_play_type"],
+            }
+        )
 
     def do_work(self):
         # Simulate logic

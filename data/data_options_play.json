@@ -23,11 +23,11 @@
             "chord": [0, 3, 7]
         },
         {
-            "name": "Dom7",
+            "name": "Dom",
             "chord": [0, 4, 7]
         },
         {
-            "name": "Diminished",
+            "name": "Dim",
             "chord": [0, 3, 6]
         }
     ],
