@@ -268,6 +268,7 @@ class MidiController:
                     degree = abs(degree - 7)
 
             self.state.key_degree = degree
+            self.state.key_degree_octave = octave
             self.state.key_note = octave + inter_octave
             self.compute_pad_intervals()
             self.compute_mode_chord_prog()

@@ -9,6 +9,7 @@ class MidiControllerState:
         self.base_note = 0
         self.key_note = 0
         self.key_degree = 0
+        self.key_degree_octave = 0
         self.selected_mode = selected_mode
         self.selected_play_type = selected_play_type
         self.chord_type = selected_chord_type
@@ -23,6 +24,7 @@ class MidiControllerState:
             "base_note": self.base_note,
             "key_note": self.key_note,
             "key_degree": self.key_degree,
+            "key_degree_octave": self.key_degree_octave,
             "selected_mode": self.selected_mode,
             "selected_play_type": self.selected_play_type,
             "chord_type": self.chord_type,
@@ -38,6 +40,7 @@ class MidiControllerState:
             ("base_note", self.base_note),
             ("key_note", self.key_note),
             ("key_degree", self.key_degree),
+            ("key_degree_octave", self.key_degree_octave),
             ("selected_mode", self.selected_mode),
             ("selected_play_type", self.selected_play_type),
             ("chord_type", self.chord_type),

@@ -11,6 +11,14 @@ class MainLogic(QObject):
     @Slot()
     def handle_midi(self, midi_controller_state):
         self.signal.base_note_changed.emit(midi_controller_state["base_note"])
+        self.signal.key_note_changed.emit(
+            {
+                "key_degree": midi_controller_state["key_degree"],
+                "key_degree_octave": midi_controller_state["key_degree_octave"],
+                "key_note": midi_controller_state["key_note"],
+                "raw_key_knob": midi_controller_state["raw_key_knob"],
+            }
+        )
 
     def do_work(self):
         # Simulate logic

@@ -1,5 +1,5 @@
 import sys
-
+import math
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
 
         self.logic = MainLogic()
         self.logic.signal.base_note_changed.connect(self.updt_base_note)
+        self.logic.signal.key_note_changed.connect(self.updt_key_degree)
 
         # Connecting the MidiCOntroller and MidiBridge to the UI
         self.threadpool = QThreadPool()
@@ -77,8 +78,20 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def updt_base_note(self, base_note_val):
-        print(base_note_val)
         self.wdgt_base_note.knob.setValue(base_note_val)
         note = map_note[base_note_val % 12]
         octave = int(base_note_val / 12) - 3
         self.wdgt_base_note.lbl_note.setText(f"{note} {octave}")
+
+    @Slot()
+    def updt_key_degree(self, key_deg_val):
+        self.wdgt_key_note.lbl_key_val.setText(f"{key_deg_val["key_degree"]}")
+        if key_deg_val["key_note"] >= 0:
+            self.wdgt_key_note.lbl_octave_val.setText(
+                f"{int(key_deg_val["key_degree_octave"]/12)}"
+            )
+        else:
+            self.wdgt_key_note.lbl_octave_val.setText(
+                f"{int(key_deg_val["key_degree_octave"]/12 - 1)}"
+            )
+        self.wdgt_key_note.knob.setValue(key_deg_val["raw_key_knob"])
