@@ -75,5 +75,6 @@ class MainWindow(QMainWindow):
         event.accept()
 
     @Slot()
-    def updt_base_note(self, state):
-        print("update base note")
+    def updt_base_note(self, base_note_val):
+        print(base_note_val)
+        self.wdgt_base_note.knob.setValue(base_note_val)

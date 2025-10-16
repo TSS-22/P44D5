@@ -1,6 +1,7 @@
 from PySide6.QtCore import QObject, Signal, Slot
 from source.midi_bridge_message_out import MidiBridgeMessageOut
 from qt_logic.main_logic_signal import MainLogicSignal
+from qt_logic.StateTupleMap import StateTupleMap
 
 
 class MainLogic(QObject):
@@ -9,7 +10,7 @@ class MainLogic(QObject):
 
     @Slot()
     def handle_midi(self, midi_controller_state):
-        pass
+        self.signal.base_note_changed.emit(midi_controller_state["base_note"])
 
     def do_work(self):
         # Simulate logic
