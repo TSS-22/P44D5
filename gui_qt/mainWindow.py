@@ -161,12 +161,14 @@ class MainWindow(QMainWindow):
         for idx, _ in enumerate(pad_grid_val["velocity"]):
             note_correction = sum(corrected_pad_intervals[: idx + 1])
             list_note.append(map_note[(idx_base_note + note_correction) % 12])
-        print(list_note)
         if pad_grid_val["key_note"] >= 0:
             key_octave = pad_grid_val["key_degree_octave"] / 12
         else:
             key_octave = int(pad_grid_val["key_degree_octave"] / 12 - 1)
         octave_corrected = base_octave + key_octave
+        octave_correction = [0] * (8 - pad_grid_val["key_degree"] - 1) + [1] * (
+            pad_grid_val["key_degree"] + 1
+        )
         for idx, velocity in enumerate(pad_grid_val["velocity"]):
             # Root
             if idx == pad_grid_val["key_degree"]:
@@ -180,7 +182,9 @@ class MainWindow(QMainWindow):
             else:
                 self.wdgt_pad_grid.pads[idx]["pad"].put_pressed_backgrnd(False)
             # Note
-            self.wdgt_pad_grid.pads[idx]["pad"].button.setText(list_note[idx])
+            self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+                f"{list_note[idx]} {int(octave_corrected + octave_correction[idx])}"
+            )
             # if idx < pad_grid_val["key_degree"]:
             #     note_correction = -sum(
             #         pad_grid_val["pad_intervals"][::-1][
