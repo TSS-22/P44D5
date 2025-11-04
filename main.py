@@ -1,8 +1,11 @@
-from source.midi_controller import MidiController
-from source.midi_bridge import MidiBridge
+import sys
 
-midi_controller = MidiController()
+from PySide6.QtWidgets import QApplication
+from gui.mainWindow import MainWindow
 
-midi_bridge = MidiBridge()
+app = QApplication(sys.argv)
 
-midi_bridge.start(midi_controller)
+window = MainWindow()
+window.show()
+
+app.exec()
