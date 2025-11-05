@@ -2,8 +2,9 @@ import mido
 
 
 class MidiControllerOutput:
-    def __init__(self, midi_controller_state, list_message=[]):
-        self.state = midi_controller_state
+    def __init__(self, state, flag, list_message=[]):
+        self.flag = flag
+        self.state = state
         self.messages = []
         for msg in list_message:
             if isinstance(msg, mido.Message):

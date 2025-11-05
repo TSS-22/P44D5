@@ -1,8 +1,8 @@
 import json
-from logic.core.utilities import correct_file_path as correct_file_path
 from logic.core.controller.midi_controller_output import MidiControllerOutput
 from logic.core.controller.midi_controller_settings import MidiControllerSettings
 from logic.core.controller.midi_controller_state import MidiControllerState
+from logic.core.controller.controller_message_flag import ControllerMessageFlag
 
 
 class MidiController:
@@ -11,13 +11,11 @@ class MidiController:
     # TODO replace the rturn message from note_on etc, as a class?
     def __init__(self):
         with open(
-            correct_file_path("../data/data_options_play.json"), "r"
+            "./data/data_options_play.json", "r", encoding="UTF-8"
         ) as file_options_play:
             data_options_play = json.load(file_options_play)
 
-        with open(
-            correct_file_path("../data/data_settings.json"), "r"
-        ) as file_settings:
+        with open("./data/data_settings.json", "r", encoding="UTF-8") as file_settings:
             data_settings = json.load(file_settings)
 
         self.controller_settings = MidiControllerSettings(
@@ -160,7 +158,9 @@ class MidiController:
             - id_pad
         )
         return MidiControllerOutput(
-            self.get_state(), self.note_on(note, input.velocity, id_pad)
+            flag=ControllerMessageFlag.PAD_PRESSED,
+            state=self.get_state(),
+            list_message=self.note_on(note, input.velocity, id_pad),
         )
 
     # Pad released
@@ -182,7 +182,11 @@ class MidiController:
                 continue
             list_note_off.append(self.note_off(note, id_pad))
         self.state.buffer.notes[id_pad] = []
-        return MidiControllerOutput(self.get_state(), list_note_off)
+        return MidiControllerOutput(
+            flag=ControllerMessageFlag.PAD_RELEASED,
+            state=self.get_state(),
+            list_message=list_note_off,
+        )
 
     #
     def knob_base_note(self, input):
@@ -194,14 +198,19 @@ class MidiController:
                     self.state.buffer.notes[id_pad][0] + input.value - 64
                 )
                 return MidiControllerOutput(
-                    self.get_state(),
-                    self.note_on(temp_note, self.state.buffer.velocity[id_pad], id_pad),
+                    flag=ControllerMessageFlag.BASE_NOTE_CHANGED,
+                    state=self.get_state(),
+                    list_message=self.note_on(
+                        temp_note, self.state.buffer.velocity[id_pad], id_pad
+                    ),
                 )
 
         if not any_pad_on:
             self.select_base_note(input.value)
             print(f"Base note: {self.state.base_note}")
-            return MidiControllerOutput(self.get_state())
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.KNOB_BASE_SLIDE, state=self.get_state()
+            )
 
     #
     def knob_key_note(self, input):
@@ -214,8 +223,11 @@ class MidiController:
                     + self.select_key_note(input.value)
                 )
                 return MidiControllerOutput(
-                    self.get_state(),
-                    self.note_on(temp_note, self.state.buffer.velocity[id_pad], id_pad),
+                    flag=ControllerMessageFlag.KEY_NOTE_CHANGED,
+                    state=self.get_state(),
+                    list_message=self.note_on(
+                        temp_note, self.state.buffer.velocity[id_pad], id_pad
+                    ),
                 )
 
         if not any_pad_on:
@@ -223,14 +235,18 @@ class MidiController:
             self.state.raw_key_knob = input.value
             print(f"Key note: {self.state.key_note}")
             print(f"Key degree: {self.state.key_degree}")
-            return MidiControllerOutput(self.get_state())
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.KNOB_KEY_SLIDE, state=self.get_state()
+            )
 
     ########################
     # BUSINESS LOGIC LAYER #
     ########################
     def select_base_note(self, note_value):
         self.state.base_note = note_value
-        return MidiControllerOutput(self.get_state())
+        return MidiControllerOutput(
+            flag=ControllerMessageFlag.BASE_NOTE_CHANGED, state=self.get_state()
+        )
 
     # When using no mode, it is equivalent to select_base_node
     # When using modes play, the mode stick to the base note to
@@ -288,7 +304,9 @@ class MidiController:
         print(
             f"Mode: {self.controller_settings.list_modes[int(input.value/self.controller_settings.knob_div_modes)]}\n"
         )
-        return MidiControllerOutput(self.get_state())
+        return MidiControllerOutput(
+            flag=ControllerMessageFlag.MODE_CHANGED, state=self.get_state()
+        )
 
     # Used to select the type of play, either chord like or single note.
     # Refer to "./data.py/knob_values_playTypes" for more details about the possible values
@@ -300,11 +318,15 @@ class MidiController:
         print(
             f"Play type: {self.controller_settings.list_play_type[int(input.value/self.controller_settings.knob_div_playType)]}\n"
         )
-        return MidiControllerOutput(self.get_state())
+        return MidiControllerOutput(
+            flag=ControllerMessageFlag.PLAY_CHANGED, state=self.get_state()
+        )
 
     def knob_chordType(self, input):
         self.state.raw_knob_chord_type = input.value
-        return MidiControllerOutput(self.get_state())
+        return MidiControllerOutput(
+            flag=ControllerMessageFlag.CHORD_CHANGED, state=self.get_state()
+        )
 
     ##########################
     # MIDI MESSAGES COMMANDS #
@@ -343,7 +365,11 @@ class MidiController:
     #######################
     # C'est un peu degueux ce manque de standardisation de l'ouput : empty/message
     def receive_message(self, message):
-        output = MidiControllerOutput(self.get_state(), [message])
+        output = MidiControllerOutput(
+            flag=ControllerMessageFlag.BYPASS,
+            state=self.get_state(),
+            list_message=[message],
+        )
         # Note pressed
         if message.type == "note_on":
             output = self.pad_pressed(message)
