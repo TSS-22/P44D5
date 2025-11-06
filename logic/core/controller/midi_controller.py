@@ -324,6 +324,15 @@ class MidiController:
 
     def knob_chordType(self, input):
         self.state.raw_knob_chord_type = input.value
+        # self.controller_settings.list_chord_comp[
+        #     int(input.value / self.controller_settings.knob_div_chord_comp)
+        # ]
+        self.state.selected_chord_comp = self.controller_settings.list_chord_comp[
+            int(input.value / self.controller_settings.knob_div_chord_comp)
+        ]
+        print(
+            f"Chord comp: {self.controller_settings.list_chord_comp[int(input.value/self.controller_settings.knob_div_chord_comp)]}\n"
+        )
         return MidiControllerOutput(
             flag=ControllerMessageFlag.CHORD_CHANGED, state=self.get_state()
         )
@@ -342,13 +351,19 @@ class MidiController:
             self.state.selected_play_type["name"] == "Normal"
             and self.state.selected_mode != "None"
         ):
-            for chord_interval in self.selected_mode_chord_prog[id_pad]:
+            for chord_interval in [
+                self.selected_mode_chord_prog[id_pad][i]
+                for i in self.state.selected_chord_comp["comp"]
+            ]:
                 midi_message_note_on.append(
                     self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
 
         else:
-            for chord_interval in self.state.selected_play_type["chord"]:
+            for chord_interval in [
+                self.state.selected_play_type["chord"][i]
+                for i in self.state.selected_chord_comp["comp"]
+            ]:
                 midi_message_note_on.append(
                     self.append_note_on(note + chord_interval, velocity, id_pad)
                 )
