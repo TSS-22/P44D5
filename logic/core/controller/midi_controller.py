@@ -296,12 +296,11 @@ class MidiController:
     # Used to select the modes.
     # Refer to "./data.py/knob_values_playModes" for more details about the possible values
     def knob_playMode(self, input):
-        # Should I reset or not ? good question
-        self.reset_key_degree()
         self.state.raw_knob_mode = input.value
         self.state.selected_mode = self.controller_settings.list_modes[
             int(input.value / self.controller_settings.knob_div_modes)
         ]
+        self.reset_key_degree()
         print(
             f"Mode: {self.controller_settings.list_modes[int(input.value/self.controller_settings.knob_div_modes)]}\n"
         )
