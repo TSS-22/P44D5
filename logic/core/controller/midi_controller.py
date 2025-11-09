@@ -32,6 +32,7 @@ class MidiController:
         self.state = MidiControllerState(
             selected_mode=self.controller_settings.list_modes[0],
             selected_play_type=self.controller_settings.list_play_type[0],
+            selected_chord_comp=self.controller_settings.list_chord_comp[0],
         )
 
         self.base_note_offset = data_settings["base_note_offset"]
@@ -198,7 +199,7 @@ class MidiController:
                     self.state.buffer.notes[id_pad][0] + input.value - 64
                 )
                 return MidiControllerOutput(
-                    flag=ControllerMessageFlag.BASE_NOTE_CHANGED,
+                    flag=ControllerMessageFlag.KNOB_BASE_SLIDE,
                     state=self.get_state(),
                     list_message=self.note_on(
                         temp_note, self.state.buffer.velocity[id_pad], id_pad
@@ -209,7 +210,7 @@ class MidiController:
             self.select_base_note(input.value)
             print(f"Base note: {self.state.base_note}")
             return MidiControllerOutput(
-                flag=ControllerMessageFlag.KNOB_BASE_SLIDE, state=self.get_state()
+                flag=ControllerMessageFlag.BASE_NOTE_CHANGED, state=self.get_state()
             )
 
     #
@@ -223,7 +224,7 @@ class MidiController:
                     + self.select_key_note(input.value)
                 )
                 return MidiControllerOutput(
-                    flag=ControllerMessageFlag.KEY_NOTE_CHANGED,
+                    flag=ControllerMessageFlag.KNOB_KEY_SLIDE,
                     state=self.get_state(),
                     list_message=self.note_on(
                         temp_note, self.state.buffer.velocity[id_pad], id_pad
@@ -236,7 +237,7 @@ class MidiController:
             print(f"Key note: {self.state.key_note}")
             print(f"Key degree: {self.state.key_degree}")
             return MidiControllerOutput(
-                flag=ControllerMessageFlag.KNOB_KEY_SLIDE, state=self.get_state()
+                flag=ControllerMessageFlag.KEY_NOTE_CHANGED, state=self.get_state()
             )
 
     ########################
@@ -362,7 +363,9 @@ class MidiController:
         else:
             for chord_interval in [
                 self.state.selected_play_type["chord"][i]
-                for i in self.state.selected_chord_comp["comp"]
+                for i in self.state.selected_chord_comp["comp"][
+                    : len(self.state.selected_play_type["chord"])
+                ]
             ]:
                 midi_message_note_on.append(
                     self.append_note_on(note + chord_interval, velocity, id_pad)

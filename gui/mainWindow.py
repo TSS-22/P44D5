@@ -78,25 +78,88 @@ class MainWindow(QMainWindow):
         event.accept()
 
     @Slot()
-    def updt_base_note(self, base_note_val):
-        self.wdgt_base_note.update(base_note_val)
+    def updt_base_note(self, state):
+        self.wdgt_base_note.update(state["base_note"])
+        self.wdgt_pad_grid.update(
+            {
+                "velocity": state["buffer"]["velocity"],
+                "base_note": state["base_note"],
+                "key_degree": state["key_degree"],
+                "key_note": state["key_note"],
+                "key_degree_octave": state["key_degree_octave"],
+                "pad_intervals": state["pad_intervals"],
+            }
+        )
 
     @Slot()
-    def updt_key_degree(self, key_deg_val):
-        self.wdgt_key_note.update(key_deg_val)
+    def updt_key_degree(self, state):
+        self.wdgt_key_note.update(
+            {
+                "key_degree": state["key_degree"],
+                "key_note": state["key_note"],
+                "key_degree_octave": state["key_degree_octave"],
+                "raw_key_knob": state["raw_key_knob"],
+            }
+        )
+        self.wdgt_pad_grid.update(
+            {
+                "velocity": state["buffer"]["velocity"],
+                "key_degree": state["key_degree"],
+                "base_note": state["base_note"],
+                "key_note": state["key_note"],
+                "pad_intervals": state["pad_intervals"],
+                "key_degree_octave": state["key_degree_octave"],
+            }
+        )
 
     @Slot()
-    def updt_panel_mode(self, panel_mode_val):
-        self.wdgt_panel_mode.update(panel_mode_val)
+    def updt_panel_mode(self, state):
+        self.wdgt_panel_mode.update(
+            {
+                "raw_knob_mode": state["raw_knob_mode"],
+                "selected_mode": state["selected_mode"],
+            }
+        )
+        self.wdgt_pad_grid.update(
+            {
+                "velocity": state["buffer"]["velocity"],
+                "key_degree": state["key_degree"],
+                "base_note": state["base_note"],
+                "key_note": state["key_note"],
+                "pad_intervals": state["pad_intervals"],
+                "key_degree_octave": state["key_degree_octave"],
+            }
+        )
 
     @Slot()
-    def updt_panel_chord(self, panel_chord_val):
-        self.wdgt_panel_chord.update_chord(panel_chord_val)
+    def updt_panel_chord(self, state):
+        # Add the update of the pad text with the note(s) played
+        self.wdgt_panel_chord.update_chord(
+            {
+                "raw_knob_chord_type": state["raw_knob_chord_type"],
+                "selected_chord_comp": state["selected_chord_comp"],
+            }
+        )
 
     @Slot()
-    def updt_panel_play(self, panel_play_val):
-        self.wdgt_panel_chord.update_play(panel_play_val)
+    def updt_panel_play(self, state):
+        # Add the update of the pad text with the note(s) played
+        self.wdgt_panel_chord.update_play(
+            {
+                "raw_knob_play_type": state["raw_knob_play_type"],
+                "selected_play_type": state["selected_play_type"],
+            }
+        )
 
     @Slot()
-    def updt_pad_grid(self, pad_grid_val):
-        self.wdgt_pad_grid.update(pad_grid_val)
+    def updt_pad_grid(self, state):
+        self.wdgt_pad_grid.update(
+            {
+                "velocity": state["buffer"]["velocity"],
+                "key_degree": state["key_degree"],
+                "base_note": state["base_note"],
+                "key_note": state["key_note"],
+                "pad_intervals": state["pad_intervals"],
+                "key_degree_octave": state["key_degree_octave"],
+            }
+        )

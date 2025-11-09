@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
 from gui.widgetPad import WidgetPad
+from logic.gui.map_note import map_note
 
 
 class WidgetPadGrid(QFrame):
@@ -100,17 +101,17 @@ class WidgetPadGrid(QFrame):
         for idx, velocity in enumerate(pad_grid_val["velocity"]):
             # Root
             if idx == pad_grid_val["key_degree"]:
-                self.wdgt_pad_grid.pads[idx]["pad"].put_root_backgrnd(True)
+                self.pads[idx]["pad"].put_root_backgrnd(True)
             else:
-                self.wdgt_pad_grid.pads[idx]["pad"].put_root_backgrnd(False)
+                self.pads[idx]["pad"].put_root_backgrnd(False)
             # Pressed
             if velocity > 0:
                 print("test")
-                self.wdgt_pad_grid.pads[idx]["pad"].put_pressed_backgrnd(True)
+                self.pads[idx]["pad"].put_pressed_backgrnd(True)
             else:
-                self.wdgt_pad_grid.pads[idx]["pad"].put_pressed_backgrnd(False)
+                self.pads[idx]["pad"].put_pressed_backgrnd(False)
             # Note
-            self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+            self.pads[idx]["pad"].button.setText(
                 f"{list_note[idx]} {int(octave_corrected + octave_correction[idx])}"
             )
             # if idx < pad_grid_val["key_degree"]:
@@ -120,17 +121,17 @@ class WidgetPadGrid(QFrame):
             #         ]
             #     )
 
-            #     # self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+            #     # self.pads[idx]["pad"].button.setText(
             #     #     map_note[idx_base_note + note_correction]
             #     # )
-            #     self.wdgt_pad_grid.pads[idx]["pad"].button.setText("P")
+            #     self.pads[idx]["pad"].button.setText("P")
             # elif idx == pad_grid_val["key_degree"]:
-            #     self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+            #     self.pads[idx]["pad"].button.setText(
             #         map_note[idx_base_note]
             #     )
             # else:
             #     print(f"correction: {pad_grid_val["pad_intervals"]}\n")
             #     note_correction = sum(pad_grid_val["pad_intervals"][: idx + 1])
-            #     self.wdgt_pad_grid.pads[idx]["pad"].button.setText(
+            #     self.pads[idx]["pad"].button.setText(
             #         map_note[(idx_base_note + note_correction) % 12]
             #     )
