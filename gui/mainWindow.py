@@ -15,8 +15,9 @@ from gui.widgetPanelMode import WidgetPanelMode
 from gui.widgetPanelChord import WidgetPanelChord
 from gui.widgetPadGrid import WidgetPadGrid
 
-from logic.gui.qt_midi_connector import QtMidiConnector
-from logic.gui.main_logic import MainLogic
+from logic.gui.qt_midi_connector import MainLogic
+
+# from logic.gui.main_logic import MainLogic
 from logic.gui.map_note import map_note
 
 
@@ -24,22 +25,27 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.logic = MainLogic()
-        self.logic.signal.base_note_changed.connect(self.updt_base_note)
-        self.logic.signal.key_note_changed.connect(self.updt_key_degree)
-        self.logic.signal.panel_mode_changed.connect(self.updt_panel_mode)
-        self.logic.signal.panel_chord_changed.connect(self.updt_panel_chord)
-        self.logic.signal.panel_play_changed.connect(self.updt_panel_play)
-        self.logic.signal.pad_grid_changed.connect(self.updt_pad_grid)
+        # self.logic = MainLogic()
+        # self.logic.signal.base_note_changed.connect(self.updt_base_note)
+        # self.logic.signal.key_note_changed.connect(self.updt_key_degree)
+        # self.logic.signal.panel_mode_changed.connect(self.updt_panel_mode)
+        # self.logic.signal.panel_chord_changed.connect(self.updt_panel_chord)
+        # self.logic.signal.panel_play_changed.connect(self.updt_panel_play)
+        # self.logic.signal.pad_grid_changed.connect(self.updt_pad_grid)
 
         # Connecting the MidiCOntroller and MidiBridge to the UI
         self.threadpool = QThreadPool()
         thread_count = self.threadpool.maxThreadCount()
-        self.worker = QtMidiConnector()
+        self.logic_worker = MainLogic()
 
-        self.worker.signals.midi_messages.connect(self.logic.handle_midi)
+        self.logic_worker.signals.base_note_changed.connect(self.updt_base_note)
+        self.logic_worker.signals.key_note_changed.connect(self.updt_key_degree)
+        self.logic_worker.signals.panel_mode_changed.connect(self.updt_panel_mode)
+        self.logic_worker.signals.panel_chord_changed.connect(self.updt_panel_chord)
+        self.logic_worker.signals.panel_play_changed.connect(self.updt_panel_play)
+        self.logic_worker.signals.pad_grid_changed.connect(self.updt_pad_grid)
 
-        self.threadpool.start(self.worker)
+        self.threadpool.start(self.logic_worker)
 
         self.setWindowTitle("8P4K PowerHouse")
         self.setStyleSheet(
@@ -77,7 +83,7 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         # Ask the worker to stop
-        self.worker.stop()
+        self.logic_worker.stop()
         event.accept()
 
     @Slot()

@@ -67,8 +67,3 @@ class MainLogic(QObject):
                     ],  # Probably key_note and key_degree_octave are redundant
                 }
             )
-
-    def do_work(self):
-        # Simulate logic
-        new_state = "Logic updated!"
-        self.state_changed.emit(new_state)  # Notify UI
