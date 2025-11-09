@@ -1,20 +1,50 @@
-from PySide6.QtCore import QObject, Signal, Slot
-from logic.gui.main_logic_signal import MainLogicSignal
+from PySide6.QtCore import QRunnable, Signal, Slot, QObject
+
+from logic.core.controller.midi_controller import MidiController
+from logic.core.bridge.midi_bridge import MidiBridge
+from logic.gui.main_logic_signals import MainLogicSignals
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
 
 
-class MainLogic(QObject):
-    id_knob_base_note = 70  # HARDCODED
-    signal = MainLogicSignal()
+class MainLogic(QRunnable):
+
+    def __init__(self):
+        super().__init__()
+        self.signals = MainLogicSignals()
+        self.midi_controller = MidiController()
+        self.midi_bridge = MidiBridge()
+        self._is_running = False
+
+    def run(self):
+        print("starting thread")
+        self._is_running = True
+        while self._is_running:
+            try:
+                for midi_msg in self.midi_bridge.input.iter_pending():
+                    midi_controller_output = self.midi_bridge.bridge_out(
+                        self.midi_controller.receive_message(midi_msg)
+                    )
+                    self.handle_midi(midi_controller_output.to_dict())
+
+            except KeyboardInterrupt:
+                print("Stopped.")
+
+        self.midi_bridge.stop()
+        self.signals.finished.emit()
+
+    @Slot()
+    def stop(self):
+        self._is_running = False
+        self.signals.stopped.emit()
 
     @Slot()
     def handle_midi(self, midi_controller_output):
         if midi_controller_output["flag"] == ControllerMessageFlag.BASE_NOTE_CHANGED:
-            self.signal.base_note_changed.emit(
+            self.signals.base_note_changed.emit(
                 midi_controller_output["state"]["base_note"]
             )
         elif midi_controller_output["flag"] == ControllerMessageFlag.KEY_NOTE_CHANGED:
-            self.signal.key_note_changed.emit(
+            self.signals.key_note_changed.emit(
                 {
                     "key_degree": midi_controller_output["state"]["key_degree"],
                     "key_degree_octave": midi_controller_output["state"][
@@ -25,14 +55,14 @@ class MainLogic(QObject):
                 }
             )
         elif midi_controller_output["flag"] == ControllerMessageFlag.MODE_CHANGED:
-            self.signal.panel_mode_changed.emit(
+            self.signals.panel_mode_changed.emit(
                 {
                     "raw_knob_mode": midi_controller_output["state"]["raw_knob_mode"],
                     "selected_mode": midi_controller_output["state"]["selected_mode"],
                 }
             )
         elif midi_controller_output["flag"] == ControllerMessageFlag.CHORD_CHANGED:
-            self.signal.panel_chord_changed.emit(
+            self.signals.panel_chord_changed.emit(
                 {
                     "raw_knob_chord_type": midi_controller_output["state"][
                         "raw_knob_chord_type"
@@ -41,7 +71,7 @@ class MainLogic(QObject):
                 }
             )
         elif midi_controller_output["flag"] == ControllerMessageFlag.PLAY_CHANGED:
-            self.signal.panel_play_changed.emit(
+            self.signals.panel_play_changed.emit(
                 {
                     "raw_knob_play_type": midi_controller_output["state"][
                         "raw_knob_play_type"
@@ -55,7 +85,7 @@ class MainLogic(QObject):
             midi_controller_output["flag"] == ControllerMessageFlag.PAD_PRESSED
             or ControllerMessageFlag.PAD_RELEASED
         ):
-            self.signal.pad_grid_changed.emit(
+            self.signals.pad_grid_changed.emit(
                 {
                     "velocity": midi_controller_output["state"]["buffer"]["velocity"],
                     "key_degree": midi_controller_output["state"]["key_degree"],

@@ -15,23 +15,14 @@ from gui.widgetPanelMode import WidgetPanelMode
 from gui.widgetPanelChord import WidgetPanelChord
 from gui.widgetPadGrid import WidgetPadGrid
 
-from logic.gui.qt_midi_connector import MainLogic
+from logic.gui.main_logic import MainLogic
 
-# from logic.gui.main_logic import MainLogic
 from logic.gui.map_note import map_note
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        # self.logic = MainLogic()
-        # self.logic.signal.base_note_changed.connect(self.updt_base_note)
-        # self.logic.signal.key_note_changed.connect(self.updt_key_degree)
-        # self.logic.signal.panel_mode_changed.connect(self.updt_panel_mode)
-        # self.logic.signal.panel_chord_changed.connect(self.updt_panel_chord)
-        # self.logic.signal.panel_play_changed.connect(self.updt_panel_play)
-        # self.logic.signal.pad_grid_changed.connect(self.updt_pad_grid)
 
         # Connecting the MidiCOntroller and MidiBridge to the UI
         self.threadpool = QThreadPool()
@@ -88,10 +79,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def updt_base_note(self, base_note_val):
-        self.wdgt_base_note.knob.setValue(base_note_val)
-        note = map_note[base_note_val % 12]
-        octave = int(base_note_val / 12) - 3
-        self.wdgt_base_note.lbl_note.setText(f"{note} {octave}")
+        self.wdgt_base_note(base_note_val)
 
     @Slot()
     def updt_key_degree(self, key_deg_val):

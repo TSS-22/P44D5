@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QFrame, QVBoxLayout, QDial, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
 from gui.knobShow import KnobShow
+from logic.gui.map_note import map_note
 
 
 class WidgetBaseNote(QFrame):
@@ -128,3 +129,9 @@ class WidgetBaseNote(QFrame):
         self.knob.move(self.knob_position["x"], self.knob_position["y"])
         self.lbl_txt.move(self.lbl_txt_position["x"], self.lbl_txt_position["y"])
         self.lbl_note.move(self.lbl_note_position["x"], self.lbl_note_position["y"])
+
+    def update(self, base_note_val):
+        self.wdgt_base_note.knob.setValue(base_note_val)
+        note = map_note[base_note_val % 12]
+        octave = int(base_note_val / 12) - 3
+        self.wdgt_base_note.lbl_note.setText(f"{note} {octave}")
