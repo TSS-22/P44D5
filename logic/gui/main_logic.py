@@ -41,61 +41,19 @@ class MainLogic(QRunnable):
         if midi_controller_output["flag"] == ControllerMessageFlag.BASE_NOTE_CHANGED:
             self.signals.base_note_changed.emit(midi_controller_output["state"])
         elif midi_controller_output["flag"] == ControllerMessageFlag.KEY_NOTE_CHANGED:
-            self.signals.key_note_changed.emit(
-                # {
-                #     "key_degree": midi_controller_output["state"]["key_degree"],
-                #     "key_degree_octave": midi_controller_output["state"][
-                #         "key_degree_octave"
-                #     ],
-                #     "key_note": midi_controller_output["state"]["key_note"],
-                #     "raw_key_knob": midi_controller_output["state"]["raw_key_knob"],
-                # }
-                midi_controller_output["state"]
-            )
+            self.signals.key_note_changed.emit(midi_controller_output["state"])
         elif midi_controller_output["flag"] == ControllerMessageFlag.MODE_CHANGED:
-            self.signals.panel_mode_changed.emit(
-                # {
-                #     "raw_knob_mode": midi_controller_output["state"]["raw_knob_mode"],
-                #     "selected_mode": midi_controller_output["state"]["selected_mode"],
-                # }
-                midi_controller_output["state"]
-            )
+            self.signals.panel_mode_changed.emit(midi_controller_output["state"])
         elif midi_controller_output["flag"] == ControllerMessageFlag.CHORD_CHANGED:
-            self.signals.panel_chord_changed.emit(
-                # {
-                #     "raw_knob_chord_type": midi_controller_output["state"][
-                #         "raw_knob_chord_type"
-                #     ],
-                #     "chord_type": midi_controller_output["state"]["chord_type"],
-                # }
-                midi_controller_output["state"]
-            )
+            self.signals.panel_chord_changed.emit(midi_controller_output["state"])
         elif midi_controller_output["flag"] == ControllerMessageFlag.PLAY_CHANGED:
-            self.signals.panel_play_changed.emit(
-                # {
-                #     "raw_knob_play_type": midi_controller_output["state"][
-                #         "raw_knob_play_type"
-                #     ],
-                #     "selected_play_type": midi_controller_output["state"][
-                #         "selected_play_type"
-                #     ],
-                # }
-                midi_controller_output["state"]
-            )
+            self.signals.panel_play_changed.emit(midi_controller_output["state"])
         elif (
             midi_controller_output["flag"] == ControllerMessageFlag.PAD_PRESSED
             or ControllerMessageFlag.PAD_RELEASED
         ):
-            self.signals.pad_grid_changed.emit(
-                # {
-                #     "velocity": midi_controller_output["state"]["buffer"]["velocity"],
-                #     "key_degree": midi_controller_output["state"]["key_degree"],
-                #     "base_note": midi_controller_output["state"]["base_note"],
-                #     "key_note": midi_controller_output["state"]["key_note"],
-                #     "pad_intervals": midi_controller_output["state"]["pad_intervals"],
-                #     "key_degree_octave": midi_controller_output["state"][
-                #         "key_degree_octave"
-                #     ],  # Probably key_note and key_degree_octave are redundant
-                # }
-                midi_controller_output["state"]
-            )
+            self.signals.pad_grid_changed.emit(midi_controller_output["state"])
+
+    @Slot()
+    def toggle_bypass(self):
+        self.midi_controller.toggle_bypass()

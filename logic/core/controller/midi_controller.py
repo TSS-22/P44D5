@@ -145,6 +145,7 @@ class MidiController:
 
     def toggle_bypass(self):
         self.state.bypass = not self.state.bypass
+        print(self.state.bypass)
 
     ##################
     # PHYSICAL LOGIC #

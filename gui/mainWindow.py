@@ -56,12 +56,13 @@ class MainWindow(QMainWindow):
             background: #eeeeee;
             """
         )
-
+        # Toolbar
         self.toolbar.setIconSize(QSize(22, 22))
         self.addToolBar(self.toolbar)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.icon_stop = QIcon("../ressources/gui/icons/prohibition.png")
         self.action_bypass = QActionBypass()
+        self.action_bypass.signal_toggled.connect(self.logic_worker.toggle_bypass)
         self.toolbar.addAction(self.action_bypass)
 
         self.wdgt_base_note = WidgetBaseNote(self)
