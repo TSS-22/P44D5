@@ -24,6 +24,7 @@ class MidiControllerState:
         self.raw_knob_play_type = 0
         self.raw_knob_chord_type = 0
         self.pad_intervals = []
+        self.pad_values = []
         self.pad_notes = [
             "C -3",
             "C# -3",
@@ -33,6 +34,16 @@ class MidiControllerState:
             "F -3",
             "F# -3",
             "G -3",
+        ]
+        self.pad_octaves = [
+            -3,
+            -3,
+            -3,
+            -3,
+            -3,
+            -3,
+            -3,
+            -3,
         ]
 
     def to_dict(self):
@@ -51,7 +62,9 @@ class MidiControllerState:
             "raw_knob_play_type": self.raw_knob_play_type,
             "raw_knob_chord_type": self.raw_knob_chord_type,
             "pad_intervals": self.pad_intervals,
+            "pad_values": self.pad_values,
             "pad_notes": self.pad_notes,
+            "pad_octaves": self.pad_octaves,
         }
 
     def to_tuple(self):
@@ -70,5 +83,7 @@ class MidiControllerState:
             ("raw_knob_play_type", self.raw_knob_play_type),
             ("raw_knob_chord_type", self.raw_knob_chord_type),
             ("pad_intervals", self.pad_intervals),
+            ("pad_values", self.pad_values),
             ("pad_notes", self.pad_notes),
+            ("pad_octaves", self.pad_octaves),
         )

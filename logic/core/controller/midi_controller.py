@@ -188,6 +188,13 @@ class MidiController:
             print(int(val / 12) - 3)
             pads_octave.append(int(val / 12) - 3)  # HARDCODED
 
+        for i in range(0, 8):
+            print(f"pad {i}: {pads_note[i]} {pads_octave[i]}")
+
+        self.state.pads_state = pads_state
+        self.state.pad_notes = pads_note
+        self.state.pad_octaves = pads_octave
+
     ##################
     # PHYSICAL LOGIC #
     ##################
@@ -438,7 +445,6 @@ class MidiController:
             state=self.get_state(),
             list_message=[message],
         )
-        self.compute_pad_note()
         if self.state.bypass is False:
             # Note pressed
             if message.type == "note_on":
@@ -476,5 +482,6 @@ class MidiController:
             else:
                 # output = message
                 pass
-
+        self.compute_pad_note()
+        output.state = self.get_state()
         return output

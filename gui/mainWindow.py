@@ -115,16 +115,7 @@ class MainWindow(QMainWindow):
         self.wdgt_base_note.knob.blockSignals(True)
         self.wdgt_base_note.update(state["base_note"])
         self.wdgt_base_note.knob.blockSignals(False)
-        self.wdgt_pad_grid.update(
-            {
-                "velocity": state["buffer"]["velocity"],
-                "base_note": state["base_note"],
-                "key_degree": state["key_degree"],
-                "key_note": state["key_note"],
-                "key_degree_octave": state["key_degree_octave"],
-                "pad_intervals": state["pad_intervals"],
-            }
-        )
+        self.updt_pad_grid(state)
 
     @Slot()
     def updt_key_degree(self, state):
@@ -138,16 +129,7 @@ class MainWindow(QMainWindow):
             }
         )
         self.wdgt_key_note.knob.blockSignals(False)
-        self.wdgt_pad_grid.update(
-            {
-                "velocity": state["buffer"]["velocity"],
-                "key_degree": state["key_degree"],
-                "base_note": state["base_note"],
-                "key_note": state["key_note"],
-                "pad_intervals": state["pad_intervals"],
-                "key_degree_octave": state["key_degree_octave"],
-            }
-        )
+        self.updt_pad_grid(state)
 
     @Slot()
     def updt_panel_mode(self, state):
@@ -159,16 +141,7 @@ class MainWindow(QMainWindow):
             }
         )
         self.wdgt_panel_mode.wheel_mode.knob.blockSignals(False)
-        self.wdgt_pad_grid.update(
-            {
-                "velocity": state["buffer"]["velocity"],
-                "key_degree": state["key_degree"],
-                "base_note": state["base_note"],
-                "key_note": state["key_note"],
-                "pad_intervals": state["pad_intervals"],
-                "key_degree_octave": state["key_degree_octave"],
-            }
-        )
+        self.updt_pad_grid(state)
 
     @Slot()
     def updt_panel_chord(self, state):
@@ -204,5 +177,7 @@ class MainWindow(QMainWindow):
                 "key_note": state["key_note"],
                 "pad_intervals": state["pad_intervals"],
                 "key_degree_octave": state["key_degree_octave"],
+                "pad_notes": state["pad_notes"],
+                "pad_octaves": state["pad_octaves"],
             }
         )
