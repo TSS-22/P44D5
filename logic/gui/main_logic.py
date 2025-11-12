@@ -66,4 +66,5 @@ class MainLogic(QRunnable):
 
     @Slot()
     def gui_change_key_note(self, key_note):
-        print(key_note)
+        self.midi_controller.knob_key_note(GuiInput(key_note))
+        self.signals.key_note_changed.emit(self.midi_controller.state.to_dict())
