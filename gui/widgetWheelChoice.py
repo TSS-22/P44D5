@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QButtonGroup,
     QRadioButton,
     QWidget,
+    QDial,
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
@@ -46,13 +47,18 @@ class WidgetWheelChoice(QFrame):
             "val_max": len(self.list_val),
             "val_start": 0,
         }
-        self.knob = KnobShow(parent=self, notchesVisible=True)
+        self.knob = QDial(parent=self, notchesVisible=True)
+        self.knob.setStyleSheet(
+            """
+            border: none;
+            background: white;
+            """
+        )
         self.knob.setFixedSize(
             self.knob_properties["size"], self.knob_properties["size"]
         )
-
         self.knob.setMinimum(self.knob_properties["val_min"])
-        self.knob.setMaximum(self.knob_properties["val_max"])
+        self.knob.setMaximum(self.knob_properties["val_max"] - 1)
         self.knob.setValue(self.knob_properties["val_start"])
 
         self.knob_palette = self.knob.palette()

@@ -68,3 +68,10 @@ class MainLogic(QRunnable):
     def gui_change_key_note(self, key_note):
         self.midi_controller.knob_key_note(GuiInput(key_note))
         self.signals.key_note_changed.emit(self.midi_controller.state.to_dict())
+
+    @Slot()
+    def gui_change_mode(self, knob_value):
+        print(knob_value)
+        self.midi_controller.select_mode(knob_value)
+        self.midi_controller.state.raw_knob_mode = knob_value * 15.875  # HARDCODED
+        self.signals.panel_mode_changed.emit(self.midi_controller.state.to_dict())

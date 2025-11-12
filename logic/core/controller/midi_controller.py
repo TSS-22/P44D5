@@ -301,13 +301,14 @@ class MidiController:
     # Refer to "./data.py/knob_values_playModes" for more details about the possible values
     def knob_playMode(self, input):
         self.state.raw_knob_mode = input.value
-        self.state.selected_mode = self.controller_settings.list_modes[
+        return self.select_mode(
             int(input.value / self.controller_settings.knob_div_modes)
-        ]
-        self.reset_key_degree()
-        print(
-            f"Mode: {self.controller_settings.list_modes[int(input.value/self.controller_settings.knob_div_modes)]}\n"
         )
+
+    def select_mode(self, idx_mode):
+        self.state.selected_mode = self.controller_settings.list_modes[idx_mode]
+        self.reset_key_degree()
+        print(f"Mode: {self.controller_settings.list_modes[idx_mode]}\n")
         return MidiControllerOutput(
             flag=ControllerMessageFlag.MODE_CHANGED, state=self.get_state()
         )

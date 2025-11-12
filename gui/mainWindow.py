@@ -77,6 +77,9 @@ class MainWindow(QMainWindow):
         self.wdgt_key_note.knob.valueChanged.connect(
             self.logic_worker.gui_change_key_note
         )
+        self.wdgt_panel_mode.wheel_mode.knob.valueChanged.connect(
+            self.logic_worker.gui_change_mode
+        )
 
         self.layout_col = QVBoxLayout(self)
         self.layout_row_up = QHBoxLayout(self)
@@ -142,12 +145,14 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def updt_panel_mode(self, state):
+        self.wdgt_panel_mode.wheel_mode.knob.blockSignals(True)
         self.wdgt_panel_mode.update(
             {
                 "raw_knob_mode": state["raw_knob_mode"],
                 "selected_mode": state["selected_mode"],
             }
         )
+        self.wdgt_panel_mode.wheel_mode.knob.blockSignals(False)
         self.wdgt_pad_grid.update(
             {
                 "velocity": state["buffer"]["velocity"],
