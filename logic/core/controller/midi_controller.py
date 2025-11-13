@@ -128,6 +128,7 @@ class MidiController:
         self.state.key_note = 0
         self.compute_pad_intervals()
         self.compute_mode_chord_prog()
+        print("called the chord prog")
 
     def compute_pad_intervals(self):
         if self.state.selected_mode == "None":
@@ -175,32 +176,51 @@ class MidiController:
         pads_octave = []
         pads_root = []
         pads_note_chord = []
-        for val in pads_state:
+        for id_pad, pad_val in enumerate(pads_state):
             notes_chords = []
             # Compute the note associated with the index calculated above
-            pads_note.append(self.list_note[val % len(self.list_note)])
+            pads_note.append(self.list_note[pad_val % len(self.list_note)])
             # Compute the octave
-            pads_octave.append(int(val / 12) - 3)  # HARDCODED
+            pads_octave.append(int(pad_val / 12) - 3)  # HARDCODED
             # Compute root
-            if (val - self.state.base_note) % 12 == 0:  # HARDCODED
+            if (pad_val - self.state.base_note) % 12 == 0:  # HARDCODED
                 pads_root.append(True)
             else:
                 pads_root.append(False)
             # Compute the chord notes
             for chord_index in self.state.selected_chord_comp["comp"]:
-                if self.state.selected_play_type["name"] == "Single":
-                    notes_chords.append(self.list_note[val % len(self.list_note)])
+                if self.state.selected_play_type["name"] == "Single" or (
+                    self.state.selected_mode == "None"
+                    and self.state.selected_play_type["name"] == "Normal"
+                ):
+                    notes_chords.append(self.list_note[pad_val % len(self.list_note)])
                     break
-                elif self.state.selected_play_type["name"] == "Normal":
-                    pass
-                else:
+                elif (
+                    self.state.selected_play_type["name"] == "Normal"
+                    and self.state.selected_mode is not "None"
+                ):
                     notes_chords.append(
                         self.list_note[
-                            (val + self.state.selected_play_type["chord"][chord_index])
+                            (
+                                pad_val
+                                + self.state.selected_mode_chord_prog[id_pad][
+                                    chord_index
+                                ]
+                            )
                             % len(self.list_note)
                         ]
                     )
-            print(f"notes_chords: {notes_chords}")
+                else:
+                    notes_chords.append(
+                        self.list_note[
+                            (
+                                pad_val
+                                + self.state.selected_play_type["chord"][chord_index]
+                            )
+                            % len(self.list_note)
+                        ]
+                    )
+            # print(f"notes_chords: {notes_chords}")
             pads_note_chord.append(notes_chords)
 
         self.state.pads_state = pads_state
@@ -487,6 +507,7 @@ class MidiController:
                 # Knob 7:select_chordType
                 elif message.control == self.controller_settings.id_knob_chord_type:
                     output = self.knob_chordType(message)
+
                 # Unassigned command
                 else:
                     # output = MidiControllerOutputmessage
@@ -496,6 +517,7 @@ class MidiController:
             else:
                 # output = message
                 pass
+
         self.compute_pad_note()
         output.state = self.get_state()
         return output

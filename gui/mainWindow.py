@@ -154,6 +154,7 @@ class MainWindow(QMainWindow):
             }
         )
         self.wdgt_panel_chord.wheel_type.knob.blockSignals(False)
+        self.updt_pad_grid(state)
 
     @Slot()
     def updt_panel_play(self, state):
@@ -166,6 +167,7 @@ class MainWindow(QMainWindow):
             }
         )
         self.wdgt_panel_chord.wheel_comp.knob.blockSignals(False)
+        self.updt_pad_grid(state)
 
     @Slot()
     def updt_pad_grid(self, state):
@@ -180,5 +182,6 @@ class MainWindow(QMainWindow):
                 "pad_notes": state["pad_notes"],
                 "pad_octaves": state["pad_octaves"],
                 "pad_roots": state["pad_roots"],
+                "pad_notes_chords": state["pad_notes_chords"],
             }
         )

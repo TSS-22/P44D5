@@ -75,6 +75,9 @@ class WidgetPadGrid(QFrame):
             self.pads[idx]["pad"].button.setText(
                 f"{pad_grid_val["pad_notes"][idx]} {pad_grid_val["pad_octaves"][idx]}"
             )
+            self.pads[idx]["pad"].lbl_chord.setText(
+                " - ".join(pad_grid_val["pad_notes_chords"][idx])
+            )
             # Root
             self.pads[idx]["pad"].put_root_backgrnd(pad_grid_val["pad_roots"][idx])
 
