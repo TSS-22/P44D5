@@ -83,7 +83,7 @@ class WidgetPad(QFrame):
 
         self.lbl_chord = QLabel("t-e-s-t-e-s-t-e", parent=self)
         self.lbl_chord_properties = {
-            "size_x": self.widget_width * 0.5,
+            "size_x": self.widget_width,
             "size_y": self.widget_height * 0.1,
             "font": font,
             "font_size": font_size * 0.20,
@@ -97,15 +97,14 @@ class WidgetPad(QFrame):
         self.lbl_chord.setStyleSheet(
             f"""
             color: {self.lbl_chord_properties["color"]};
-            background: transparent;
-            qproperty-alignment: AlignCenter;
+            background: transparent; 
             """
         )
-        # self.lbl_chord.setFixedSize(
-        #     self.lbl_chord_properties["size_x"], self.lbl_chord_properties["size_y"]
-        # )
+        self.lbl_chord.setFixedSize(
+            self.lbl_chord_properties["size_x"], self.lbl_chord_properties["size_y"]
+        )
         self.lbl_chord_position = {
-            "x": self.widget_width / 2,
+            "x": 0,
             "y": self.widget_height * 0.80,
         }
         self.lbl_chord.move(self.lbl_chord_position["x"], self.lbl_chord_position["y"])
