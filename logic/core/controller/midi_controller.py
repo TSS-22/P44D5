@@ -22,8 +22,6 @@ class MidiController:
         "B",
     ]  # HARDCODED
 
-    # TODO change the name of some function like knob_playMode()as the plya might not be necessary. Make them more intuitive and simple
-    # TODO reorganize the code in subclasses or something else to make the class more digestable
     # TODO replace the rturn message from note_on etc, as a class?
     def __init__(self):
         with open(
@@ -41,13 +39,13 @@ class MidiController:
         # self.buffer = MidiControllerBuffer()
 
         # self.selected_mode = self.controller_settings.list_modes[0]
-        # self.selected_play_type = self.controller_settings.list_play_type[0]
+        # self.selected_chord_comp = self.controller_settings.list_chord_comp[0]
         # self.base_note = 0
         # self.key_note = 0
         # self.key_degree = 0
         self.state = MidiControllerState(
             selected_mode=self.controller_settings.list_modes[0],
-            selected_play_type=self.controller_settings.list_play_type[0],
+            selected_chord_comp=self.controller_settings.list_chord_comp[0],
             selected_chord_size=self.controller_settings.list_chord_size[0],
         )
 
@@ -66,41 +64,36 @@ class MidiController:
         self.state.selected_mode_chord_prog = []
         self.compute_mode_chord_prog()
 
-        self.chord_play_type = (
+        self.chord_comp = (
             []
-        )  # This architecture is prone to error, put list_play_type and chord_play_style together
-        # Create a dic with "name", "chord", that way I always have the name for single and normal. Actually that will make single the same as any mono chords play type
-        # Can't I make the normal one also just like any  other play type ?
+        )  # This architecture is prone to error, put list_chord_comp and chord_play_style together
+        # Create a dic with "name", "chord", that way I always have the name for single and normal. Actually that will make single the same as any mono chords comp
+        # Can't I make the normal one also just like any  other chord comp ?
         # TODO Put the user file parser into a function when the need arise once the GUI is in working
-        self._init_chord_play_style(data_options_play)
+        self._init_chord_comp(data_options_play)
 
     def _init_mode_prog_chord(self, data):
-        for key in data["playModes_chordProg"]:
+        for key in data["chord_prog_mode"]:
             self.mode_prog_chord.update({key: []})
-            for val in data["playModes_chordProg"][key]:
+            for val in data["chord_prog_mode"][key]:
                 self.mode_prog_chord[key].append(data[data["ionian_chord_prog"][val]])
         self.mode_prog_chord.update({"None": [[0]] * 8})
 
     def _init_mode_prog_tone(self, data):
-        for key in data["playModes_toneProg"]:
+        for key in data["tone_prog_mode"]:
             self.mode_prog_tone.update({key: []})
-            for val in data["playModes_toneProg"][key]:
+            for val in data["tone_prog_mode"][key]:
                 self.mode_prog_tone[key].append(data["tone_progression"][val])
 
-    def _init_chord_play_style(self, data):
-        self.chord_play_type.append(
+    def _init_chord_comp(self, data):
+        self.chord_comp.append(
             {"name": "chord_major", "intervals": data["chord_major"]}
         )
-        self.chord_play_type.append(
+        self.chord_comp.append(
             {"name": "chord_minor", "intervals": data["chord_minor"]}
         )
-        self.chord_play_type.append(
-            {"name": "chord_dom7", "intervals": data["chord_dom7"]}
-        )
-        self.chord_play_type.append(
-            {"name": "chord_dim", "intervals": data["chord_dim"]}
-        )
-        # Add user play style chord file processing here
+        self.chord_comp.append({"name": "chord_dom7", "intervals": data["chord_dom7"]})
+        self.chord_comp.append({"name": "chord_dim", "intervals": data["chord_dim"]})
 
     def get_state(self):
         return self.state
@@ -189,14 +182,14 @@ class MidiController:
                 pads_root.append(False)
             # Compute the chord notes
             for chord_index in self.state.selected_chord_size["comp"]:
-                if self.state.selected_play_type["name"] == "Single" or (
+                if self.state.selected_chord_comp["name"] == "Single" or (
                     self.state.selected_mode == "None"
-                    and self.state.selected_play_type["name"] == "Normal"
+                    and self.state.selected_chord_comp["name"] == "Normal"
                 ):
                     notes_chords.append(self.list_note[pad_val % len(self.list_note)])
                     break
                 elif (
-                    self.state.selected_play_type["name"] == "Normal"
+                    self.state.selected_chord_comp["name"] == "Normal"
                     and self.state.selected_mode is not "None"
                 ):
                     notes_chords.append(
@@ -215,7 +208,7 @@ class MidiController:
                         self.list_note[
                             (
                                 pad_val
-                                + self.state.selected_play_type["chord"][chord_index]
+                                + self.state.selected_chord_comp["chord"][chord_index]
                             )
                             % len(self.list_note)
                         ]
@@ -380,8 +373,8 @@ class MidiController:
             return octave + inter_octave
 
     # Used to select the modes.
-    # Refer to "./data.py/knob_values_playModes" for more details about the possible values
-    def knob_playMode(self, input_val):
+    # Refer to "./data.py/knob_values_mode" for more details about the possible values
+    def knob_mode(self, input_val):
         self.state.raw_knob_mode = input_val.value
         return self.select_mode(
             int(input_val.value / self.controller_settings.knob_div_modes)
@@ -395,25 +388,27 @@ class MidiController:
             flag=ControllerMessageFlag.MODE_CHANGED, state=self.get_state()
         )
 
-    # Used to select the type of play, either chord like or single note.
-    # Refer to "./data.py/knob_values_playTypes" for more details about the possible values
-    def knob_playTypes(self, input_val):
-        self.state.raw_knob_play_type = input_val.value
-        return self.select_play(
-            int(input_val.value / self.controller_settings.knob_div_playType)
+    # Used to select the chord comp, either chord like or single note.
+    # Refer to "./data.py/knob_values_chord_comp" for more details about the possible values
+    def knob_chord_comp(self, input_val):
+        self.state.raw_knob_chord_comp = input_val.value
+        return self.select_chord_comp(
+            int(input_val.value / self.controller_settings.knob_div_chord_comp)
         )
 
-    def select_play(self, idx_play):
-        self.state.selected_play_type = self.controller_settings.list_play_type[
-            idx_play
+    def select_chord_comp(self, idx_chord_comp):
+        self.state.selected_chord_comp = self.controller_settings.list_chord_comp[
+            idx_chord_comp
         ]
-        print(f"Play type: {self.controller_settings.list_play_type[idx_play]}\n")
+        print(
+            f"Chord comp: {self.controller_settings.list_chord_comp[idx_chord_comp]}\n"
+        )
         return MidiControllerOutput(
-            flag=ControllerMessageFlag.PLAY_CHANGED, state=self.get_state()
+            flag=ControllerMessageFlag.CHORD_COMP_CHANGED, state=self.get_state()
         )
 
-    def knob_chordType(self, input_val):
-        self.state.raw_knob_chord_type = input_val.value
+    def knob_chord_size(self, input_val):
+        self.state.raw_knob_chord_size = input_val.value
         return self.select_chord_size(
             int(input_val.value / self.controller_settings.knob_div_chord_size)
         )
@@ -426,7 +421,7 @@ class MidiController:
             f"Chord comp: {self.controller_settings.list_chord_size[idx_chord_size]}\n"
         )
         return MidiControllerOutput(
-            flag=ControllerMessageFlag.CHORD_CHANGED, state=self.get_state()
+            flag=ControllerMessageFlag.CHORD_SIZE_CHANGED, state=self.get_state()
         )
 
     ##########################
@@ -440,7 +435,7 @@ class MidiController:
 
         # Isn't the issue with the is not needed, just a problem that mode = "None" is just not where/assessed where it should be ?
         if (
-            self.state.selected_play_type["name"] == "Normal"
+            self.state.selected_chord_comp["name"] == "Normal"
             and self.state.selected_mode != "None"
         ):
             for chord_interval in [
@@ -453,9 +448,9 @@ class MidiController:
 
         else:
             for chord_interval in [
-                self.state.selected_play_type["chord"][i]
+                self.state.selected_chord_comp["chord"][i]
                 for i in self.state.selected_chord_size["comp"][
-                    : len(self.state.selected_play_type["chord"])
+                    : len(self.state.selected_chord_comp["chord"])
                 ]
             ]:
                 midi_message_note_on.append(
@@ -496,17 +491,17 @@ class MidiController:
                 elif message.control == self.controller_settings.id_knob_key_note:
                     output = self.knob_key_note(message)
 
-                # Knob 4: select_playMode
+                # Knob 4: select_mode
                 elif message.control == self.controller_settings.id_knob_mode:
-                    output = self.knob_playMode(message)
+                    output = self.knob_mode(message)
 
-                # Knob 8: select_playType
-                elif message.control == self.controller_settings.id_knob_play_type:
-                    output = self.knob_playTypes(message)
+                # Knob 8: select_chord_comp
+                elif message.control == self.controller_settings.id_knob_chord_comp:
+                    output = self.knob_chord_comp(message)
 
-                # Knob 7:select_chordType
-                elif message.control == self.controller_settings.id_knob_chord_type:
-                    output = self.knob_chordType(message)
+                # Knob 7:select_chord_size
+                elif message.control == self.controller_settings.id_knob_chord_size:
+                    output = self.knob_chord_comp(message)
 
                 # Unassigned command
                 else:

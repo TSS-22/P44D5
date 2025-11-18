@@ -6,6 +6,6 @@
     "id_knob_base_note": 70,
     "id_knob_key_note": 74,
     "id_knob_mode": 73,
-    "id_knob_play_type": 77,
-    "id_knob_chord_type": 76
+    "id_knob_chord_comp": 77,
+    "id_knob_chord_size": 76
 }

@@ -6,7 +6,7 @@ from gui.widgetWheelChoice import WidgetWheelChoice
 
 class WidgetPanelChord(QFrame):
 
-    list_chord_type = [
+    list_chord_comp = [
         "Single",
         "Normal",
         "Major",
@@ -52,12 +52,12 @@ class WidgetPanelChord(QFrame):
             background-repeat: no-repeat;
             background-position: center;
             border: none; 	
-            background-image: url(ressources/gui/png/backgnd-panel_play.png);
+            background-image: url(ressources/gui/png/backgnd-panel_chord.png);
             """
         )
 
-        self.wheel_type = WidgetWheelChoice(
-            list_val=self.list_chord_type,
+        self.wheel_chord_comp = WidgetWheelChoice(
+            list_val=self.list_chord_comp,
             widget_height=self.widget_height,
             widget_width=self.widget_width / 2,
             parent=self,
@@ -73,25 +73,23 @@ class WidgetPanelChord(QFrame):
 
         self.layout = QHBoxLayout(self)
 
-        self.layout.addWidget(self.wheel_type)
+        self.layout.addWidget(self.wheel_chord_comp)
         self.layout.addWidget(self.wheel_chord_size)
 
-    def update_chord(self, panel_chord_val):
+    def update_chord_size(self, state):
         self.wheel_chord_size.knob.setValue(
-            (panel_chord_val["raw_knob_chord_type"] / 127) * len(self.list_chord_size)
+            (state["raw_knob_chord_comp"] / 127) * len(self.list_chord_size)
         )
-        idx = self.list_chord_size.index(panel_chord_val["selected_chord_size"]["name"])
+        idx = self.list_chord_size.index(state["selected_chord_size"]["name"])
         self.wheel_chord_size.radio_button[idx].setChecked(True)
 
-    def update_play(self, panel_play_val):
-        self.wheel_type.knob.setValue(
-            (panel_play_val["raw_knob_play_type"] / 127) * len(self.list_chord_type)
+    def update_chord_comp(self, state):
+        self.wheel_chord_comp.knob.setValue(
+            (state["raw_knob_chord_comp"] / 127) * len(self.list_chord_comp)
         )
         #  Bad  data architecture correct this
-        if panel_play_val["selected_play_type"] == "Single":
+        if state["selected_chord_comp"] == "Single":
             idx = 0
         else:
-            idx = self.list_chord_type.index(
-                panel_play_val["selected_play_type"]["name"]
-            )
-        self.wheel_type.radio_button[idx].setChecked(True)
+            idx = self.list_chord_comp.index(state["selected_chord_comp"]["name"])
+        self.wheel_chord_comp.radio_button[idx].setChecked(True)

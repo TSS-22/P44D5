@@ -4,8 +4,8 @@
     "chord_dom7": [0, 4, 7, 7, 10, 14, 17, 21],
     "chord_dim": [0, 3, 6, 9, 9, 14, 17, 21],
     "tone_progression": [2,2,1,2,2,2,1],
-    "knob_values_playModes": ["None","Ionian","Dorian","Phrygian","Lydian","Myxolydian","Aeolian","Locrian"],
-    "knob_values_playTypes": [
+    "knob_values_mode": ["None","Ionian","Dorian","Phrygian","Lydian","Myxolydian","Aeolian","Locrian"],
+    "knob_values_chord_comp": [
         {
             "name": "Single",
             "chord": [0]
@@ -61,7 +61,7 @@
             "comp":[0,1,2,4,5,6,7]
         }
     ],
-    "playModes_toneProg": { 
+    "tone_prog_mode": { 
                             "Ionian": [0,1,2,3,4,5,6],
                             "Dorian": [1,2,3,4,5,6,0],
                             "Phrygian": [2,3,4,5,6,0,1],
@@ -70,7 +70,7 @@
                             "Aeolian": [5,6,0,1,2,3,4],
                             "Locrian": [6,0,1,2,3,4,5]
                         },
-    "playModes_chordProg": {
+    "chord_prog_mode": {
                             "Ionian": [0,1,2,3,4,5,6,7],
                             "Dorian": [1,2,3,4,5,6,7,0],
                             "Phrygian": [2,3,4,5,6,7,0,1],

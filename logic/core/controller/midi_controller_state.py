@@ -5,8 +5,8 @@ class MidiControllerState:
     def __init__(
         self,
         selected_mode=None,
-        selected_play_type=None,
-        selected_chord_type=None,
+        selected_chord_comp=None,
+        selected_chord_comp=None,
         selected_chord_size=None,
         selected_mode_chord_prog=[],
     ):
@@ -18,13 +18,13 @@ class MidiControllerState:
         self.key_degree_octave = 0
         self.selected_mode = selected_mode
         self.selected_mode_chord_prog = selected_mode_chord_prog
-        self.selected_play_type = selected_play_type
+        self.selected_chord_comp = selected_chord_comp
         self.selected_chord_size = selected_chord_size
-        self.chord_type = selected_chord_type
+        self.chord_comp = selected_chord_comp
         self.raw_key_knob = 0
         self.raw_knob_mode = 0
-        self.raw_knob_play_type = 0
-        self.raw_knob_chord_type = 0
+        self.raw_knob_chord_comp = 0
+        self.raw_knob_chord_comp = 0
         self.pad_intervals = []
         self.pad_values = []
         self.pad_notes = [
@@ -76,14 +76,14 @@ class MidiControllerState:
             "key_degree": self.key_degree,
             "key_degree_octave": self.key_degree_octave,
             "selected_mode": self.selected_mode,
-            "selected_play_type": self.selected_play_type,
+            "selected_chord_comp": self.selected_chord_comp,
             "selected_chord_size": self.selected_chord_size,
             "selected_mode_chord_prog": self.selected_mode_chord_prog,
-            "chord_type": self.chord_type,
+            "chord_comp": self.chord_comp,
             "raw_key_knob": self.raw_key_knob,
             "raw_knob_mode": self.raw_knob_mode,
-            "raw_knob_play_type": self.raw_knob_play_type,
-            "raw_knob_chord_type": self.raw_knob_chord_type,
+            "raw_knob_chord_comp": self.raw_knob_chord_comp,
+            "raw_knob_chord_comp": self.raw_knob_chord_comp,
             "pad_intervals": self.pad_intervals,
             "pad_values": self.pad_values,
             "pad_notes": self.pad_notes,
@@ -100,14 +100,14 @@ class MidiControllerState:
             ("key_degree", self.key_degree),
             ("key_degree_octave", self.key_degree_octave),
             ("selected_mode", self.selected_mode),
-            ("selected_play_type", self.selected_play_type),
+            ("selected_chord_comp", self.selected_chord_comp),
             ("selected_chord_size", self.selected_chord_size),
             ("selected_mode_chord_prog", self.selected_mode_chord_prog),
-            ("chord_type", self.chord_type),
+            ("chord_comp", self.chord_comp),
             ("raw_key_knob", self.raw_key_knob),
             ("raw_knob_mode", self.raw_knob_mode),
-            ("raw_knob_play_type", self.raw_knob_play_type),
-            ("raw_knob_chord_type", self.raw_knob_chord_type),
+            ("raw_knob_chord_comp", self.raw_knob_chord_comp),
+            ("raw_knob_chord_comp", self.raw_knob_chord_comp),
             ("pad_intervals", self.pad_intervals),
             ("pad_values", self.pad_values),
             ("pad_notes", self.pad_notes),
