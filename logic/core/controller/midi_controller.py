@@ -417,7 +417,7 @@ class MidiController:
             idx_chord_size
         ]
         print(
-            f"Chord comp: {self.controller_settings.list_chord_size[idx_chord_size]}\n"
+            f"Chord size: {self.controller_settings.list_chord_size[idx_chord_size]}\n"
         )
         return MidiControllerOutput(
             flag=ControllerMessageFlag.CHORD_SIZE_CHANGED, state=self.get_state()
@@ -499,7 +499,7 @@ class MidiController:
 
                 # Knob 7:select_chord_size
                 elif message.control == self.controller_settings.id_knob_chord_size:
-                    output = self.knob_chord_comp(message)
+                    output = self.knob_chord_size(message)
 
                 # Unassigned command
                 else:
