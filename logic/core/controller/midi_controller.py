@@ -29,11 +29,11 @@ class MidiController:
         ) as file_options_play:
             data_options_play = json.load(file_options_play)
 
-        with open("./data/data_settings.json", "r", encoding="UTF-8") as file_settings:
-            data_settings = json.load(file_settings)
+        with open("./data/akai_lpd8_mk2.json", "r", encoding="UTF-8") as file_settings:
+            midi_device_settings = json.load(file_settings)
 
         self.controller_settings = MidiControllerSettings(
-            data_options_play, data_settings
+            data_options_play, midi_device_settings
         )
 
         # self.buffer = MidiControllerBuffer()
@@ -49,7 +49,7 @@ class MidiController:
             selected_chord_size=self.controller_settings.list_chord_size[0],
         )
 
-        self.base_note_offset = data_settings["base_note_offset"]
+        self.base_note_offset = midi_device_settings["base_note_offset"]
 
         self.mode_prog_chord = {}
         self._init_mode_prog_chord(data_options_play)
@@ -121,7 +121,6 @@ class MidiController:
         self.state.key_note = 0
         self.compute_pad_intervals()
         self.compute_mode_chord_prog()
-        print("called the chord prog")
 
     def compute_pad_intervals(self):
         if self.state.selected_mode == "None":
@@ -467,7 +466,6 @@ class MidiController:
     #######################
     # COMMUNICATION LAYER #
     #######################
-    # C'est un peu degueux ce manque de standardisation de l'ouput : empty/message
     def receive_message(self, message):
         output = MidiControllerOutput(
             flag=ControllerMessageFlag.BYPASS,

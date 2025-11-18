@@ -8,11 +8,11 @@ import mido
 class MidiBridge:
 
     def __init__(self):
-        with open("./data/data_settings.json", "r", encoding="UTF-8") as file_settings:
-            data_settings = json.load(file_settings)
+        with open("./data/akai_lpd8_mk2.json", "r", encoding="UTF-8") as file_settings:
+            midi_device_settings = json.load(file_settings)
 
-        self.input_port = data_settings["name_midi_in"]
-        self.output_port = data_settings["name_midi_out"]
+        self.input_port = midi_device_settings["name_midi_in"]
+        self.output_port = midi_device_settings["name_midi_out"]
 
         self.init_midi_in()
         self.init_midi_out()
