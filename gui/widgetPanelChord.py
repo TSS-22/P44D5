@@ -76,13 +76,6 @@ class WidgetPanelChord(QFrame):
         self.layout.addWidget(self.wheel_chord_comp)
         self.layout.addWidget(self.wheel_chord_size)
 
-    def update_chord_size(self, state):
-        self.wheel_chord_size.knob.setValue(
-            (state["raw_knob_chord_comp"] / 127) * len(self.list_chord_size)
-        )
-        idx = self.list_chord_size.index(state["selected_chord_size"]["name"])
-        self.wheel_chord_size.radio_button[idx].setChecked(True)
-
     def update_chord_comp(self, state):
         self.wheel_chord_comp.knob.setValue(
             (state["raw_knob_chord_comp"] / 127) * len(self.list_chord_comp)
@@ -93,3 +86,10 @@ class WidgetPanelChord(QFrame):
         else:
             idx = self.list_chord_comp.index(state["selected_chord_comp"]["name"])
         self.wheel_chord_comp.radio_button[idx].setChecked(True)
+
+    def update_chord_size(self, state):
+        self.wheel_chord_size.knob.setValue(
+            (state["raw_knob_chord_size"] / 127) * len(self.list_chord_size)
+        )
+        idx = self.list_chord_size.index(state["selected_chord_size"]["name"])
+        self.wheel_chord_size.radio_button[idx].setChecked(True)

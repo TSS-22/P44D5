@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def updt_panel_chord_size(self, state):
         self.wdgt_panel_chord.wheel_chord_size.knob.blockSignals(True)
-        self.wdgt_panel_chord.update_chord(
+        self.wdgt_panel_chord.update_chord_size(
             {
                 "raw_knob_chord_comp": state["raw_knob_chord_comp"],
                 "selected_chord_size": state["selected_chord_size"],
