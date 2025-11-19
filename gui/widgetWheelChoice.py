@@ -44,7 +44,7 @@ class WidgetWheelChoice(QFrame):
         self.knob_properties = {
             "size": self.widget_height * self.knob_size_ratio,
             "val_min": 0,
-            "val_max": len(self.list_val),
+            "val_max": len(self.list_val),  # IMPROVE: wouldn't that be len(...) -1 ?
             "val_start": 0,
         }
         self.knob = QDial(parent=self, notchesVisible=True)
@@ -110,7 +110,7 @@ class WidgetWheelChoice(QFrame):
         for idx, mode in enumerate(self.list_val):
             radio = QRadioButton(mode, self)
             self.radio_button.append(radio)
-            self.radio_button_group.addButton(radio)
+            self.radio_button_group.addButton(radio, idx)
 
             # Set the radio button
             self.radio_button[idx].setStyleSheet(

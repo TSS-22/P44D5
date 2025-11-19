@@ -62,31 +62,33 @@ class MainLogic(QRunnable):
     @Slot()
     def gui_change_base_note(self, base_note):
         self.midi_controller.knob_base_note(GuiInput(base_note))
+        self.midi_controller.compute_pad_note()
         self.signals.base_note_changed.emit(self.midi_controller.state.to_dict())
 
     @Slot()
     def gui_change_key_note(self, key_note):
         self.midi_controller.knob_key_note(GuiInput(key_note))
+        self.midi_controller.compute_pad_note()
         self.signals.key_note_changed.emit(self.midi_controller.state.to_dict())
 
     @Slot()
     def gui_change_mode(self, knob_value):
         # IMPROVE
         self.midi_controller.state.raw_knob_mode = int(knob_value * 15.875)  # HARDCODED
-        print(f"mainLogic mode knob: {knob_value}")
         self.midi_controller.select_mode(knob_value)
+        self.midi_controller.compute_pad_note()
         self.signals.panel_mode_changed.emit(self.midi_controller.state.to_dict())
 
     @Slot()
     def gui_change_chord_comp(self, knob_value):
-        print(f"chord comp knob: {knob_value}")
         self.midi_controller.state.raw_knob_chord_comp = knob_value * 21.166667
         self.midi_controller.select_chord_comp(knob_value)  # HARDCODED
+        self.midi_controller.compute_pad_note()
         self.signals.panel_chord_comp_changed.emit(self.midi_controller.state.to_dict())
 
     @Slot()
     def gui_change_chord_size(self, knob_value):
-        print(f"chord size knob: {knob_value * 18.142857142}")  # HARDCODED
         self.midi_controller.state.raw_knob_chord_size = knob_value * 18.142857142
         self.midi_controller.select_chord_size(knob_value)  # HARDCODED
+        self.midi_controller.compute_pad_note()
         self.signals.panel_chord_size_changed.emit(self.midi_controller.state.to_dict())
