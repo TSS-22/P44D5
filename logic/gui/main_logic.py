@@ -5,6 +5,11 @@ from logic.core.bridge.midi_bridge import MidiBridge
 from logic.gui.main_logic_signals import MainLogicSignals
 from logic.gui.gui_input import GuiInput
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
+from logic.hardcoded import (
+    hc_knob_mode_multiplier,
+    hc_knob_chord_comp_multiplier,
+    hc_knob_chord_size_multiplier,
+)
 
 
 class MainLogic(QRunnable):
@@ -74,21 +79,27 @@ class MainLogic(QRunnable):
     @Slot()
     def gui_change_mode(self, knob_value):
         # IMPROVE
-        self.midi_controller.state.raw_knob_mode = int(knob_value * 15.875)  # HARDCODED
+        self.midi_controller.state.raw_knob_mode = int(
+            knob_value * hc_knob_mode_multiplier
+        )
         self.midi_controller.select_mode(knob_value)
         self.midi_controller.compute_pad_note()
         self.signals.panel_mode_changed.emit(self.midi_controller.state.to_dict())
 
     @Slot()
     def gui_change_chord_comp(self, knob_value):
-        self.midi_controller.state.raw_knob_chord_comp = knob_value * 21.166667
-        self.midi_controller.select_chord_comp(knob_value)  # HARDCODED
+        self.midi_controller.state.raw_knob_chord_comp = (
+            knob_value * hc_knob_chord_comp_multiplier
+        )
+        self.midi_controller.select_chord_comp(knob_value)
         self.midi_controller.compute_pad_note()
         self.signals.panel_chord_comp_changed.emit(self.midi_controller.state.to_dict())
 
     @Slot()
     def gui_change_chord_size(self, knob_value):
-        self.midi_controller.state.raw_knob_chord_size = knob_value * 18.142857142
-        self.midi_controller.select_chord_size(knob_value)  # HARDCODED
+        self.midi_controller.state.raw_knob_chord_size = (
+            knob_value * hc_knob_chord_size_multiplier
+        )
+        self.midi_controller.select_chord_size(knob_value)
         self.midi_controller.compute_pad_note()
         self.signals.panel_chord_size_changed.emit(self.midi_controller.state.to_dict())

@@ -2,20 +2,12 @@ from PySide6.QtWidgets import QFrame
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
 from gui.widgetWheelChoice import WidgetWheelChoice
+from logic.hardcoded import hc_list_mode
 
 
 class WidgetPanelMode(QFrame):
 
-    list_mode = [
-        "None",
-        "Ionian",
-        "Dorian",
-        "Phrygian",
-        "Lydian",
-        "Myxolydian",
-        "Aeolian",
-        "Locrian",
-    ]  # HARDCODED
+    list_mode = hc_list_mode
 
     def __init__(
         self,

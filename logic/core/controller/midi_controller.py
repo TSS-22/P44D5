@@ -3,24 +3,16 @@ from logic.core.controller.midi_controller_output import MidiControllerOutput
 from logic.core.controller.midi_controller_settings import MidiControllerSettings
 from logic.core.controller.midi_controller_state import MidiControllerState
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
+from logic.hardcoded import (
+    hc_chromatic_scale,
+    hc_len_chromatic_scale,
+    hc_offset_midi_octave,
+)
 
 
 class MidiController:
 
-    list_note = [
-        "C",
-        "C#",
-        "D",
-        "D#",
-        "E",
-        "F",
-        "F#",
-        "G",
-        "G#",
-        "A",
-        "A#",
-        "B",
-    ]  # HARDCODED
+    list_note = hc_chromatic_scale
 
     # TODO replace the rturn message from note_on etc, as a class?
     def __init__(self):
@@ -173,9 +165,11 @@ class MidiController:
             # Compute the note associated with the index calculated above
             pads_note.append(self.list_note[pad_val % len(self.list_note)])
             # Compute the octave
-            pads_octave.append(int(pad_val / 12) - 3)  # HARDCODED
+            pads_octave.append(
+                int(pad_val / hc_len_chromatic_scale) - hc_offset_midi_octave
+            )
             # Compute root
-            if (pad_val - self.state.base_note) % 12 == 0:  # HARDCODED
+            if (pad_val - self.state.base_note) % hc_len_chromatic_scale == 0:
                 pads_root.append(True)
             else:
                 pads_root.append(False)

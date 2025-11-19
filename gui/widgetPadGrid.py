@@ -2,21 +2,12 @@ from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
 from gui.widgetPad import WidgetPad
-from logic.gui.map_note import map_note
+from logic.hardcoded import hc_list_note_startup
 
 
 class WidgetPadGrid(QFrame):
 
-    list_note = [
-        "C -3",
-        "C# -3",
-        "D -3",
-        "D# -3",
-        "E -3",
-        "F -3",
-        "F# -3",
-        "G -3",
-    ]  # HARDOCDED + TEST
+    list_note = hc_list_note_startup
 
     def __init__(
         self,
