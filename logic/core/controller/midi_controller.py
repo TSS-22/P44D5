@@ -3,81 +3,48 @@ from logic.core.controller.midi_controller_output import MidiControllerOutput
 from logic.core.controller.midi_controller_settings import MidiControllerSettings
 from logic.core.controller.midi_controller_state import MidiControllerState
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
-from logic.hardcoded import (
-    hc_chromatic_scale,
-    hc_len_chromatic_scale,
-    hc_offset_midi_octave,
-)
+from data import data_general as dg
 
 
 class MidiController:
 
-    list_note = hc_chromatic_scale
+    list_note = dg.hc_chromatic_scale
 
-    # TODO replace the rturn message from note_on etc, as a class?
     def __init__(self):
-        with open(
-            "./data/data_options_play.json", "r", encoding="UTF-8"
-        ) as file_options_play:
-            data_options_play = json.load(file_options_play)
-
         with open("./data/akai_lpd8_mk2.json", "r", encoding="UTF-8") as file_settings:
             midi_device_settings = json.load(file_settings)
 
-        self.controller_settings = MidiControllerSettings(
-            data_options_play, midi_device_settings
-        )
+        self.controller_settings = MidiControllerSettings(midi_device_settings)
 
         self.state = MidiControllerState(
             selected_mode=self.controller_settings.list_modes[0],
             selected_chord_comp=self.controller_settings.list_chord_comp[0],
             selected_chord_size=self.controller_settings.list_chord_size[0],
         )
+        # Init state and class variables
+        self.compute_pad_intervals()
 
         self.base_note_offset = midi_device_settings["base_note_offset"]
 
         self.mode_prog_chord = {}
-        self._init_mode_prog_chord(data_options_play)
+        self._init_mode_prog_chord()
 
         self.mode_prog_tone = {}
-        self._init_mode_prog_tone(data_options_play)
-
-        self.selected_pad_interval = []
-        self.compute_pad_intervals()
+        self._init_mode_prog_tone()
 
         self.state.selected_mode_chord_prog = []
         self.compute_mode_chord_prog()
 
-        # self.chord_comp = (
-        #     []
-        # )  # This architecture is prone to error, put list_chord_comp and chord_play_style together
-        # # Create a dic with "name", "chord", that way I always have the name for single and normal. Actually that will make single the same as any mono chords comp
-        # # Can't I make the normal one also just like any  other chord comp ?
-        # # TODO Put the user file parser into a function when the need arise once the GUI is in working
-        # self._init_chord_comp(data_options_play)
-
-    def _init_mode_prog_chord(self, data):
-        for key in data["chord_prog_mode"]:
-            self.mode_prog_chord.update({key: []})
-            for val in data["chord_prog_mode"][key]:
-                self.mode_prog_chord[key].append(data[data["ionian_chord_prog"][val]])
+    def _init_mode_prog_chord(self):
+        for key, val_list in dg.chord_prog_mode.items():
+            self.mode_prog_chord[key] = [
+                dg.chords[dg.ionian_chord_prog[val]] for val in val_list
+            ]
         self.mode_prog_chord.update({"None": [[0]] * 8})
 
-    def _init_mode_prog_tone(self, data):
-        for key in data["tone_prog_mode"]:
-            self.mode_prog_tone.update({key: []})
-            for val in data["tone_prog_mode"][key]:
-                self.mode_prog_tone[key].append(data["tone_progression"][val])
-
-    # def _init_chord_comp(self, data):
-    #     self.chord_comp.append(
-    #         {"name": "chord_major", "intervals": data["chord_major"]}
-    #     )
-    #     self.chord_comp.append(
-    #         {"name": "chord_minor", "intervals": data["chord_minor"]}
-    #     )
-    #     self.chord_comp.append({"name": "chord_dom7", "intervals": data["chord_dom7"]})
-    #     self.chord_comp.append({"name": "chord_dim", "intervals": data["chord_dim"]})
+    def _init_mode_prog_tone(self):
+        for key, val_list in dg.tone_prog_mode.items():
+            self.mode_prog_tone[key] = [dg.tone_progression[val] for val in val_list]
 
     def get_state(self):
         return self.state
@@ -108,14 +75,13 @@ class MidiController:
 
     def compute_pad_intervals(self):
         if self.state.selected_mode == "None":
-            self.selected_pad_interval = [0] + [1] * 7
+            self.state.pad_intervals = [0] + [1] * 7
         else:
-            self.selected_pad_interval = (
+            self.state.pad_intervals = (
                 [0]
                 + self.mode_prog_tone[self.state.selected_mode][self.state.key_degree :]
                 + self.mode_prog_tone[self.state.selected_mode][: self.state.key_degree]
             )
-        self.state.pad_intervals = self.selected_pad_interval
 
     def compute_mode_chord_prog(self):
         if self.state.selected_mode != "None":
@@ -134,7 +100,7 @@ class MidiController:
             )
 
     def count_interval(self, id_pad):
-        return sum(self.selected_pad_interval[: id_pad + 1])
+        return sum(self.state.pad_intervals[: id_pad + 1])
 
     def toggle_bypass(self):
         self.state.bypass = not self.state.bypass
@@ -158,10 +124,10 @@ class MidiController:
             pads_note.append(self.list_note[pad_val % len(self.list_note)])
             # Compute the octave
             pads_octave.append(
-                int(pad_val / hc_len_chromatic_scale) + hc_offset_midi_octave
+                int(pad_val / dg.hc_len_chromatic_scale) + dg.hc_offset_midi_octave
             )
             # Compute root
-            if (pad_val - self.state.base_note) % hc_len_chromatic_scale == 0:
+            if (pad_val - self.state.base_note) % dg.hc_len_chromatic_scale == 0:
                 pads_root.append(True)
             else:
                 pads_root.append(False)
@@ -175,7 +141,7 @@ class MidiController:
                     break
                 elif (
                     self.state.selected_chord_comp["name"] == "Normal"
-                    and self.state.selected_mode is not "None"
+                    and self.state.selected_mode != "None"
                 ):
                     notes_chords.append(
                         self.list_note[
@@ -338,7 +304,7 @@ class MidiController:
                     degree = degree + 1
 
             else:
-                temp = temp_note % -7 - 1  # To test
+                temp = temp_note % -7 - 1
                 for val in self.mode_prog_tone[self.state.selected_mode][:temp:-1]:
                     inter_octave = inter_octave - abs(val)
                     degree = degree + 1
@@ -354,7 +320,6 @@ class MidiController:
             return octave + inter_octave
 
     # Used to select the modes.
-    # Refer to "./data.py/knob_values_mode" for more details about the possible values
     def knob_mode_changed(self, input_val):
         return self.select_mode(
             int(input_val.value / self.controller_settings.knob_div_modes)
@@ -369,7 +334,6 @@ class MidiController:
         )
 
     # Used to select the chord comp, either chord like or single note.
-    # Refer to "./data.py/knob_values_chord_comp" for more details about the possible values
     def knob_chord_comp_changed(self, input_val):
         return self.select_chord_comp(
             int(input_val.value / self.controller_settings.knob_div_chord_comp)

@@ -4,10 +4,10 @@ from logic.core.controller.midi_controller_buffer import MidiControllerBuffer
 class MidiControllerState:
     def __init__(
         self,
-        selected_mode=None,
-        selected_chord_comp=None,
-        selected_chord_size=None,
-        selected_mode_chord_prog=[],
+        selected_mode,
+        selected_chord_comp,
+        selected_chord_size,
+        selected_mode_chord_prog=None,
     ):
         self.bypass = False
         self.buffer = MidiControllerBuffer()

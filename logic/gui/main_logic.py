@@ -5,11 +5,6 @@ from logic.core.bridge.midi_bridge import MidiBridge
 from logic.gui.main_logic_signals import MainLogicSignals
 from logic.gui.gui_input import GuiInput
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
-from logic.hardcoded import (
-    hc_knob_mode_multiplier,
-    hc_knob_chord_comp_multiplier,
-    hc_knob_chord_size_multiplier,
-)
 
 
 class MainLogic(QRunnable):

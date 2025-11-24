@@ -1,9 +1,12 @@
-class MidiControllerSettings:
-    def __init__(self, data_options_play, midi_device_settings):
+from data import data_general as dg
 
-        self.list_modes = data_options_play["knob_values_mode"]
-        self.list_chord_comp = data_options_play["knob_values_chord_comp"]
-        self.list_chord_size = data_options_play["knob_values_chord_size"]
+
+class MidiControllerSettings:
+    def __init__(self, midi_device_settings):
+
+        self.list_modes = dg.hc_list_mode
+        self.list_chord_comp = dg.knob_values_chord_comp
+        self.list_chord_size = dg.knob_values_chord_size
 
         self.id_knob_base_note = midi_device_settings["id_knob_base_note"]
         self.id_knob_key_note = midi_device_settings["id_knob_key_note"]

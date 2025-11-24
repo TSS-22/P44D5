@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
 from gui.widgetPad import WidgetPad
-from logic.hardcoded import hc_list_note_startup
+from data.data_general import hc_list_note_startup
 
 
 class WidgetPadGrid(QFrame):

@@ -44,7 +44,7 @@ class WidgetWheelChoice(QFrame):
         self.knob_properties = {
             "size": self.widget_height * self.knob_size_ratio,
             "val_min": 0,
-            "val_max": len(self.list_val),  # IMPROVE: wouldn't that be len(...) -1 ?
+            "val_max": len(self.list_val),
             "val_start": 0,
         }
         self.knob = QDial(parent=self, notchesVisible=True)
