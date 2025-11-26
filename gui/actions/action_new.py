@@ -2,6 +2,8 @@ from PySide6.QtGui import QAction, QIcon, QKeySequence
 from PySide6.QtWidgets import QStyle, QFileDialog
 from PySide6.QtCore import Signal
 
+from gui.configs.ConfigNewWindow import ConfigNewWindow
+
 
 class QActionConfigNew(QAction):
 
@@ -15,4 +17,5 @@ class QActionConfigNew(QAction):
         self.setShortcut(QKeySequence.New)
 
     def clicked(self):
-        print("Action new clicked.")
+        self.config_new_window = ConfigNewWindow()
+        self.config_new_window.show()
