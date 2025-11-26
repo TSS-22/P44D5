@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QFrame
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
-from gui.widgetWheelChoice import WidgetWheelChoice
+from gui.main_window.widgetWheelChoice import WidgetWheelChoice
 from data.data_general import hc_list_mode
 
 

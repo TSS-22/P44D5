@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtWidgets import QApplication
-from gui.mainWindow import MainWindow
+from gui.main_window.mainWindow import MainWindow
 
 
 app = QApplication(sys.argv)

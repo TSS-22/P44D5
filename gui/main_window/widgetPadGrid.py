@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor, QFont
-from gui.widgetPad import WidgetPad
+from gui.main_window.widgetPad import WidgetPad
 from data.data_general import hc_list_note_startup
 
 

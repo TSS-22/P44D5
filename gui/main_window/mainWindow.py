@@ -7,16 +7,20 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QToolBar,
+    QFileDialog,
 )
 from PySide6.QtCore import QThread, QThreadPool, Slot, QSize, Qt
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QAction
 
-from gui.widgetBaseNote import WidgetBaseNote
-from gui.widgetKeyNote import WidgetKeyNote
-from gui.widgetPanelMode import WidgetPanelMode
-from gui.widgetPanelChord import WidgetPanelChord
-from gui.widgetPadGrid import WidgetPadGrid
-from gui.action_bypass import QActionBypass
+from gui.main_window.widgetBaseNote import WidgetBaseNote
+from gui.main_window.widgetKeyNote import WidgetKeyNote
+from gui.main_window.widgetPanelMode import WidgetPanelMode
+from gui.main_window.widgetPanelChord import WidgetPanelChord
+from gui.main_window.widgetPadGrid import WidgetPadGrid
+from gui.actions.action_bypass import QActionBypass
+from gui.actions.action_load import QActionConfigLoad
+from gui.actions.action_new import QActionConfigNew
+from gui.actions.action_edit import QActionConfigEdit
 
 from logic.gui.main_logic import MainLogic
 
@@ -50,11 +54,27 @@ class MainWindow(QMainWindow):
 
         # Toolbar
         self.toolbar.setIconSize(QSize(22, 22))
+        self.toolbar.setMovable(False)  # Prevents the toolbar from being dragged
+        self.toolbar.setFloatable(
+            False
+        )  # Prevents the toolbar from being detached as a floating window
+        self.toolbar.setContextMenuPolicy(Qt.NoContextMenu)
         self.addToolBar(self.toolbar)
+        self.toolbar.setAllowedAreas(Qt.TopToolBarArea | Qt.BottomToolBarArea)
+        self.toolbar.setVisible(True)
+
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.icon_stop = QIcon("../ressources/gui/icons/prohibition.png")
+
+        self.action_new = QActionConfigNew()
+        self.action_load = QActionConfigLoad()
+        self.action_edit = QActionConfigEdit()
+
         self.action_bypass = QActionBypass()
-        self.action_bypass.signal_toggled.connect(self.logic_worker.toggle_bypass)
+
+        self.toolbar.addAction(self.action_new)
+        self.toolbar.addAction(self.action_load)
+        self.toolbar.addAction(self.action_edit)
+        self.toolbar.addSeparator()
         self.toolbar.addAction(self.action_bypass)
 
         self.wdgt_base_note = WidgetBaseNote(self)

@@ -1,6 +1,7 @@
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QStyle
 from PySide6.QtCore import Signal
+from PySide6.QtCore import Qt
 
 
 class QActionBypass(QAction):
@@ -12,16 +13,17 @@ class QActionBypass(QAction):
         self.setText("Midi bypass")
         self.setStatusTip("Midi bypass turned off")
         self.setCheckable(True)
-        self.icon_stop = QIcon("../ressources/gui/icons/prohibition.png")
-        self.icon_go = QIcon("../ressources/gui/icons/play_solid.png")
+        self.icon_stop = QIcon.fromTheme("media-playback-stop")
+        self.icon_go = QIcon.fromTheme("media-playback-start")
         self.toggled.connect(self.on_toggled)  # Connect the signal
-        self.setIcon(self.icon_go)
+        self.setIcon(self.icon_stop)
+        self.setShortcut(Qt.Key_Return)
 
     def on_toggled(self, checked):
         self.signal_toggled.emit(checked)
         if checked:
-            self.setStatusTip("Midi bypass turned on")
-            self.setIcon(self.icon_stop)
-        else:
-            self.setStatusTip("Midi bypass turned off")
+            self.setStatusTip("Midi bypass turned on (Enter)")
             self.setIcon(self.icon_go)
+        else:
+            self.setStatusTip("Midi bypass turned off (Enter)")
+            self.setIcon(self.icon_stop)
