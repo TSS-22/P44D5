@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import Signal, QTimer
 
 
-class DiagKnobSetup(QMessageBox):
+class DiagPadSetup(QMessageBox):
 
     sig_cancel = Signal()
     sig_ok = Signal()
@@ -16,7 +16,6 @@ class DiagKnobSetup(QMessageBox):
         self.setIcon(QMessageBox.Information)
         self.setWindowTitle(title)
         self.setText('Press all your pad at least once and click "OK" once done.')
-        self.setStandardButtons(QMessageBox.Cancel)
-        self.cancel_button = self.button(QMessageBox.Ok | QMessageBox.Cancel)
+        self.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         self.accepted.connect(self.sig_ok)
         self.rejected.connect(self.sig_cancel)

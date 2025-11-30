@@ -15,6 +15,7 @@ from gui.configs.combo_midi_list import CmbBoxMidiController
 from gui.configs.wdgt_setup_knob import WidgetSetupKnob
 from gui.configs.config_knob_setup_flag import ConfigSetupFlag
 from gui.configs.information_dialogs.DiagKnobSetup import DiagKnobSetup
+from gui.configs.information_dialogs.DiagPadSetup import DiagPadSetup
 
 from data.data_general import hc_file_filter, hc_diag_knob_setup_txt
 
@@ -26,6 +27,7 @@ class ConfigNewWindow(QWidget):
         self.parent = parent
 
         # Setup data
+        self.polled_messages = []
         self.midi_control_value = {}
         for val in ConfigSetupFlag:
             self.midi_control_value[val.value] = None
@@ -34,7 +36,6 @@ class ConfigNewWindow(QWidget):
 
         self.active_setup = ConfigSetupFlag.NONE
         self.midi_poll_timer = QTimer()
-        self.midi_poll_timer.timeout.connect(self.poll_midi_messages)
 
         self.layout_window = QVBoxLayout()
 
@@ -59,11 +60,12 @@ class ConfigNewWindow(QWidget):
         self.layout_window.addLayout(self.layout_top)
 
         # Dialog windows
-        self.diag_window_knob = DiagKnobSetup(
-            title="Instructions",
-        )
-        self.diag_window_knob.sig_cancel.connect(self.cancel_knob_setup)
+        self.diag_window_knob = DiagKnobSetup()
+        self.diag_window_knob.sig_cancel.connect(self.on_cancel_setup)
 
+        self.diag_window_pad = DiagPadSetup()
+        self.diag_window_pad.sig_cancel.connect(self.on_cancel_setup)
+        self.diag_window_pad.sig_ok.connect(self.on_ok_pad_setup)
         # Explanation part
         self.lbl_explanation = QLabel(
             """
@@ -152,7 +154,11 @@ class ConfigNewWindow(QWidget):
         self.setLayout(self.layout_window)
 
     def on_setup_pad_clicked(self):
-        print("setup pad")
+        self.active_setup = ConfigSetupFlag.PAD
+        self.diag_window_pad.show()
+        self.polled_messages = []
+        self.midi_poll_timer.timeout.connect(self.poll_midi_messages_pad)
+        self.midi_poll_timer.start(10)
 
     def on_save_click(self):
         self.open_save_dialog()
@@ -176,22 +182,31 @@ class ConfigNewWindow(QWidget):
 
     def on_knob_setup_clicked(self, knob_function):
         self.active_setup = knob_function
-        print(self.active_setup)
         # Open an instruction pop up
         self.set_text_diag_knob_setup(knob_function)
         self.diag_window_knob.show()
 
         # Start a timer to poll for MIDI messages
-        self.midi_poll_timer.start(10)  # Check every 50ms
+        self.midi_poll_timer.timeout.connect(self.poll_midi_messages_knob)
+        self.midi_poll_timer.start(10)  # Check every 10ms
 
-    def poll_midi_messages(self):
-        print("polling")
+    def poll_midi_messages_knob(self):
+        print("polling knob")
         messages = list(self.parent.logic_worker.midi_bridge.input.iter_pending())
         if messages:
+
             self.midi_poll_timer.stop()  # Stop the timer
             print("Received:", messages)
             # Process messages here
             self.on_midi_message_received(messages)
+
+    def poll_midi_messages_pad(self):
+        print("polling knob")
+
+        messages = self.parent.logic_worker.midi_bridge.input.iter_pending()
+        if messages:
+            for msg in messages:
+                self.polled_messages.append(msg)
 
     def on_midi_message_received(self, messages):
         print(messages)
@@ -216,10 +231,10 @@ class ConfigNewWindow(QWidget):
     def set_text_diag_knob_setup(self, val_function):
         self.diag_window_knob.setText(hc_diag_knob_setup_txt + " " + val_function)
 
-    def cancel_knob_setup(self):
-        print("dede")
+    def on_cancel_setup(self):
         self.midi_poll_timer.stop()
         self.diag_window_knob.hide()
+        self.diag_window_pad.hide()
 
     def update_setup_val_disp(self):
         self.setup_knob_mode.lbl_knob_value.setText(
@@ -237,3 +252,9 @@ class ConfigNewWindow(QWidget):
         self.setup_knob_key_degree.lbl_knob_value.setText(
             str(self.midi_control_value[ConfigSetupFlag.KEY_DEGREE.value])
         )
+
+    def on_ok_pad_setup(self):
+        print("ok pad")
+        self.midi_poll_timer.stop()
+        print(self.polled_messages)
+        self.polled_messages = []
