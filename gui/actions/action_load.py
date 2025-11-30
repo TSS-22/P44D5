@@ -6,6 +6,8 @@ from data.data_general import hc_file_filter
 
 class QActionConfigLoad(QAction):
 
+    sig_load_config = Signal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setText("Open MIDI controller config")
@@ -25,3 +27,4 @@ class QActionConfigLoad(QAction):
         if file_path:
             print(f"Selected file: {file_path}")
             # Do something with the file path
+            self.sig_load_config.emit(file_path)

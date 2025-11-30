@@ -57,6 +57,8 @@ class MainWindow(QMainWindow):
         self.tool_bar.cmb_midi_controller.currentTextChanged.connect(
             self.on_choice_controller_changed
         )
+        self.tool_bar.action_load.sig_load_config.connect(self.on_load_midi_config)
+
         # User GUI driven changes signal connections
         self.wdgt_base_note.knob.valueChanged.connect(
             self.logic_worker.gui_change_base_note
@@ -245,3 +247,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def open_new_config_window(self):
         self.config_new_window.show()
+
+    @Slot()
+    def on_load_midi_config(self, file_path):
+        self.logic_worker.load_micro_controller_settings(file_path)

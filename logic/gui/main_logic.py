@@ -1,3 +1,5 @@
+import json
+
 from PySide6.QtCore import QRunnable, Signal, Slot, QObject
 
 from logic.core.controller.midi_controller import MidiController
@@ -92,5 +94,12 @@ class MainLogic(QRunnable):
     def get_midi_input(self):
         return self.midi_bridge.get_midi_input()
 
-    # def set_configuration_mode(self, val):
-    #     self.midi_controller.set_configuration_mode(val)
+    def load_micro_controller_settings(self, settings_path):
+        try:
+            with open(settings_path, "r", encoding="UTF-8") as file_settings:
+                midi_device_settings = json.load(file_settings)
+                self.midi_controller.load_micro_controller_settings(
+                    midi_device_settings
+                )
+        except Exception as e:
+            print(f"Failed to open configuration: {e}")
