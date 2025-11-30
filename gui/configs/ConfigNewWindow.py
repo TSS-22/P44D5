@@ -26,9 +26,9 @@ class ConfigNewWindow(QWidget):
         self.parent = parent
 
         # Setup data
-        midi_control_value = {}
+        self.midi_control_value = {}
         for val in ConfigSetupFlag:
-            midi_control_value[val.value] = None
+            self.midi_control_value[val.value] = None
 
         self.setWindowTitle("Create MIDI controller configuration")
 
@@ -182,7 +182,7 @@ class ConfigNewWindow(QWidget):
         self.diag_window_knob.show()
 
         # Start a timer to poll for MIDI messages
-        self.midi_poll_timer.start(50)  # Check every 50ms
+        self.midi_poll_timer.start(10)  # Check every 50ms
 
     def poll_midi_messages(self):
         print("polling")
@@ -203,14 +203,13 @@ class ConfigNewWindow(QWidget):
         else:
             print("Invalid knob")
 
-        self.midi_control_value[self.active_setup.value] = control
+        self.midi_control_value[self.active_setup] = control
         self.update_setup_val_disp()
         self.diag_window_knob.hide()
         print("done")
         self.active_setup = ConfigSetupFlag.NONE
 
     def closeEvent(self, event):
-        print("test")
         self.diag_window_knob.close()
         self.midi_poll_timer.stop()
 
