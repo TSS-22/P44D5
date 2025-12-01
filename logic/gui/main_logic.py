@@ -94,13 +94,27 @@ class MainLogic(QRunnable):
     def get_midi_input(self):
         return self.midi_bridge.get_midi_input()
 
+    # CLEAN
+    # I put micro_controller and not midi_controller
     def load_micro_controller_settings(self, settings_path):
         print(settings_path)
         try:
             with open(settings_path, "r", encoding="UTF-8") as file_settings:
                 midi_device_settings = json.load(file_settings)
-                self.midi_controller.load_micro_controller_settings(
-                    midi_device_settings
-                )
+                if self.assert_midi_device_settings(midi_device_settings):
+                    self.midi_controller.load_micro_controller_settings(
+                        midi_device_settings
+                    )
+                else:
+                    raise Exception("Invalid configuration")
         except Exception as e:
             print(f"Failed to open configuration: {e}")
+
+    def assert_midi_device_settings(self, midi_device_settings):
+        if (
+            midi_device_settings["pad_mode"]
+            and midi_device_settings["base_note_offset"]
+        ):
+            return True
+        else:
+            return False
