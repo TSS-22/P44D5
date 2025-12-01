@@ -1,5 +1,6 @@
 import json
 from logic.core.controller.midi_controller_output import MidiControllerOutput
+from logic.core.controller.input_pad import InputPad
 from logic.core.controller.midi_controller_settings import MidiControllerSettings
 from logic.core.controller.midi_controller_state import MidiControllerState
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
@@ -450,32 +451,43 @@ class MidiController:
             list_message=[message],
         )
         if self.state.bypass is False:
-            # Note pressed
-            if message.type == "note_on":
-                output = self.pad_pressed(message)
+            if self.controller_settings.pad_mode == dg.hc_pad_mode_note:
+                # Note pressed
+                if message.type == "note_on":
+                    output = self.pad_pressed(message)
 
-            elif message.type == "note_off":
-                output = self.pad_released(message)
+                elif message.type == "note_off":
+                    output = self.pad_released(message)
 
             elif message.type == "control_change":
+                if (message.control >= self.controller_settings.base_note_offset) and (
+                    message.control <= self.controller_settings.base_note_offset + 7
+                ):
+                    if message.value > 0:
+                        output = self.pad_pressed(
+                            InputPad(note=message.control, velocity=message.value)
+                        )
+                    else:
+                        output = self.pad_released(InputPad(note=message.control))
+
                 # Knob 1: select_base_note
-                if message.control == self.controller_settings.id_knob_base_note:
+                elif message.control == self.controller_settings.id_knob_base_note:
                     output = self.knob_base_note_changed(message)
 
-                # Knob 5: select_keyNote
+                # Knob 2: select_keyNote
                 elif message.control == self.controller_settings.id_knob_key_note:
                     if self.state.selected_mode != "None":
                         output = self.knob_key_note_changed(message)
 
-                # Knob 4: select_mode
+                # Knob 3: select_mode
                 elif message.control == self.controller_settings.id_knob_mode:
                     output = self.knob_mode_changed(message)
 
-                # Knob 8: select_chord_comp
+                # Knob 4: select_chord_comp
                 elif message.control == self.controller_settings.id_knob_chord_comp:
                     output = self.knob_chord_comp_changed(message)
 
-                # Knob 7:select_chord_size
+                # Knob 5:select_chord_size
                 elif message.control == self.controller_settings.id_knob_chord_size:
                     if self.state.idx_chord_comp != 0:
                         output = self.knob_chord_size_changed(message)
