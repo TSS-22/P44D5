@@ -25,7 +25,7 @@ class MidiController:
         # Init state and class variables
         self.compute_pad_intervals()
 
-        self.base_note_offset = midi_device_settings["base_note_offset"]
+        # self.base_note_offset = midi_device_settings["base_note_offset"]
 
         self.mode_prog_chord = {}
         self._init_mode_prog_chord()
@@ -51,7 +51,10 @@ class MidiController:
         return self.state
 
     def load_micro_controller_settings(self, midi_device_settings):
+        # IMRPOVE
+        # Add a check to see if the configuration is valid before loading.
         self.controller_settings = MidiControllerSettings(midi_device_settings)
+        print(self.controller_settings)
 
     #############################
     # GENERAL LOGIC / UTILITIES #
@@ -208,25 +211,30 @@ class MidiController:
     ##################
     # Pad pressed
     def pad_pressed(self, input_val):
-        id_pad = input_val.note - self.base_note_offset
-        self.state.buffer.velocity[id_pad] = input_val.velocity
-        note = self.check_note(
-            input_val.note
-            - self.base_note_offset
-            + self.state.base_note
-            + self.state.key_note
-            + self.count_interval(id_pad)
-            - id_pad
-        )
-        return MidiControllerOutput(
-            flag=ControllerMessageFlag.PAD_PRESSED,
-            state=self.get_state(),
-            list_message=self.note_on(note, input_val.velocity, id_pad),
-        )
+        if self.controller_settings.base_note_offset:
+            id_pad = input_val.note - self.controller_settings.base_note_offset
+            self.state.buffer.velocity[id_pad] = input_val.velocity
+            note = self.check_note(
+                input_val.note
+                - self.controller_settings.base_note_offset
+                + self.state.base_note
+                + self.state.key_note
+                + self.count_interval(id_pad)
+                - id_pad
+            )
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.PAD_PRESSED,
+                state=self.get_state(),
+                list_message=self.note_on(note, input_val.velocity, id_pad),
+            )
+        else:
+            # IMPROVE
+            # Handle case with improper config (prevent it when loading)
+            pass
 
     # Pad released
     def pad_released(self, input_val):
-        id_pad = input_val.note - self.base_note_offset
+        id_pad = input_val.note - self.controller_settings.base_note_offset
         self.state.buffer.velocity[id_pad] = 0
         list_note_off = []
         for note in self.state.buffer.notes[id_pad]:
