@@ -1,13 +1,21 @@
+# CLEAN
+# Can discard the top and keep just the chords one.
 chord_major = [0, 4, 7, 9, 11, 14, 17, 21]
 chord_minor = [0, 3, 7, 8, 10, 14, 17, 20]
-chord_dom = [0, 4, 7, 7, 10, 14, 17, 21]
+chord_dom = [0, 4, 7, 9, 10, 14, 17, 21]
 chord_dim = [0, 3, 6, 9, 9, 14, 17, 21]
+chord_aug = [0, 4, 8, 9, 11, 14, 17, 21]
+chord_sus2 = [0, 2, 7, 9, 10, 14, 17, 21]
+chord_sus4 = [0, 5, 7, 9, 10, 14, 17, 21]
 
 chords = {
-    "major": [0, 4, 7, 9, 11, 14, 17, 21],
-    "minor": [0, 3, 7, 8, 10, 14, 17, 20],
-    "dominant": [0, 4, 7, 7, 10, 14, 17, 21],
-    "diminished": [0, 3, 6, 9, 9, 14, 17, 21],
+    "major": chord_major,
+    "minor": chord_minor,
+    "dominant": chord_dom,
+    "diminished": chord_dim,
+    "augmented": chord_aug,
+    "sus2": chord_sus2,
+    "sus4": chord_sus4,
 }
 
 knob_values_chord_comp = [
@@ -17,6 +25,9 @@ knob_values_chord_comp = [
     {"name": "Minor", "chord": chords["minor"]},
     {"name": "Dom", "chord": chords["dominant"]},
     {"name": "Dim", "chord": chords["diminished"]},
+    {"name": "Aug", "chord": chords["augmented"]},
+    {"name": "Sus2", "chord": chords["sus2"]},
+    {"name": "Sus4", "chord": chords["sus4"]},
 ]
 
 hc_chord_comp_name = [item["name"] for item in knob_values_chord_comp]
