@@ -7,6 +7,7 @@ from logic.core.bridge.midi_bridge import MidiBridge
 from logic.gui.main_logic_signals import MainLogicSignals
 from logic.gui.gui_input import GuiInput
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
+from logic.core.controller.input_pad import InputPad
 
 
 class MainLogic(QRunnable):
@@ -95,11 +96,22 @@ class MainLogic(QRunnable):
     def gui_pad_pressed(self, id_pad):
         print("pressed")
         print(id_pad)
+        self.midi_controller.pad_pressed(
+            InputPad(
+                note=id_pad + self.midi_controller.controller_settings.base_note_offset,
+                velocity=self.midi_controller.controller_settings.pot_max_value - 1,
+            )
+        )
 
     @Slot()
     def gui_pad_released(self, id_pad):
         print("released")
         print(id_pad)
+        self.midi_controller.pad_released(
+            InputPad(
+                note=id_pad + self.midi_controller.controller_settings.base_note_offset
+            )
+        )
 
     def get_midi_input(self):
         return self.midi_bridge.get_midi_input()
