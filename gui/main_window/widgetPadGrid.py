@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Signal
+from PySide6.QtGui import QShortcut
+from PySide6.QtCore import Qt
 from gui.main_window.widgetPad import WidgetPad
-from data.data_general import hc_list_note_startup
+from data.data_general import hc_list_note_startup, hc_shortcut_pads
 
 
 class WidgetPadGrid(QFrame):
@@ -66,6 +68,24 @@ class WidgetPadGrid(QFrame):
                 self.pads[id_note]["pad"].sig_pressed.connect(self.on_pad_pressed)
                 self.pads[id_note]["pad"].sig_released.connect(self.on_pad_released)
                 id_note = id_note + 1
+
+        # self.shortcut_pad_0 = QShortcut(Qt.Key_S, self)
+        # self.shortcut_pad_1 = QShortcut(Qt.Key_D, self)
+        # self.shortcut_pad_2 = QShortcut(Qt.Key_F, self)
+        # self.shortcut_pad_3 = QShortcut(Qt.Key_G, self)
+        # self.shortcut_pad_4 = QShortcut(Qt.Key_H, self)
+        # self.shortcut_pad_5 = QShortcut(Qt.Key_J, self)
+        # self.shortcut_pad_6 = QShortcut(Qt.Key_K, self)
+        # self.shortcut_pad_7 = QShortcut(Qt.Key_L, self)
+
+        # # self.shortcut_pad_0.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_1.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_2.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_3.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_4.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_5.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_6.activated.connect(lambda: print("Save All triggered!"))
+        # # self.shortcut_pad_7.activated.connect(lambda: print("Save All triggered!"))
 
     def update(self, state):
         for idx, velocity in enumerate(state["velocity"]):

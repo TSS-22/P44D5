@@ -1,3 +1,5 @@
+from PySide6.QtCore import Qt
+
 # CLEAN
 # Can discard the top and keep just the chords one.
 chord_major = [0, 4, 7, 9, 11, 14, 17, 21]
@@ -19,7 +21,6 @@ chords = {
 }
 
 knob_values_chord_comp = [
-    # {"name": "Single", "chord": [0]},
     {"name": "Normal", "chord": [0]},
     {"name": "Major", "chord": chords["major"]},
     {"name": "Minor", "chord": chords["minor"]},
@@ -202,3 +203,17 @@ Move the knob you want to associate with
 
 hc_pad_mode_note = "note"
 hc_pad_mode_cc = "control_change"
+
+hc_shortcut_pads = [
+    Qt.Key_S,
+    Qt.Key_D,
+    Qt.Key_F,
+    Qt.Key_G,
+    Qt.Key_H,
+    Qt.Key_J,
+    Qt.Key_K,
+    Qt.Key_L,
+]
+
+hc_event_type_shortcut_override = 51
+hc_event_type_key_release = 7

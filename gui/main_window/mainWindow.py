@@ -20,6 +20,12 @@ from gui.configs.ConfigNewWindow import ConfigNewWindow
 
 from logic.gui.main_logic import MainLogic
 
+from data.data_general import (
+    hc_shortcut_pads,
+    hc_event_type_shortcut_override,
+    hc_event_type_key_release,
+)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -127,6 +133,8 @@ class MainWindow(QMainWindow):
         self.config_new_window = ConfigNewWindow(parent=self)
 
         self._init_GUI()
+
+        self.installEventFilter(self)
 
     def closeEvent(self, event):
         # Ask the worker to stop
@@ -279,3 +287,19 @@ class MainWindow(QMainWindow):
             self.status_bar.new_config_loaded(name)
         else:
             pass
+
+    def eventFilter(self, obj, event):
+        # Check for key press and release events
+        if event.type() == hc_event_type_shortcut_override:
+            if event.key() in hc_shortcut_pads:
+                id_pad = hc_shortcut_pads.index(event.key())
+                self.logic_worker.gui_pad_pressed(id_pad)
+                return True  # Event handled
+
+        elif event.type() == hc_event_type_key_release:
+            if event.key() in hc_shortcut_pads:
+                id_pad = hc_shortcut_pads.index(event.key())
+                self.logic_worker.gui_pad_released(id_pad)
+                return True  # Event handled
+
+        return super().eventFilter(obj, event)
