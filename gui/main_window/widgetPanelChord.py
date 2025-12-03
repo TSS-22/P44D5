@@ -5,26 +5,6 @@ from data.data_general import hc_chord_comp_name, hc_chord_size_name
 
 
 class WidgetPanelChord(QFrame):
-    # CLEAN
-    # list_chord_comp = [
-    #     "Single",
-    #     "Normal",
-    #     "Major",
-    #     "Minor",
-    #     "Dom",
-    #     "Dim",
-    # ]
-
-    # list_chord_size = [
-    #     "5",
-    #     "X",
-    #     "6",
-    #     "7",
-    #     "9",
-    #     "11",
-    #     "13",
-    # ]
-
     def __init__(
         self,
         parent=None,

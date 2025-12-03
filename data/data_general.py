@@ -1,23 +1,13 @@
 from PySide6.QtCore import Qt
 
-# CLEAN
-# Can discard the top and keep just the chords one.
-chord_major = [0, 4, 7, 9, 11, 14, 17, 21]
-chord_minor = [0, 3, 7, 8, 10, 14, 17, 20]
-chord_dom = [0, 4, 7, 9, 10, 14, 17, 21]
-chord_dim = [0, 3, 6, 9, 9, 14, 17, 21]
-chord_aug = [0, 4, 8, 9, 11, 14, 17, 21]
-chord_sus2 = [0, 2, 7, 9, 10, 14, 17, 21]
-chord_sus4 = [0, 5, 7, 9, 10, 14, 17, 21]
-
 chords = {
-    "major": chord_major,
-    "minor": chord_minor,
-    "dominant": chord_dom,
-    "diminished": chord_dim,
-    "augmented": chord_aug,
-    "sus2": chord_sus2,
-    "sus4": chord_sus4,
+    "major": [0, 4, 7, 9, 11, 14, 17, 21],
+    "minor": [0, 3, 7, 8, 10, 14, 17, 20],
+    "dominant": [0, 4, 7, 9, 10, 14, 17, 21],
+    "diminished": [0, 3, 6, 9, 9, 14, 17, 21],
+    "augmented": [0, 4, 8, 9, 11, 14, 17, 21],
+    "sus2": [0, 2, 7, 9, 10, 14, 17, 21],
+    "sus4": [0, 5, 7, 9, 10, 14, 17, 21],
 }
 
 knob_values_chord_comp = [
@@ -193,7 +183,7 @@ hc_dialog_select_device = "Select a device"
 
 hc_name_midi_out = "test_virt_midi"
 
-hc_file_filter = "Midi controller config files (*.cnfmidi);;All Files (*);;"
+hc_file_filter = "Midi controller configuration files (*.cnfmidi);;All Files (*);;"
 
 hc_file_extension = "cnfmidi"
 

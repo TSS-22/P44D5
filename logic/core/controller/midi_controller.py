@@ -64,8 +64,6 @@ class MidiController:
         return self.state
 
     def load_midi_controller_settings(self, midi_device_settings):
-        # IMRPOVE
-        # Add a check to see if the configuration is valid before loading.
         self.controller_settings = MidiControllerSettings(midi_device_settings)
         print(self.controller_settings)
 
