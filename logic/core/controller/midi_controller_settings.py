@@ -3,11 +3,11 @@ from data import data_general as dg
 
 class MidiControllerSettings:
     def __init__(self, midi_device_settings):
-
         self.list_modes = dg.hc_list_mode
         self.list_chord_comp = dg.knob_values_chord_comp
         self.list_chord_size = dg.knob_values_chord_size
 
+        print(midi_device_settings)
         self.pad_mode = midi_device_settings["pad_mode"]
         self.base_note_offset = midi_device_settings["base_note_offset"]
         self.id_knob_mode = midi_device_settings["id_knob_mode"]

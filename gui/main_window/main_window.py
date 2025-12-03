@@ -24,15 +24,14 @@ from data.data_general import (
     hc_shortcut_pads,
     hc_event_type_shortcut_override,
     hc_event_type_key_release,
+    hc_path_user_settings,
 )
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        with open(
-            "./data/user_settings.json", "r", encoding="UTF-8"
-        ) as file_settings_user:
+        with open(hc_path_user_settings, "r", encoding="UTF-8") as file_settings_user:
             self.user_settings = json.load(file_settings_user)
 
         # Connecting the MidiCOntroller and MidiBridge to the UI

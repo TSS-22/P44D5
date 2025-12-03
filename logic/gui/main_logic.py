@@ -9,6 +9,8 @@ from logic.gui.gui_input import GuiInput
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
 from logic.core.controller.input_pad import InputPad
 
+from data.data_general import hc_path_user_settings
+
 
 class MainLogic(QRunnable):
     def __init__(self):
@@ -143,9 +145,7 @@ class MainLogic(QRunnable):
             return False
 
     def save_user_settings(self, user_settings):
-        with open(
-            "./data/user_settings.json", "w", encoding="UTF-8"
-        ) as file_settings_user:
+        with open(hc_path_user_settings, "w", encoding="UTF-8") as file_settings_user:
             json.dump(user_settings, file_settings_user, indent=4)
 
     def is_int(self, value):

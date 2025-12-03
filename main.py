@@ -4,9 +4,12 @@ from PySide6.QtWidgets import QApplication
 from gui.main_window.main_window import MainWindow
 
 
-app = QApplication(sys.argv)
+def main():
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
 
-window = MainWindow()
-window.show()
 
-app.exec()
+if __name__ == "__main__":
+    main()

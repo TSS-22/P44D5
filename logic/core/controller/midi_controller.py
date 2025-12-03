@@ -14,13 +14,17 @@ class MidiController:
 
     def __init__(self):
         # Put the automatic loading of the last config here
-        with open(dg.hc_user_settings, "r", encoding="UTF-8") as file_settings_user:
+        with open(
+            dg.hc_path_user_settings, "r", encoding="UTF-8"
+        ) as file_settings_user:
             self.user_settings = json.load(file_settings_user)
             if os.path.exists(self.user_settings["last_load_config"]):
                 try:
                     with open(
                         self.user_settings["last_load_config"], "r", encoding="UTF-8"
                     ) as file_settings_controller:
+                        print(self.user_settings["last_load_config"])
+                        print(file_settings_controller)
                         midi_device_settings = json.load(file_settings_controller)
                 except Exception as e:
                     self.load_default_midi_config(error=e)
@@ -515,7 +519,7 @@ class MidiController:
         midi_device_settings = []
         try:
             with open(
-                dg.hc_default_config, "r", encoding="UTF-8"
+                dg.hc_path_user_settings, "r", encoding="UTF-8"
             ) as file_settings_controller:
                 midi_device_settings = json.load(file_settings_controller)
         except Exception as e:
