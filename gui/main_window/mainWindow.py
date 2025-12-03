@@ -278,7 +278,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def on_load_midi_config(self, file_path):
-        config_loaded = self.logic_worker.load_micro_controller_settings(
+        config_loaded = self.logic_worker.load_midi_controller_settings(
             file_path, self.user_settings
         )
         if config_loaded:

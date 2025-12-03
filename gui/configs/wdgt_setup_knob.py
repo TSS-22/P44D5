@@ -37,10 +37,10 @@ class WidgetSetupKnob(QWidget):
         layout = QHBoxLayout()
 
         # Add widgets to the layout
-        layout.addWidget(self.checkbox)
-        layout.addWidget(self.lbl_knob_function)
-        layout.addWidget(self.button)
-        layout.addWidget(self.lbl_knob_value)
+        layout.addWidget(self.checkbox, stretch=0)
+        layout.addWidget(self.lbl_knob_function, stretch=1)
+        layout.addWidget(self.button, stretch=0)
+        layout.addWidget(self.lbl_knob_value, stretch=0)
 
         # Set the layout for this widget
         self.setLayout(layout)

@@ -210,7 +210,7 @@ class ConfigNewWindow(QWidget):
             }
             with open(file_path, "w", encoding="utf-8") as f:
                 json.dump(data_dump, f, indent=4)
-            self.parent.logic_worker.load_micro_controller_settings(file_path)
+            self.parent.logic_worker.load_midi_controller_settings(file_path)
             self.close()
 
     def on_knob_setup_clicked(self, knob_function):

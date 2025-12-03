@@ -116,15 +116,13 @@ class MainLogic(QRunnable):
     def get_midi_input(self):
         return self.midi_bridge.get_midi_input()
 
-    # CLEAN
-    # I put micro_controller and not midi_controller
-    def load_micro_controller_settings(self, settings_path, user_settings):
+    def load_midi_controller_settings(self, settings_path, user_settings):
         print(settings_path)
         try:
             with open(settings_path, "r", encoding="UTF-8") as file_settings:
                 midi_device_settings = json.load(file_settings)
                 if self.assert_midi_device_settings(midi_device_settings):
-                    self.midi_controller.load_micro_controller_settings(
+                    self.midi_controller.load_midi_controller_settings(
                         midi_device_settings
                     )
                     user_settings["last_load_config"] = settings_path
