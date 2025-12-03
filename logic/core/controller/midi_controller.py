@@ -19,19 +19,15 @@ class MidiController:
         ) as file_settings_user:
             self.user_settings = json.load(file_settings_user)
             if os.path.exists(self.user_settings["last_load_config"]):
-                print("if")
                 try:
                     with open(
                         self.user_settings["last_load_config"], "r", encoding="UTF-8"
                     ) as file_settings_controller:
-                        print(self.user_settings["last_load_config"])
-                        print(file_settings_controller)
                         midi_device_settings = json.load(file_settings_controller)
                 except Exception as e:
                     self.load_default_midi_config(error=e)
                     sys.exit(1)
             else:
-                print("else")
                 midi_device_settings = self.load_default_midi_config()
 
         self.controller_settings = MidiControllerSettings(midi_device_settings)
@@ -69,7 +65,6 @@ class MidiController:
 
     def load_midi_controller_settings(self, midi_device_settings):
         self.controller_settings = MidiControllerSettings(midi_device_settings)
-        print(self.controller_settings)
 
     #############################
     # GENERAL LOGIC / UTILITIES #
@@ -518,18 +513,16 @@ class MidiController:
         return output
 
     def load_default_midi_config(self, error=None):
-        midi_device_settings = []
         try:
+            print("ettsts")
             with open(
                 dg.hc_path_default_config, "r", encoding="UTF-8"
             ) as file_settings_controller:
                 midi_device_settings = json.load(file_settings_controller)
-                print("done")
+                return midi_device_settings
         except Exception as e:
             print(
                 f"Previous error: {error}. Couldn't load the default configuration: {e}"
             )
             input("Press ENTER to exit...")
             sys.exit(1)
-        print(midi_device_settings)
-        return midi_device_settings

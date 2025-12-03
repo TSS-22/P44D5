@@ -25,6 +25,7 @@ from data.data_general import (
     hc_event_type_shortcut_override,
     hc_event_type_key_release,
     hc_path_user_settings,
+    hc_path_default_config,
 )
 
 
@@ -164,7 +165,12 @@ class MainWindow(QMainWindow):
                     flags=Qt.MatchFlag.MatchContains,
                 )
             )
-        self.on_load_midi_config(self.user_settings["last_load_config"])
+        load_success = self.on_load_midi_config(self.user_settings["last_load_config"])
+        if load_success is False:
+            self.on_load_midi_config(hc_path_default_config)
+            self.status_bar.print_error_success(
+                f"Config {self.user_settings['last_load_config']} cannot be found. Ressorting to default config."
+            )
 
     @Slot()
     def updt_base_note(self, state):
@@ -296,10 +302,12 @@ class MainWindow(QMainWindow):
             self.status_bar.print_error_success(
                 f'Configuration "{name}" loaded successfully'
             )
+            return True
         else:
             self.status_bar.print_error_success(
                 "Loading failed. Configuration invalid. Check that pads are set correctly."
             )
+            return False
 
     def eventFilter(self, obj, event):
         # Check for key press and release events
