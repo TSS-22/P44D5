@@ -5,7 +5,6 @@ from data.data_general import hc_file_filter
 
 
 class QActionConfigLoad(QAction):
-
     sig_load_config = Signal(str)
 
     def __init__(self, parent=None):

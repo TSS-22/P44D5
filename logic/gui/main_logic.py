@@ -43,7 +43,6 @@ class MainLogic(QRunnable):
         self.signals.stopped.emit()
 
     def handle_midi(self, midi_controller_output):
-        print(midi_controller_output)
         if midi_controller_output["flag"] == ControllerMessageFlag.BASE_NOTE_CHANGED:
             self.signals.base_note_changed.emit(midi_controller_output["state"])
         elif midi_controller_output["flag"] == ControllerMessageFlag.KEY_NOTE_CHANGED:
@@ -119,7 +118,6 @@ class MainLogic(QRunnable):
         return self.midi_bridge.get_midi_input()
 
     def load_midi_controller_settings(self, settings_path, user_settings):
-        print(settings_path)
         try:
             with open(settings_path, "r", encoding="UTF-8") as file_settings:
                 midi_device_settings = json.load(file_settings)

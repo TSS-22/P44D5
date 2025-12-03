@@ -19,6 +19,7 @@ class MidiController:
         ) as file_settings_user:
             self.user_settings = json.load(file_settings_user)
             if os.path.exists(self.user_settings["last_load_config"]):
+                print("if")
                 try:
                     with open(
                         self.user_settings["last_load_config"], "r", encoding="UTF-8"
@@ -30,6 +31,7 @@ class MidiController:
                     self.load_default_midi_config(error=e)
                     sys.exit(1)
             else:
+                print("else")
                 midi_device_settings = self.load_default_midi_config()
 
         self.controller_settings = MidiControllerSettings(midi_device_settings)
@@ -519,13 +521,15 @@ class MidiController:
         midi_device_settings = []
         try:
             with open(
-                dg.hc_path_user_settings, "r", encoding="UTF-8"
+                dg.hc_path_default_config, "r", encoding="UTF-8"
             ) as file_settings_controller:
                 midi_device_settings = json.load(file_settings_controller)
+                print("done")
         except Exception as e:
             print(
                 f"Previous error: {error}. Couldn't load the default configuration: {e}"
             )
             input("Press ENTER to exit...")
             sys.exit(1)
+        print(midi_device_settings)
         return midi_device_settings
