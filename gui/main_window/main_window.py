@@ -8,15 +8,15 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QThreadPool, Slot, Qt
 
-from gui.main_window.widgetBaseNote import WidgetBaseNote
-from gui.main_window.widgetKeyNote import WidgetKeyNote
-from gui.main_window.widgetPanelMode import WidgetPanelMode
-from gui.main_window.widgetPanelChord import WidgetPanelChord
-from gui.main_window.widgetPadGrid import WidgetPadGrid
+from gui.main_window.widget_base_note import WidgetBaseNote
+from gui.main_window.widget_key_note import WidgetKeyNote
+from gui.main_window.widget_panel_mode import WidgetPanelMode
+from gui.main_window.widget_panel_chord import WidgetPanelChord
+from gui.main_window.widget_pad_grid import WidgetPadGrid
 from gui.main_bars.main_tool_bar import MainToolBar
 from gui.main_bars.main_status_bar import MainStatusBar
 
-from gui.configs.ConfigNewWindow import ConfigNewWindow
+from gui.configs.config_new_windows import ConfigNewWindow
 
 from logic.gui.main_logic import MainLogic
 

@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QFrame, QHBoxLayout
-from gui.main_window.widgetWheelChoice import WidgetWheelChoice
+from gui.main_window.widget_wheel_choice import WidgetWheelChoice
 
 from data.data_general import hc_chord_comp_name, hc_chord_size_name
 

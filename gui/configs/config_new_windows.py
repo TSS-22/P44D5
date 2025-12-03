@@ -13,8 +13,8 @@ from gui.actions.action_refresh import QActionMidiRefresh
 from gui.configs.combo_midi_list import CmbBoxMidiController
 from gui.configs.wdgt_setup_knob import WidgetSetupKnob
 from gui.configs.config_knob_setup_flag import ConfigSetupFlag
-from gui.configs.information_dialogs.DiagKnobSetup import DiagKnobSetup
-from gui.configs.information_dialogs.DiagPadSetup import DiagPadSetup
+from gui.configs.information_dialogs.diag_knob_setup import DiagKnobSetup
+from gui.configs.information_dialogs.diag_pad_setup import DiagPadSetup
 
 from data.data_general import (
     hc_file_filter,

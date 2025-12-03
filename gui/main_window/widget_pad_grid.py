@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QFrame, QGridLayout
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QShortcut
 from PySide6.QtCore import Qt
-from gui.main_window.widgetPad import WidgetPad
+from gui.main_window.widget_pad import WidgetPad
 from data.data_general import hc_list_note_startup, hc_shortcut_pads
 
 
