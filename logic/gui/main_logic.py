@@ -132,8 +132,6 @@ class MainLogic(QRunnable):
                     raise Exception("Invalid configuration")
         except Exception as e:
             print(f"Failed to open configuration: {e}")
-            # IMPROVE
-            # explain why the config failed to load
             return False
 
     def assert_midi_device_settings(self, midi_device_settings):

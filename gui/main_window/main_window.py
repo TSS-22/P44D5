@@ -165,6 +165,7 @@ class MainWindow(QMainWindow):
                     flags=Qt.MatchFlag.MatchContains,
                 )
             )
+        self.on_load_midi_config(self.user_settings["last_load_config"])
 
     @Slot()
     def updt_base_note(self, state):
@@ -268,9 +269,17 @@ class MainWindow(QMainWindow):
     @Slot()
     def on_choice_controller_changed(self, controller_name):
         self.logic_worker.midi_bridge.disconnect()
-        self.logic_worker.midi_bridge.connect_to_controller(controller_name)
-        self.user_settings["last_connected_midi"] = controller_name
-        self.logic_worker.save_user_settings(self.user_settings)
+        connection_success = self.logic_worker.midi_bridge.connect_to_controller(
+            controller_name
+        )
+        if connection_success:
+            self.user_settings["last_connected_midi"] = controller_name
+            self.logic_worker.save_user_settings(self.user_settings)
+            self.status_bar.print_error_success(
+                f"Connection successfull to: {controller_name}"
+            )
+        else:
+            self.status_bar.print_error_success("Connection unsuccessful")
 
     @Slot()
     def open_new_config_window(self):
@@ -285,8 +294,13 @@ class MainWindow(QMainWindow):
             basename = os.path.basename(file_path)
             name = os.path.splitext(basename)[0]
             self.status_bar.new_config_loaded(name)
+            self.status_bar.print_error_success(
+                f'Configuration "{name}" loaded successfully'
+            )
         else:
-            pass
+            self.status_bar.print_error_success(
+                "Loading failed. Configuration invalid. Check that pads are set correctly."
+            )
 
     def eventFilter(self, obj, event):
         # Check for key press and release events

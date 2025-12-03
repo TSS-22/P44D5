@@ -89,15 +89,12 @@ class MidiBridge:
         self.disconnect()
         if controller_name != "":
             try:
-                # IMPROVE
-                # Add a status connection item in the status bar
                 self.input = mido.open_input(controller_name)
                 print(f"Successfully opened MIDI input: {controller_name}")
-
+                return True
             except Exception as e:
-                # IMPROVE
-                # Add a popup
                 print(f"Failed to open MIDI input: {e}")
+                return False
 
     def disconnect(self):
         # check if connected first

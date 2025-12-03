@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QStatusBar, QLabel
+from PySide6.QtCore import QTimer
 
 
 class MainStatusBar(QStatusBar):
-
     def __init__(self):
         super().__init__()
         self.setStyleSheet(
@@ -19,3 +19,7 @@ class MainStatusBar(QStatusBar):
 
     def new_config_loaded(self, name):
         self.lbl_config_loaded.setText(f"Loaded config: {name}")
+
+    def print_error_success(self, error_text):
+        self.lbl_status_error_sucess.setText(error_text)
+        QTimer.singleShot(2000, lambda: self.lbl_status_error_sucess.setText(""))

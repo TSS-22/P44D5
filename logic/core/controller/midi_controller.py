@@ -1,4 +1,6 @@
 import json
+import os
+import sys
 from logic.core.controller.midi_controller_output import MidiControllerOutput
 from logic.core.controller.input_pad import InputPad
 from logic.core.controller.midi_controller_settings import MidiControllerSettings
@@ -12,23 +14,19 @@ class MidiController:
 
     def __init__(self):
         # Put the automatic loading of the last config here
-        with open(
-            "./data/user_settings.json", "r", encoding="UTF-8"
-        ) as file_settings_user:
+        with open(dg.hc_user_settings, "r", encoding="UTF-8") as file_settings_user:
             self.user_settings = json.load(file_settings_user)
-            # IMPROVE
-            # via the use of os.file_exist() or somthing like that
-            try:
-                with open(
-                    self.user_settings["last_load_config"], "r", encoding="UTF-8"
-                ) as file_settings_controller:
-                    midi_device_settings = json.load(file_settings_controller)
-            except Exception as e:
-                print(f"Error loading config: {e}")
-                with open(
-                    "./data/akai_lpd8_mk2.json", "r", encoding="UTF-8"
-                ) as file_settings_controller:
-                    midi_device_settings = json.load(file_settings_controller)
+            if os.path.exists(self.user_settings["last_load_config"]):
+                try:
+                    with open(
+                        self.user_settings["last_load_config"], "r", encoding="UTF-8"
+                    ) as file_settings_controller:
+                        midi_device_settings = json.load(file_settings_controller)
+                except Exception as e:
+                    self.load_default_midi_config(error=e)
+                    sys.exit(1)
+            else:
+                midi_device_settings = self.load_default_midi_config()
 
         self.controller_settings = MidiControllerSettings(midi_device_settings)
 
@@ -512,3 +510,18 @@ class MidiController:
         self.compute_pad_note()
         output.state = self.get_state()
         return output
+
+    def load_default_midi_config(self, error=None):
+        midi_device_settings = []
+        try:
+            with open(
+                dg.hc_default_config, "r", encoding="UTF-8"
+            ) as file_settings_controller:
+                midi_device_settings = json.load(file_settings_controller)
+        except Exception as e:
+            print(
+                f"Previous error: {error}. Couldn't load the default configuration: {e}"
+            )
+            input("Press ENTER to exit...")
+            sys.exit(1)
+        return midi_device_settings
