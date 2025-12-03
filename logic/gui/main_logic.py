@@ -1,6 +1,6 @@
 import json
 
-from PySide6.QtCore import QRunnable, Signal, Slot, QObject
+from PySide6.QtCore import QRunnable, Slot, QObject
 
 from logic.core.controller.midi_controller import MidiController
 from logic.core.bridge.midi_bridge import MidiBridge
@@ -138,9 +138,8 @@ class MainLogic(QRunnable):
             return False
 
     def assert_midi_device_settings(self, midi_device_settings):
-        if (
-            midi_device_settings["pad_mode"]
-            and midi_device_settings["base_note_offset"]
+        if midi_device_settings["pad_mode"] and self.is_int(
+            midi_device_settings["base_note_offset"]
         ):
             return True
         else:
@@ -151,3 +150,6 @@ class MainLogic(QRunnable):
             "./data/user_settings.json", "w", encoding="UTF-8"
         ) as file_settings_user:
             json.dump(user_settings, file_settings_user, indent=4)
+
+    def is_int(self, value):
+        return isinstance(value, int) and not isinstance(value, bool)

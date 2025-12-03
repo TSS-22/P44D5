@@ -112,7 +112,7 @@ hc_list_note_startup = [
 ]
 
 hc_list_mode = [
-    "None",
+    "Chromatic",
     "Ionian",
     "Dorian",
     "Phrygian",

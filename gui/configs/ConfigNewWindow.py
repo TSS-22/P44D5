@@ -82,8 +82,11 @@ class ConfigNewWindow(QWidget):
         # Explanation part
         self.lbl_explanation = QLabel(
             """
-            EXPLANATION HERE
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            To create a new configuration for a MIDI controller, first plug it in your computer. Then refresh the list of MIDI controller and then select this controller in the drop down list to connect to it.
+            Next click on the "Setup pads" button to setup the pads. A window with the instructions to follow will come up.
+            Once this is done you can save your configuration. If the configuration is valid it will then be automatically loaded afterward.
+            If you desire to add knob/potentiometer to control the software, check the control you want to bind and then click on the "Setup" button. A window will pop up with instructions to follow.
+
             """
         )
         self.lbl_explanation.setWordWrap(True)  # Enable word wrap
@@ -93,10 +96,10 @@ class ConfigNewWindow(QWidget):
         # Setup part
         ## Pads
         self.lbl_setup_pad_title = QLabel("Pad setup:")
-        self.lbl_setup_pad_xpln = QLabel("Pad explanation")
+        # self.lbl_setup_pad_xpln = QLabel("Pad explanation")
 
         self.lbl_setup_knob_title = QLabel("Knob setup:")
-        self.lbl_setup_knob_xpln = QLabel("Knob explanation")
+        # self.lbl_setup_knob_xpln = QLabel("Knob explanation")
 
         self.button_setup_pad = QPushButton("Setup pad")
 
@@ -137,11 +140,11 @@ class ConfigNewWindow(QWidget):
         self.layout_setup = QVBoxLayout()
 
         self.layout_setup.addWidget(self.lbl_setup_pad_title)
-        self.layout_setup.addWidget(self.lbl_setup_pad_xpln)
+        # self.layout_setup.addWidget(self.lbl_setup_pad_xpln)
         self.layout_setup.addWidget(self.button_setup_pad)
 
         self.layout_setup.addWidget(self.lbl_setup_knob_title)
-        self.layout_setup.addWidget(self.lbl_setup_knob_xpln)
+        # self.layout_setup.addWidget(self.lbl_setup_knob_xpln)
         self.layout_setup.addWidget(self.setup_knob_mode)
         self.layout_setup.addWidget(self.setup_knob_chord_comp)
         self.layout_setup.addWidget(self.setup_knob_chord_size)

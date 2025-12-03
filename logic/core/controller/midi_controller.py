@@ -55,7 +55,7 @@ class MidiController:
             self.mode_prog_chord[key] = [
                 dg.chords[dg.ionian_chord_prog[val]] for val in val_list
             ]
-        self.mode_prog_chord.update({"None": [[0]] * 8})
+        self.mode_prog_chord.update({"Chromatic": [[0]] * 8})
 
     def _init_mode_prog_tone(self):
         for key, val_list in dg.tone_prog_mode.items():
@@ -96,7 +96,7 @@ class MidiController:
         self.state.name_chords = self.compute_name_chord_prog()
 
     def compute_pad_intervals(self):
-        if self.state.selected_mode == "None":
+        if self.state.selected_mode == "Chromatic":
             self.state.pad_intervals = [0] + [1] * 7
         else:
             self.state.pad_intervals = (
@@ -106,7 +106,7 @@ class MidiController:
             )
 
     def compute_mode_chord_prog(self):
-        if self.state.selected_mode != "None":
+        if self.state.selected_mode != "Chromatic":
             self.state.selected_mode_chord_prog = (
                 self.mode_prog_chord[self.state.selected_mode][:-1][
                     self.state.key_degree :
@@ -156,14 +156,14 @@ class MidiController:
             # Compute the chord notes
             for chord_index in self.state.selected_chord_size["comp"]:
                 if (
-                    self.state.selected_mode == "None"
+                    self.state.selected_mode == "Chromatic"
                     and self.state.selected_chord_comp["name"] == "Normal"
                 ):
                     notes_chords.append(self.list_note[pad_val % len(self.list_note)])
                     break
                 elif (
                     self.state.selected_chord_comp["name"] == "Normal"
-                    and self.state.selected_mode != "None"
+                    and self.state.selected_mode != "Chromatic"
                 ):
                     notes_chords.append(
                         self.list_note[
@@ -209,7 +209,7 @@ class MidiController:
         # IMPROVE
         # self.state.idx_chord_comp == 1, this smell like problem
         # print(f"protential problem: {self.state.idx_chord_comp}")
-        if self.state.selected_mode != "None" and self.state.idx_chord_comp == 0:
+        if self.state.selected_mode != "Chromatic" and self.state.idx_chord_comp == 0:
             name_chords = (
                 dg.hc_name_chord_prog[self.state.selected_mode][self.state.key_degree :]
                 + dg.hc_name_chord_prog[self.state.selected_mode][
@@ -342,7 +342,7 @@ class MidiController:
     def select_key_note(self, input_val):
         temp_note = int((input_val - 64) / 3)
         degree = 0
-        if self.state.selected_mode == "None":
+        if self.state.selected_mode == "Chromatic":
             self.state.key_note = temp_note
             self.reset_key_degree()
             return temp_note
@@ -425,10 +425,10 @@ class MidiController:
     def note_on(self, note, velocity, id_pad):
         midi_message_note_on = []
 
-        # Isn't the issue with the is not needed, just a problem that mode = "None" is just not where/assessed where it should be ?
+        # Isn't the issue with the is not needed, just a problem that mode = "Chromatic" is just not where/assessed where it should be ?
         if (
             self.state.selected_chord_comp["name"] == "Normal"
-            and self.state.selected_mode != "None"
+            and self.state.selected_mode != "Chromatic"
         ):
             for chord_interval in [
                 self.state.selected_mode_chord_prog[id_pad][i]
@@ -494,7 +494,7 @@ class MidiController:
 
                 # Knob 2: select_keyNote
                 elif message.control == self.controller_settings.id_knob_key_note:
-                    if self.state.selected_mode != "None":
+                    if self.state.selected_mode != "Chromatic":
                         output = self.knob_key_note_changed(message)
 
                 # Knob 3: select_mode

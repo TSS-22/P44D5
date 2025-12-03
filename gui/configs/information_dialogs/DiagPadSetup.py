@@ -15,7 +15,9 @@ class DiagPadSetup(QMessageBox):
         super().__init__(parent)
         self.setIcon(QMessageBox.Information)
         self.setWindowTitle(title)
-        self.setText('Press all your pad at least once and click "OK" once done.')
+        self.setText(
+            'Press all your pads at least once and click "OK" once done. Do not hesitate to make sure to press them multiple time to make sure they are well detected by the setup program.'
+        )
         self.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         self.accepted.connect(self.sig_ok)
         self.rejected.connect(self.sig_cancel)

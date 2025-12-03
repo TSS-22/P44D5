@@ -1,4 +1,11 @@
-from PySide6.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QHBoxLayout
+from PySide6.QtWidgets import (
+    QWidget,
+    QCheckBox,
+    QLabel,
+    QPushButton,
+    QHBoxLayout,
+    QSizePolicy,
+)
 from PySide6.QtCore import Signal
 
 from gui.configs.config_knob_setup_flag import ConfigSetupFlag
