@@ -2,6 +2,8 @@
 
 ![License](https://img.shields.io/badge/license-BSD-blue)
 
+![P44K5 main window snapshot](./ressources/readme/snapshot.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
