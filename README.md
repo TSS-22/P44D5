@@ -7,10 +7,15 @@
 
 ## Table of Contents
 
+- [Presentation](#presentation)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [Acknowledgment](#acknowledgment)
+
+## Presentation
+
+P44k5 helps you create music and test theoretical concepts by providing a compact set of possibilities. It can be used to increase the potential of small 8 pads MIDI controller, or be used independantly. It's goal is to make it easy to play keys and chords to facilitate simple composition with limited means, and an easy way to test out different type of chords, mode, progressions to help learn these musical concepts and put them to practice to compose music.
 
 ## Installation
 
@@ -61,6 +66,6 @@ This program uses third-party libraries and dependencies, which are subject to t
 
 P44K5 use the following dependencies:
 
-- [PySide6](https://doc.qt.io/qtforpython-6/)
-- [mido](https://github.com/mido/mido)
-- [python-rtmidi](https://github.com/SpotlightKid/python-rtmidi)
+- GUI: [PySide6](https://doc.qt.io/qtforpython-6/)
+- MIDI: [mido](https://github.com/mido/mido), [python-rtmidi](https://github.com/SpotlightKid/python-rtmidi)
+- Deployment: [nuitka](https://github.com/Nuitka/Nuitka)
