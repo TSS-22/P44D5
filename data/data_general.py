@@ -208,5 +208,5 @@ hc_shortcut_pads = [
 hc_event_type_shortcut_override = 51
 hc_event_type_key_release = 7
 
-hc_path_default_config = "./data/default.cnfmidi"
+hc_path_default_config = "./configurations/default.cnfmidi"
 hc_path_user_settings = "./user_settings.json"

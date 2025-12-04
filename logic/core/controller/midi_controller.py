@@ -524,5 +524,4 @@ class MidiController:
             print(
                 f"Previous error: {error}. Couldn't load the default configuration: {e}"
             )
-            input("Press ENTER to exit...")
             sys.exit(1)

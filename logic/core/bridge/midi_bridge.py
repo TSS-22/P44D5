@@ -24,7 +24,6 @@ class MidiBridge:
 
             except Exception as e:
                 print(f"Failed to create MIDI output: {e}")
-                input("Press ENTER to exit...")
                 sys.exit(1)
 
         else:
@@ -39,7 +38,6 @@ class MidiBridge:
 
         except Exception as e:
             print(f"Failed to open MIDI output: {e}")
-            input("Press ENTER to exit...")
             sys.exit(1)
 
     def start(self, midi_controller):
