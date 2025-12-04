@@ -1,0 +1,16 @@
+py -m nuitka ^
+    --enable-plugin=pyside6 ^
+    --include-module=mido ^
+    --windows-console-mode=disable ^
+    --include-module=mido.backends.rtmidi ^
+    --include-module=rtmidi ^
+    --include-package-data=mido ^
+    --include-package-data=rtmidi ^
+    --windows-icon-from-ico=./ressources/app-icon.png ^
+    --onefile ^
+    --onefile-windows-splash-screen-image=./ressources/app-icon.png ^
+    --standalone ^
+    --follow-imports ^
+    --include-data-dir=./data=data ^
+    --include-data-dir=./ressources/gui/png=ressources/gui/png ^
+    main.py
