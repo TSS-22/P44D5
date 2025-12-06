@@ -3,6 +3,8 @@
 ![License](https://img.shields.io/badge/license-BSD-blue)
 ![Python 3.13.3](https://img.shields.io/badge/python-3.13.3-blue?logo=python&logoColor=white)
 
+[Documentation](https://tss-22.github.io/P44D5/)
+
 ![P44D5 main window snapshot](./ressources/readme/snapshot.png)
 
 ## Table of Contents
@@ -54,7 +56,7 @@ py ./P44D5.py
 
 ## Usage
 
-insert doc link
+[Documentation](https://tss-22.github.io/P44D5/)
 
 ## Issues
 
