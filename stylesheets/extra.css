@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'Liberation Sans';
+    src: url('../fonts/liberation_sans/LiberationSans-Regular.ttf') format('tff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Liberation Sans';
+    src: url('../fonts/liberation_sans/LiberationSans-Bold.ttf') format('tff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Liberation Sans';
+    src: url('../fonts/liberation_sans/LiberationSans-Italic.ttf') format('tff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Liberation Sans';
+    src: url('../fonts/liberation_sans/LiberationSans-BoldItalic.ttf') format('tff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Liberation Sans', sans-serif !important;
+}

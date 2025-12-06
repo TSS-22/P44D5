@@ -1,0 +1,941 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/TSS-22/P44D5/usage/00-overview/">
+      
+      
+        <link rel="prev" href="../../03-trouble_shooting/">
+      
+      
+        <link rel="next" href="../01-configurations/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/img/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Overview - P44D5 User documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="P44D5 User documentation" class="md-header__button md-logo" aria-label="P44D5 User documentation" data-md-component="logo">
+      
+  <img src="../../assets/img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            P44D5 User documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="deep-purple"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="deep-orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="P44D5 User documentation" class="md-nav__button md-logo" aria-label="P44D5 User documentation" data-md-component="logo">
+      
+  <img src="../../assets/img/logo.png" alt="logo">
+
+    </a>
+    P44D5 User documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome to P44D5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-trouble_shooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trouble shooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top bar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mode-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chord-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chord panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-note-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key note panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pad-grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pad grid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-degree-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key degree panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bottom-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bottom bar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-configurations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MIDI Configurations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-shortcuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shortcuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top bar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mode-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chord-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chord panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-note-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key note panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pad-grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pad grid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-degree-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key degree panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bottom-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bottom bar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="overview">Overview</h1>
+<p>To achieve its goal, P44D5 is composed of multiple panels, each offering the possibilty to manipulate specific musical parameters. All the panels that compose P44D5 can be controlled either via a MIDI controller, or using mouse and keyboard. </p>
+<p><img alt="P44D5 screenshot" src="../../assets/img/snapshot_highlight.png" /></p>
+<ol>
+<li>Top bar</li>
+<li>Mode panel</li>
+<li>Chord panel</li>
+<li>Key note panel</li>
+<li>Pad grid</li>
+<li>Key degree panel</li>
+<li>Bottom bar</li>
+</ol>
+<h2 id="top-bar">Top bar</h2>
+<p>The top bar gives you a set of action to manage MIDI controller configuration, discover and connect to MIDI controller and to apply a MIDI message bypass.</p>
+<p><img alt="Top bar screenshort" src="../../assets/img/top_bar.png" /></p>
+<p>The top bar is divided in 3 sections:</p>
+<ol>
+<li>Configuration</li>
+<li>Connection</li>
+<li>Utility</li>
+</ol>
+<p>The configuration section allow create or load MIDI configurations. You can find more details on the creation/editing process of MIDI configurations in the <a href="../01-configurations/">MIDI configurations</a> section.</p>
+<p>The connection panel provide you with a list of the MIDI device detected. You can refresh them using the refresh button <img alt="Refresh button icon" src="../../assets/img/refresh_button.png" />. To connect to a MIDI controller detected by P44D5, simply select it in the list. The <a href="#bottom-bar">bottom bar</a> will provide you with information on the success or the failure of the connection to this device.</p>
+<p><img alt="List of MIDI ports" src="../../assets/img/example_list_midi.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Refreshing and disconnection</p>
+<p>At the moment, refreshing the list of available MIDI controller will disconnect you from the MIDI device you are currently connected to.</p>
+</div>
+<p>The last section of the top bar, is the utility section which contain the MIDI bypass. This utility allow you, as the name imply, to bypass P44D5 internal processing of the MIDI messages receive by the MIDI controller it is connected to. This is useful if you need to send the "vanilla" MIDI message of your controller to your target with having to   </p>
+<h2 id="mode-panel">Mode panel</h2>
+<p>The mode panel provide you with the differents mode available. </p>
+<p><img alt="Mode panel screenshot" src="../../assets/img/panel_modes.png" width="300" /></p>
+<p>The chormatic mode, is simply the chromatic scale.</p>
+<h2 id="chord-panel">Chord panel</h2>
+<p>The chord panel provide you many options to create the chord you want to play. You can choose independantly the chord composition/"flavor" of the chord and its "size".</p>
+<p><img alt="Chord panel screenshot" src="../../assets/img/panel_chords.png" width="500" /></p>
+<p>The first dial allows you to choose the chord composition/"flavor". You can choose the following chord flavor:</p>
+<ul>
+<li>Normal</li>
+<li>Major</li>
+<li>Minor</li>
+<li>Dom (Dominante)</li>
+<li>Dim (Diminished)</li>
+<li>Aug (Augmented)</li>
+<li>Sus2 (Suspended 2) </li>
+<li>Sus4 (Suspended 4) </li>
+</ul>
+<p>The Normal "flavor" correspond to the implementation of the normal diatonic chord progression. So for example, if you chose the Ionian mode ("Major" mode), the chord progression will then be: major, minor, minor, major, dominante, minor, diminished, major. If you chose the aeolian mode ("Minor" mode), it will then be: minor, diminished, major, minor, minor, major, dominante, minor. The progression will adapt to the <a href="#mode-panel">mode</a> and the <a href="#key-degree-panel">key degree</a> you chose. it will also be displayed on the <a href="#pad-grid">pads</a>.</p>
+<p>The second dial allows you to select the "size" of the chords you play. You can choose between the following option:</p>
+<ul>
+<li>Single: plays single note, the root of the chord</li>
+<li>5: power chord</li>
+<li>Triad</li>
+<li>6<sup>th</sup></li>
+<li>7<sup>th</sup></li>
+<li>9<sup>th</sup></li>
+<li>11<sup>th</sup></li>
+<li>13<sup>th</sup></li>
+</ul>
+<p>All chord "flavor" have access to all the "size" options, even if some chord "flavors" are not played in real life to such "size". The construction of each chord "flavor" is explained below using the following construction: [root, 3<sup>rd</sup>, 5<sup>th</sup>, 6<sup>th</sup>, 7<sup>th</sup>, 9<sup>th</sup>, 11<sup>th</sup>, 13<sup>th</sup>]</p>
+<ul>
+<li>Major: [0, 4, 7, 9, 11, 14, 17, 21]</li>
+<li>Minor: [0, 3, 7, 8, 10, 14, 17, 20]</li>
+<li>Dominant: [0, 4, 7, 9, 10, 14, 17, 21]</li>
+<li>Diminished: [0, 3, 6, 9, 9, 14, 17, 21]</li>
+<li>Augmented: [0, 4, 8, 9, 11, 14, 17, 21]</li>
+<li>Sus2: [0, 2, 7, 9, 10, 14, 17, 21]</li>
+<li>Sus4: [0, 5, 7, 9, 10, 14, 17, 21]</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Chromatic and normal chord progression</p>
+<p>When the chromatic mode and normal chord progression is selected, you won't be able to choose any other chord "size" than the single note one.</p>
+<p>Indeed, as the normal chord progression is based on the chord progression from the diatonic scales, no equivalent was implemented to the chromatic scale.</p>
+<p><img alt="Chord panel screenshot" src="../../assets/img/panel_chord_size_deactivated.png" width="width" /></p>
+</div>
+<h2 id="key-note-panel">Key note panel</h2>
+<p>As the name imply, the key note panel allows you to choose the root note of the key you desire to play in. It doesn't necessarily imply it will be the note played on pad 1 and 8, as this can be change through the opposite panel, the <a href="#key-degree-panel">key degree panel</a>.  </p>
+<p><img alt="Key note panel screenshot" src="../../assets/img/panel_base_note.png" width="100" /></p>
+<p>The panel inform you of the note you chose and also it's octave in the MIDI scheme. In the example above, the note A# has been chosen, and is in the 1<sup>st</sup> octave.</p>
+<h2 id="pad-grid">Pad grid</h2>
+<p>The pad grid provide you with the array of pad to play the note. </p>
+<p><img alt="Pad grid screenshot" src="../../assets/img/pad_grid.png" width="400" /></p>
+<p>Each pad highlight many informations about the current state:</p>
+<ul>
+<li>Note played by the pad, or root not of the chord played by the pad</li>
+<li>When in a normal diatonic chord progression, it will display the "flavor" of the chord</li>
+<li>The notes that compose the chord</li>
+</ul>
+<p><img alt="Pad screenshot" src="../../assets/img/pad.png" width="200" /></p>
+<p>Additionnally it will also display a yellow halo in the background if the pad is playing the root note of the key.</p>
+<p><img alt="Pad root screenshot" src="../../assets/img/pad_root.png" width="100" /></p>
+<p>And it will display a cyan halo around itself when it is pressed.</p>
+<p><img alt="Pad pressed screenshot" src="../../assets/img/pad_activated.png" width="100" /></p>
+<h2 id="key-degree-panel">Key degree panel</h2>
+<p>The key degree panel allows you to chose the degree of the key you want to play in. This translate to the ability to change the order of the note associated with the pads.</p>
+<p>As an example, let say with are in the key of C major (Ionian mode selected), as in the example below. We therefore have a diatonic scale composed of the note: C, D, E, F, G, H, A, B. We can see the root note, C, being highlighted in yellow.</p>
+<p><img alt="Key degree example 1" src="../../assets/img/key_degree_ex_1.png" /></p>
+<p>The note corresponds to C: 1<sup>st</sup> degree, D: 2<sup>nd</sup> degree, and so forth. In the example above, the key degree panel is set to 1. Now, let's change it to, let say, 2. We will be starting of from the 2<sup>nd</sup> degree of the scale. In the image below, you can now see that we kept the same key, the key of C major (with the root, C, highlighted in yellow), but the pads are now starting on D,the 2<sup>nd</sup> degree of the key.</p>
+<p><img alt="Key degree example 2" src="../../assets/img/key_degree_ex_2.png" /></p>
+<p>To allow for a greater range of motion through the note and octave whithout having to adjust the key note, you can move the key degree between -3 and +3 octave.</p>
+<p><img alt="Key degree example 3" src="../../assets/img/key_degree_ex_3.png" /></p>
+<div class="admonition info">
+<p class="admonition-title">Key degree and chromatic mode</p>
+<p>When the <strong>Chromatic</strong> mode is selected in the <a href="#mode-panel">mode panel</a>, the key degree panel is deactivated as it becomes redundant with the choice of a base note with the <a href="#key-note-panel">key note</a>.</p>
+<p><img alt="Deactivated key degree panel" src="../../assets/img/panel_key_note_deactivated.png" width="100" /></p>
+</div>
+<h2 id="bottom-bar">Bottom bar</h2>
+<p>The bottom bar is here to give you valuable information on the state of the software, and the success or failure of some actions.</p>
+<p><img alt="Bottom bar screenshot" src="../../assets/img/bottom_bar.png" /></p>
+<p>On the far left of the bottom bar, information about the elements you are hover over will be displayed. On the far right, the loaded configuration file name is displayed. In between, error and success status of actions are displayed for a brief period after the action took place.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../03-trouble_shooting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Trouble shooting">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Trouble shooting
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../01-configurations/" class="md-footer__link md-footer__link--next" aria-label="Next: MIDI Configurations">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                MIDI Configurations
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 TSS-22
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/TSS-22/P44D5" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.footer"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
