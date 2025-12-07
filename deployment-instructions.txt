@@ -11,6 +11,5 @@ py -m nuitka ^
     --onefile-windows-splash-screen-image=./ressources/app-icon.png ^
     --standalone ^
     --follow-imports ^
-    --include-data-dir=./data=data ^
     --include-data-dir=./ressources/gui/png=ressources/gui/png ^
     P44D5.py

@@ -16,3 +16,4 @@ gui/main_window/__pycache__/main_window.cpython-313.pyc
 /logic/core/controller/__pycache__
 __pycache__/
 /P44D5.dist
+nuitka-crash-report.xml
