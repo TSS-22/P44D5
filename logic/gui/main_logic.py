@@ -158,7 +158,6 @@ class MainLogic(QRunnable):
 
     def assert_if_int_or_null(self, value):
         result = False
-        print(value)
         if value:
             if self.is_int(value):
                 result = True

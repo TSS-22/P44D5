@@ -123,6 +123,9 @@ class MidiController:
     def toggle_bypass(self):
         self.state.bypass = not self.state.bypass
 
+    def set_bypass(self, val):
+        self.state.bypass = val
+
     def compute_pad_note(self):
         # Get the state of the pads
         pads_state = []
@@ -514,7 +517,6 @@ class MidiController:
 
     def load_default_midi_config(self, error=None):
         try:
-            print("ettsts")
             with open(
                 dg.hc_path_default_config, "r", encoding="UTF-8"
             ) as file_settings_controller:

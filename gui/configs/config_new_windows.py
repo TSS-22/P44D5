@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QToolButton,
     QFileDialog,
 )
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Signal
 from gui.actions.action_refresh import QActionMidiRefresh
 from gui.configs.combo_midi_list import CmbBoxMidiController
 from gui.configs.wdgt_setup_knob import WidgetSetupKnob
@@ -25,10 +25,17 @@ from data.data_general import (
 
 
 class ConfigNewWindow(QWidget):
+    sig_pad_detected = Signal(int)
+
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self.previous_bypass_setting = (
+            self.parent.logic_worker.midi_controller.state.bypass
+        )
+        self.parent.logic_worker.midi_controller.set_bypass(True)
 
+        self.detected_pad = []
         # Setup data
         self.polled_messages = []
         self.midi_control_value = {}
@@ -73,9 +80,11 @@ class ConfigNewWindow(QWidget):
         self.diag_window_knob = DiagKnobSetup()
         self.diag_window_knob.sig_cancel.connect(self.on_cancel_setup)
 
-        self.diag_window_pad = DiagPadSetup()
+        self.diag_window_pad = DiagPadSetup(parent=self)
         self.diag_window_pad.sig_cancel.connect(self.on_cancel_setup)
         self.diag_window_pad.sig_ok.connect(self.on_ok_pad_setup)
+        self.sig_pad_detected.connect(self.diag_window_pad.update_pad_detected_number)
+
         # Explanation part
         self.lbl_explanation = QLabel(
             """
@@ -93,14 +102,13 @@ class ConfigNewWindow(QWidget):
         # Setup part
         ## Pads
         self.lbl_setup_pad_title = QLabel("Pad setup:")
-        # self.lbl_setup_pad_xpln = QLabel("Pad explanation")
-
-        self.lbl_setup_knob_title = QLabel("Knob setup:")
-        # self.lbl_setup_knob_xpln = QLabel("Knob explanation")
 
         self.button_setup_pad = QPushButton("Setup pad")
+        self.lbl_setup_pad_detected = QLabel("Pad detected: None")
 
         ## Knobs
+        self.lbl_setup_knob_title = QLabel("Knob setup:")
+        # self.lbl_setup_knob_xpln = QLabel("Knob explanation")
         self.setup_knob_mode = WidgetSetupKnob(knob_function=ConfigSetupFlag.MODE)
         self.setup_knob_chord_comp = WidgetSetupKnob(
             knob_function=ConfigSetupFlag.CHORD_COMP
@@ -137,8 +145,8 @@ class ConfigNewWindow(QWidget):
         self.layout_setup = QVBoxLayout()
 
         self.layout_setup.addWidget(self.lbl_setup_pad_title)
-        # self.layout_setup.addWidget(self.lbl_setup_pad_xpln)
         self.layout_setup.addWidget(self.button_setup_pad)
+        self.layout_setup.addWidget(self.lbl_setup_pad_detected)
 
         self.layout_setup.addWidget(self.lbl_setup_knob_title)
         # self.layout_setup.addWidget(self.lbl_setup_knob_xpln)
@@ -167,10 +175,11 @@ class ConfigNewWindow(QWidget):
         self.setLayout(self.layout_window)
 
     def on_setup_pad_clicked(self):
+        self.detected_pad = []
         self.active_setup = ConfigSetupFlag.PAD
         self.diag_window_pad.show()
         self.polled_messages = []
-        self.midi_poll_timer_pad.start(2)
+        self.midi_poll_timer_pad.start(1)
 
     def on_save_click(self):
         self.open_save_dialog()
@@ -231,9 +240,20 @@ class ConfigNewWindow(QWidget):
             self.on_midi_message_received(messages)
 
     def poll_midi_messages_pad(self):
+        # IMPROVE
+        # Try polling ?
         messages = self.parent.logic_worker.midi_bridge.input.iter_pending()
         if messages:
             for msg in messages:
+                if msg.is_cc():
+                    if msg.control not in self.detected_pad:
+                        self.detected_pad.append(msg.control)
+                        self.sig_pad_detected.emit(len(self.detected_pad))
+                else:
+                    if msg.note not in self.detected_pad:
+                        self.detected_pad.append(msg.note)
+                        self.sig_pad_detected.emit(len(self.detected_pad))
+
                 self.polled_messages.append(msg)
 
     def on_midi_message_received(self, messages):
@@ -249,6 +269,9 @@ class ConfigNewWindow(QWidget):
         self.active_setup = ConfigSetupFlag.NONE
 
     def closeEvent(self, event):
+        self.parent.logic_worker.midi_controller.set_bypass(
+            self.previous_bypass_setting
+        )
         self.diag_window_knob.close()
         self.diag_window_pad.close()
         self.midi_poll_timer_pad.stop()
@@ -292,8 +315,15 @@ class ConfigNewWindow(QWidget):
             else:
                 self.midi_control_value.update({"pad_mode": hc_pad_mode_note})
                 for msg in self.polled_messages:
-                    if msg.note < base_note:
-                        base_note = msg.note
+                    if hasattr(msg, "note"):
+                        if msg.note < base_note:
+                            base_note = msg.note
         self.midi_control_value[self.active_setup.value] = base_note
+        self.update_lbl_pad_detected()
         self.active_setup = ConfigSetupFlag.NONE
         self.polled_messages = []
+
+    def update_lbl_pad_detected(self):
+        self.lbl_setup_pad_detected.setText(
+            f"Offset detected: {self.midi_control_value[ConfigSetupFlag.PAD.value]}"
+        )

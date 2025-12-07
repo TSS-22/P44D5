@@ -8,7 +8,7 @@ class DiagPadSetup(QMessageBox):
 
     def __init__(
         self,
-        parent=None,
+        parent,
         title="Instructions",
     ):
         super().__init__(parent)
@@ -17,6 +17,10 @@ class DiagPadSetup(QMessageBox):
         self.setText(
             'Press all your pads at least once and click "OK" once done. Do not hesitate to make sure to press them multiple time to make sure they are well detected by the setup program.'
         )
+        self.setInformativeText("Pad detected: 0")
         self.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         self.accepted.connect(self.sig_ok)
         self.rejected.connect(self.sig_cancel)
+
+    def update_pad_detected_number(self, int):
+        self.setInformativeText(f"Pad detected: {int}")
