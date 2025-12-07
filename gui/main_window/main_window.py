@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from PySide6.QtCore import QThreadPool, Slot, Qt
+from PySide6.QtGui import QIcon
 
 from gui.main_window.widget_base_note import WidgetBaseNote
 from gui.main_window.widget_key_note import WidgetKeyNote
@@ -32,6 +33,13 @@ from data.data_general import (
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        # Load an icon
+        icon = QIcon("./ressources/app-icon.png")  # Replace with your icon file path
+
+        # Set the window icon
+        self.setWindowIcon(icon)
+
         with open(hc_path_user_settings, "r", encoding="UTF-8") as file_settings_user:
             self.user_settings = json.load(file_settings_user)
 
@@ -288,6 +296,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def open_new_config_window(self):
+        self.config_new_window.ini_gui()
         self.config_new_window.show()
 
     @Slot()

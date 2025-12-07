@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QToolButton,
     QFileDialog,
 )
-from PySide6.QtCore import QTimer, Signal
+from PySide6.QtCore import QTimer, Signal, Qt
 from gui.actions.action_refresh import QActionMidiRefresh
 from gui.configs.combo_midi_list import CmbBoxMidiController
 from gui.configs.wdgt_setup_knob import WidgetSetupKnob
@@ -173,6 +173,15 @@ class ConfigNewWindow(QWidget):
         self.layout_window.addLayout(self.layout_exit)
 
         self.setLayout(self.layout_window)
+
+    def ini_gui(self):
+        self.parent.refresh_midi_input_new_config_window()
+        self.cmb_midi_controller.setCurrentIndex(
+            self.cmb_midi_controller.findText(
+                self.parent.user_settings["last_connected_midi"],
+                flags=Qt.MatchFlag.MatchContains,
+            )
+        )
 
     def on_setup_pad_clicked(self):
         self.detected_pad = []
