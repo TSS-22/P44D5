@@ -271,13 +271,29 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def refresh_midi_input(self):
+        self.tool_bar.cmb_midi_controller.blockSignals(True)
         self.tool_bar.cmb_midi_controller.refresh(self.logic_worker.get_midi_input())
+        self.tool_bar.cmb_midi_controller.setCurrentIndex(
+            self.tool_bar.cmb_midi_controller.findText(
+                self.user_settings["last_connected_midi"],
+                flags=Qt.MatchFlag.MatchContains,
+            )
+        )
+        self.tool_bar.cmb_midi_controller.blockSignals(False)
 
     @Slot()
     def refresh_midi_input_new_config_window(self):
+        self.config_new_window.cmb_midi_controller.blockSignals(True)
         self.config_new_window.cmb_midi_controller.refresh(
             self.logic_worker.get_midi_input()
         )
+        self.config_new_window.cmb_midi_controller.setCurrentIndex(
+            self.config_new_window.cmb_midi_controller.findText(
+                self.user_settings["last_connected_midi"],
+                flags=Qt.MatchFlag.MatchContains,
+            )
+        )
+        self.config_new_window.cmb_midi_controller.blockSignals(False)
 
     @Slot()
     def on_choice_controller_changed(self, controller_name):

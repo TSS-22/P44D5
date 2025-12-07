@@ -82,6 +82,9 @@ class MidiBridge:
         ]
 
     def connect_to_controller(self, controller_name):
+        print("connect")
+        print(controller_name)
+
         self.disconnect()
         if controller_name != "":
             try:
@@ -93,6 +96,7 @@ class MidiBridge:
                 return False
 
     def disconnect(self):
+        print("disconnect")
         # check if connected first
         for ports in mido.get_input_names():
             input_port_to_close = mido.ports.BaseInput(name=ports)
