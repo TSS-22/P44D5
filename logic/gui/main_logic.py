@@ -9,7 +9,7 @@ from logic.gui.gui_input import GuiInput
 from logic.core.controller.controller_message_flag import ControllerMessageFlag
 from logic.core.controller.input_pad import InputPad
 
-from data.data_general import hc_path_user_settings
+from data.data_general import hc_path_user_settings, hc_pad_mode_note, hc_pad_mode_cc
 
 
 class MainLogic(QRunnable):
@@ -121,7 +121,7 @@ class MainLogic(QRunnable):
         try:
             with open(settings_path, "r", encoding="UTF-8") as file_settings:
                 midi_device_settings = json.load(file_settings)
-                if self.assert_midi_device_settings(midi_device_settings):
+                if self.assert_midi_config_validity(midi_device_settings):
                     self.midi_controller.load_midi_controller_settings(
                         midi_device_settings
                     )
@@ -134,17 +134,44 @@ class MainLogic(QRunnable):
             print(f"Failed to open configuration: {e}")
             return False
 
-    def assert_midi_device_settings(self, midi_device_settings):
-        if midi_device_settings["pad_mode"] and self.is_int(
-            midi_device_settings["base_note_offset"]
-        ):
-            return True
+    # IMPROVE
+    # It is not midi_device_settings it is config settings
+    def assert_midi_config_validity(self, midi_device_settings):
+        result = True
+        for key, value in midi_device_settings.items():
+            if key.startswith("id_knob_"):
+                if self.assert_if_int_or_null(value) is False:
+                    result = False
+                elif self.is_int(value):
+                    if value < 0:
+                        result = False
+            elif key == "pad_mode":
+                if value != hc_pad_mode_note and value != hc_pad_mode_cc:
+                    result = False
+            elif key == "base_note_offset" or key == "pot_max_value":
+                if self.is_int(value) is False:
+                    result = False
+                elif value < 0:
+                    result = False
+
+        return result
+
+    def assert_if_int_or_null(self, value):
+        result = False
+        print(value)
+        if value:
+            if self.is_int(value):
+                result = True
+            else:
+                result = False
         else:
-            return False
+            result = True
+
+        return result
+
+    def is_int(self, value):
+        return isinstance(value, int) and not isinstance(value, bool)
 
     def save_user_settings(self, user_settings):
         with open(hc_path_user_settings, "w", encoding="UTF-8") as file_settings_user:
             json.dump(user_settings, file_settings_user, indent=4)
-
-    def is_int(self, value):
-        return isinstance(value, int) and not isinstance(value, bool)
