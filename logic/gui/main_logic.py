@@ -120,10 +120,10 @@ class MainLogic(QRunnable):
     def load_midi_controller_settings(self, settings_path, user_settings):
         try:
             with open(settings_path, "r", encoding="UTF-8") as file_settings:
-                midi_device_settings = json.load(file_settings)
-                if self.assert_midi_config_validity(midi_device_settings):
+                midi_config_settings = json.load(file_settings)
+                if self.assert_midi_config_validity(midi_config_settings):
                     self.midi_controller.load_midi_controller_settings(
-                        midi_device_settings
+                        midi_config_settings
                     )
                     user_settings["last_load_config"] = settings_path
                     self.save_user_settings(user_settings)
@@ -134,11 +134,9 @@ class MainLogic(QRunnable):
             print(f"Failed to open configuration: {e}")
             return False
 
-    # IMPROVE
-    # It is not midi_device_settings it is config settings
-    def assert_midi_config_validity(self, midi_device_settings):
+    def assert_midi_config_validity(self, midi_config_settings):
         result = True
-        for key, value in midi_device_settings.items():
+        for key, value in midi_config_settings.items():
             if key.startswith("id_knob_"):
                 if self.assert_if_int_or_null(value) is False:
                     result = False

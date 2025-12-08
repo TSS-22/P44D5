@@ -3,9 +3,9 @@ from logic.gui.main_logic import MainLogic
 from data.data_general import hc_pad_mode_note, hc_pad_mode_cc
 
 
-def assert_midi_config_validity(midi_device_settings):
+def assert_midi_config_validity(midi_config_settings):
     result = True
-    for key, value in midi_device_settings.items():
+    for key, value in midi_config_settings.items():
         if key.startswith("id_knob_"):
             if assert_if_int_or_null(value) is False:
                 result = False
@@ -42,7 +42,7 @@ def is_int(value):
 
 
 @pytest.mark.parametrize(
-    "midi_device_settings, expected",
+    "midi_config_settings, expected",
     [
         pytest.param(
             {  # Default config
@@ -215,8 +215,8 @@ def is_int(value):
         ),
     ],
 )
-def test_assert_midi_config_validity(midi_device_settings, expected):
+def test_assert_midi_config_validity(midi_config_settings, expected):
     assert (
-        assert_midi_config_validity(midi_device_settings=midi_device_settings)
+        assert_midi_config_validity(midi_config_settings=midi_config_settings)
         == expected
     )

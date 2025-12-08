@@ -23,14 +23,14 @@ class MidiController:
                     with open(
                         self.user_settings["last_load_config"], "r", encoding="UTF-8"
                     ) as file_settings_controller:
-                        midi_device_settings = json.load(file_settings_controller)
+                        midi_config_settings = json.load(file_settings_controller)
                 except Exception as e:
                     self.load_default_midi_config(error=e)
                     sys.exit(1)
             else:
-                midi_device_settings = self.load_default_midi_config()
+                midi_config_settings = self.load_default_midi_config()
 
-        self.controller_settings = MidiControllerSettings(midi_device_settings)
+        self.controller_settings = MidiControllerSettings(midi_config_settings)
 
         self.state = MidiControllerState(
             selected_mode=self.controller_settings.list_modes[0],
@@ -63,8 +63,8 @@ class MidiController:
     def get_state(self):
         return self.state
 
-    def load_midi_controller_settings(self, midi_device_settings):
-        self.controller_settings = MidiControllerSettings(midi_device_settings)
+    def load_midi_controller_settings(self, midi_config_settings):
+        self.controller_settings = MidiControllerSettings(midi_config_settings)
 
     #############################
     # GENERAL LOGIC / UTILITIES #
@@ -520,8 +520,8 @@ class MidiController:
             with open(
                 dg.hc_path_default_config, "r", encoding="UTF-8"
             ) as file_settings_controller:
-                midi_device_settings = json.load(file_settings_controller)
-                return midi_device_settings
+                midi_config_settings = json.load(file_settings_controller)
+                return midi_config_settings
         except Exception as e:
             print(
                 f"Previous error: {error}. Couldn't load the default configuration: {e}"
