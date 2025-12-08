@@ -678,7 +678,7 @@
 <div class="admonition warning">
 <p class="admonition-title">Invalid configuration</p>
 <p>If the configuration is invalid, it won't be able to be loaded, but it can still be created. </p>
-<p>If you ever have trouble loading a configuration, ensure that it has a "pad_mode" value of either <code>note</code> or <code>control_change</code>, and that it has a signed integer value in the field <code>base note offset</code>, as well as in the id_knob_XXX fields. </p>
+<p>If you ever have trouble loading a configuration, ensure that it has a "pad_mode" value of either <code>note</code> or <code>control_change</code>, and that it has a positive integer value in the field <code>base note offset</code>, as well as in the id_knob_XXX fields and <code>pot_max_value</code>. <a href="../02-files/#understanding-the-configuration-files">More info</a>.</p>
 </div>
 <h2 id="create-a-midi-configuration">Create a MIDI configuration</h2>
 <p>To create a new MIDI configuration click on the new button <img alt="New button screenshot" src="../../assets/img/new_config.png" width="25" /> on the left of the <a href="../00-overview/#top-bar">top bar</a>. This will open the window shown below.</p>
@@ -686,7 +686,11 @@
 <h3 id="setup-the-pads">Setup the pads</h3>
 <p>To setup the pads, click on the setup button in the setup pad section. Wait for the following pop-up to display.</p>
 <p><img alt="Pad setup pop-up" src="../../assets/img/window_pad_config.png" width="300" /></p>
-<p>Once it is displayed, simply press all your pads. The most important is to be sure to press the pad with the lowest id in the MIDI controller. If you don't know which one it is, simply press all your pads. Don't hesitate to press them multiple times each to make sure they are detected by the software.</p>
+<p>Once it is displayed, simply press all your pads. The most important is to be sure to press the pad with the lowest id in the MIDI controller. If you don't know which one it is, simply press all your pads. Don't hesitate to press them multiple times each to make sure they are detected by the software. A number indicating the number of pad detected will help you know if you the pads were detected as you pressed them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Pad detection</p>
+<p>The pad detection also detect knob movements and interaction you can have with other physical control of your MIDI controller. To ensure accurate pad detection, be careful to only interact with the pads of your MIDI controller during setup. </p>
+</div>
 <h3 id="setup-the-dials">Setup the dials</h3>
 <p>To setup dials, simply tick the checkmark corresponding to the function you want to associate a dial with. This will enable the corresponding setup button. Click on the setup button and wait for the pop-up shown below to appear.</p>
 <p><img alt="Dial setup pop-up" src="../../assets/img/window_dial_config.png" width="250" /></p>

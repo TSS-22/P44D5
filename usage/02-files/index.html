@@ -421,6 +421,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -437,6 +455,47 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the configuration files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#folder-and-file-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder and file architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -498,6 +557,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the configuration files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#folder-and-file-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder and file architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -514,6 +603,14 @@
 
 
 <h1 id="files">Files</h1>
+<h2 id="understanding-the-configuration-files">Understanding the configuration files</h2>
+<ul>
+<li><code>pad_mode</code>: Indicate if your control send <code>control_change</code> or <code>note_on/note_off</code> MIDI messages.</li>
+<li><code>base_note_offset</code>: This is either the id of your first/lowest pad, or the note it is assigned to, depending  on the mode of your pad above. This is a positive integer.</li>
+<li><code>pot_max_value</code>: This is the maximum value your knob can take. MIDI knob are usually bounded between [0;127].</li>
+<li><code>id_knob_XXX</code>: Indicate the id assigned to the knob you selected to be assigned to a specific function. This is a positive integer.</li>
+</ul>
+<h2 id="folder-and-file-architecture">Folder and file architecture</h2>
 <pre class="mermaid"><code>---
 title: P44D5 folder/file architecture
 ---
