@@ -152,7 +152,6 @@ class MainWindow(QMainWindow):
 
     def _init_GUI(self):
         state = self.logic_worker.midi_controller.get_state().to_dict()
-        # state = state
         self.updt_base_note(state)
         self.updt_key_degree(state)
         self.updt_panel_mode(state)
@@ -166,13 +165,19 @@ class MainWindow(QMainWindow):
                 flags=Qt.MatchFlag.MatchContains,
             )
             > -1
-        ):
+        ) and self.user_settings["last_connected_midi"]:
             self.tool_bar.cmb_midi_controller.setCurrentIndex(
                 self.tool_bar.cmb_midi_controller.findText(
                     self.user_settings["last_connected_midi"],
                     flags=Qt.MatchFlag.MatchContains,
                 )
             )
+        else:  # For some reason it selects a MIDI device if the last connected is "" in the user settings
+            self.logic_worker.midi_bridge.disconnect()
+            self.tool_bar.cmb_midi_controller.blockSignals(True)
+            self.tool_bar.cmb_midi_controller.setCurrentIndex(-1)
+            self.tool_bar.cmb_midi_controller.blockSignals(False)
+
         load_success = self.on_load_midi_config(self.user_settings["last_load_config"])
         if load_success is False:
             self.on_load_midi_config(hc_path_default_config)

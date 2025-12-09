@@ -73,7 +73,7 @@ class MidiBridge:
         return midi_controller_ouput
 
     def get_selected_input(self):
-        return self.input
+        return self.input.name
 
     def get_selected_ouput(self):
         return self.output
