@@ -9,17 +9,13 @@ class MidiBridge:
     def __init__(self):
         self.input = mido.ports.BaseInput()
         self.output_port = mido.ports.BaseOutput()
-        output_ports = mido.get_output_names()
-        self.output_port = [
-            item for item in output_ports if item.startswith(hc_name_midi_out)
-        ][0]
         self.init_midi_out()
 
     def init_midi_out(self):
         if os.name == "posix":
             try:
-                self.rtmidi_midiout = rtmidi.MidiOut()
-                self.rtmidi_midiout.open_virtual_port(self.output_port)
+                self.rtmidi_midiout = rtmidi.MidiIn()
+                self.rtmidi_midiout.open_virtual_port(hc_name_midi_out)
                 print(f"Successfully created MIDI output: {self.output_port}")
 
             except Exception as e:
@@ -33,12 +29,20 @@ class MidiBridge:
 
         # Connect to the virtual output port
         try:
+            output_ports = mido.get_output_names()
+            self.output_port = [
+                item for item in output_ports if hc_name_midi_out in item
+            ][0]
             self.output = mido.open_output(self.output_port)
             print(f"Successfully opened MIDI output: {self.output_port}")
 
-        except Exception as e:
-            print(f"Failed to open MIDI output: {e}")
-            sys.exit(1)
+        except Exception as e1:
+            try:
+                self.output = mido.open_output()
+                print(f"Successfully opened MIDI output: {self.output_port}")
+            except Exception as e_final:
+                print(f"Failed to open MIDI output: {e_final}")
+                sys.exit(1)
 
     def start(self, midi_controller):
         print(
