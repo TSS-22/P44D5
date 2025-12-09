@@ -1,0 +1,15 @@
+python -m nuitka \
+    --enable-plugin=pyside6 \
+    --include-module=mido \
+    --include-module=mido.backends.rtmidi \
+    --include-module=rtmidi \
+    --include-package-data=mido \
+    --include-package-data=rtmidi \
+    --linux-onefile-icon=./ressources/app-icon.png \
+    --onefile \
+    --standalone \
+    --follow-imports \
+    --include-data-dir=./ressources/gui/png=ressources/gui/png \
+	--include-data-dir=./ressources=ressources \
+	--include-data-files=./ressources/app-icon.png=app-icon.png \
+    P44D5.py
