@@ -86,9 +86,6 @@ class MidiBridge:
         ]
 
     def connect_to_controller(self, controller_name):
-        print("connect")
-        print(controller_name)
-
         self.disconnect()
         if controller_name != "":
             try:

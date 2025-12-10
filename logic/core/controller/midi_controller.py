@@ -471,7 +471,6 @@ class MidiController:
             state=self.get_state(),
             list_message=[message],
         )
-        print(message)
         if self.state.bypass is False:
             if self.controller_settings.pad_mode == dg.hc_pad_mode_note:
                 # Note pressed

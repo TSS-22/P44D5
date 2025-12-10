@@ -76,6 +76,7 @@ class MainWindow(QMainWindow):
         self.tool_bar.cmb_midi_controller.currentTextChanged.connect(
             self.on_choice_controller_changed
         )
+
         self.tool_bar.action_load.sig_load_config.connect(self.on_load_midi_config)
 
         # User GUI driven changes signal connections
@@ -166,11 +167,13 @@ class MainWindow(QMainWindow):
             )
             > -1
         ) and self.user_settings["last_connected_midi"]:
-            self.tool_bar.cmb_midi_controller.setCurrentIndex(
-                self.tool_bar.cmb_midi_controller.findText(
-                    self.user_settings["last_connected_midi"],
-                    flags=Qt.MatchFlag.MatchContains,
-                )
+            idx_controller = self.tool_bar.cmb_midi_controller.findText(
+                self.user_settings["last_connected_midi"],
+                flags=Qt.MatchFlag.MatchContains,
+            )
+            self.tool_bar.cmb_midi_controller.setCurrentIndex(idx_controller)
+            self.on_choice_controller_changed(
+                self.tool_bar.cmb_midi_controller.itemText(idx_controller)
             )
         else:  # For some reason it selects a MIDI device if the last connected is "" in the user settings
             self.logic_worker.midi_bridge.disconnect()
