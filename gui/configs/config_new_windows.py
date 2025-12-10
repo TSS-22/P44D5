@@ -173,6 +173,7 @@ class ConfigNewWindow(QWidget):
         self.layout_window.addLayout(self.layout_exit)
 
         self.setLayout(self.layout_window)
+        self.parent.logic_worker.midi_controller.set_bypass(False)
 
     def ini_gui(self):
         self.parent.refresh_midi_input_new_config_window()

@@ -225,45 +225,59 @@ class MidiController:
     # Pad pressed
     def pad_pressed(self, input_val):
         id_pad = input_val.note - self.controller_settings.base_note_offset
-        self.state.buffer.velocity[id_pad] = input_val.velocity
-        note = self.check_note(
-            input_val.note
-            - self.controller_settings.base_note_offset
-            + self.state.base_note
-            + self.state.key_note
-            + self.count_interval(id_pad)
-            - id_pad
-        )
-        return MidiControllerOutput(
-            flag=ControllerMessageFlag.PAD_PRESSED,
-            state=self.get_state(),
-            list_message=self.note_on(note, input_val.velocity, id_pad),
-        )
+        if id_pad >= 0 and id_pad <= len(self.state.buffer.velocity) - 1:
+            self.state.buffer.velocity[id_pad] = input_val.velocity
+            note = self.check_note(
+                input_val.note
+                - self.controller_settings.base_note_offset
+                + self.state.base_note
+                + self.state.key_note
+                + self.count_interval(id_pad)
+                - id_pad
+            )
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.PAD_PRESSED,
+                state=self.get_state(),
+                list_message=self.note_on(note, input_val.velocity, id_pad),
+            )
+        else:  # In case of default config or wrong config to prevent unconspicuous freeze
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.BYPASS,
+                state=self.get_state(),
+                list_message=[],
+            )
 
     # Pad released
     def pad_released(self, input_val):
         id_pad = input_val.note - self.controller_settings.base_note_offset
-        self.state.buffer.velocity[id_pad] = 0
-        list_note_off = []
-        for note in self.state.buffer.notes[id_pad]:
-            skip = False
-            for idx, pad in enumerate(self.state.buffer.velocity):
-                if pad > 0:
-                    for note_other_pad in self.state.buffer.notes[idx]:
-                        if note_other_pad == note:
-                            skip = True
-                            break
+        if id_pad >= 0 and id_pad <= len(self.state.buffer.velocity) - 1:
+            self.state.buffer.velocity[id_pad] = 0
+            list_note_off = []
+            for note in self.state.buffer.notes[id_pad]:
+                skip = False
+                for idx, pad in enumerate(self.state.buffer.velocity):
+                    if pad > 0:
+                        for note_other_pad in self.state.buffer.notes[idx]:
+                            if note_other_pad == note:
+                                skip = True
+                                break
+                    if skip:
+                        break
                 if skip:
-                    break
-            if skip:
-                continue
-            list_note_off.append(self.note_off(note, id_pad))
-        self.state.buffer.notes[id_pad] = []
-        return MidiControllerOutput(
-            flag=ControllerMessageFlag.PAD_RELEASED,
-            state=self.get_state(),
-            list_message=list_note_off,
-        )
+                    continue
+                list_note_off.append(self.note_off(note, id_pad))
+            self.state.buffer.notes[id_pad] = []
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.PAD_RELEASED,
+                state=self.get_state(),
+                list_message=list_note_off,
+            )
+        else:  # In case of default config or wrong config to prevent unconspicuous freeze
+            return MidiControllerOutput(
+                flag=ControllerMessageFlag.BYPASS,
+                state=self.get_state(),
+                list_message=[],
+            )
 
     #
     def knob_base_note_changed(self, input_val):
@@ -457,6 +471,7 @@ class MidiController:
             state=self.get_state(),
             list_message=[message],
         )
+        print(message)
         if self.state.bypass is False:
             if self.controller_settings.pad_mode == dg.hc_pad_mode_note:
                 # Note pressed
