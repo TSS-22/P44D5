@@ -321,45 +321,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Windows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-open-the-run-dialog" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Open the Run Dialog
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-go-to-the-playback-tab" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Go to the Playback Tab
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-enable-the-synth" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Enable the Synth
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -620,45 +581,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Windows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-open-the-run-dialog" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Open the Run Dialog
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-go-to-the-playback-tab" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Go to the Playback Tab
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-enable-the-synth" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Enable the Synth
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -714,35 +636,9 @@
 <div class="admonition warning">
 <p class="admonition-title">Windows and virtual MIDI ports</p>
 <p>You will need to be able to create a virtual MIDI output port. At the moment it is easily doable only via the use of third party tools, but the new MIDI Windows API should change that soon.</p>
-<p>At the moment we recommend using <a href="https://www.tobias-erichsen.de/software/loopmidi.html">LoopMIDI</a> for this. Once installed, open the program and create a virtual MIDI port called <code>P44D5_virt</code>. LoopMIDI will need to be running before you start P44D5 everytime.
-Microsoft GS Wavetable Synth is also a valid option, but due to the fact that it only support one active connection, it can cause conflict between P44D5 and other app you might have. Unlikely but possible.</p>
+<p>At the moment we recommend using <a href="https://www.tobias-erichsen.de/software/loopmidi.html">LoopMIDI</a> for this. Once installed, open the program and create a virtual MIDI port called <code>P44D5_virt</code>. LoopMIDI will need to be running before you start P44D5 everytime.</p>
 <p>For more information on how to setup these solutions, see boxes below.</p>
 </div>
-<details class="info">
-<summary>Virtual port solution: Microsoft GS Wavetable Synth</summary>
-<p>Microsoft GS Wavetable Synth is already bundled in Windows and can avoid the needs for any third party software, stricto sensus. The only issue is that the Microsoft GS Wavetable Synth only support one active connection at a time. This can create conflict if another app is trying to connect to it or is already connected. In most cases it shouldn't cause any trouble but you have to be aware of it.</p>
-<p>To activate the <strong>Microsoft GS Wavetable Synth</strong> in Windows, follow these steps:</p>
-<h4 id="1-open-the-run-dialog"><strong>1. Open the Run Dialog</strong></h4>
-<p>Press <strong>Win + R</strong>, type <code>mmsys.cpl</code>, and press <strong>Enter</strong>. This opens the <strong>Sound settings</strong>.</p>
-<h4 id="2-go-to-the-playback-tab"><strong>2. Go to the Playback Tab</strong></h4>
-<ul>
-<li>In the <strong>Sound</strong> window, navigate to the <strong>Playback</strong> tab.</li>
-</ul>
-<h4 id="3-enable-the-synth"><strong>3. Enable the Synth</strong></h4>
-<ul>
-<li>Right-click anywhere in the list of playback devices.</li>
-<li>Check the boxes for:</li>
-<li><strong>Show Disabled Devices</strong></li>
-<li>
-<p><strong>Show Disconnected Devices</strong></p>
-</li>
-<li>
-<p>Look for <strong>Microsoft GS Wavetable Synth</strong> in the list.</p>
-</li>
-<li>If it’s disabled, right-click it and select <strong>Enable</strong>.</li>
-<li>Click <strong>Apply</strong> and then <strong>OK</strong>.</li>
-</ul>
-</details>
 <details class="info">
 <summary>Virtual port solution: LoopMIDI</summary>
 <p>To create the necessary virtual MIDI port using <a href="https://www.tobias-erichsen.de/software/loopmidi.html">LoopMIDI</a>, after you installed and launched it, you should be greated with the window below.</p>
