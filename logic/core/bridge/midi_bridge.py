@@ -37,12 +37,8 @@ class MidiBridge:
             print(f"Successfully opened MIDI output: {self.output_port}")
 
         except Exception as e1:
-            try:
-                self.output = mido.open_output()
-                print(f"Successfully opened MIDI output: {self.output_port}")
-            except Exception as e_final:
-                print(f"Failed to open MIDI output: {e_final}")
-                sys.exit(1)
+            print(f"Failed to open MIDI output: {e1}")
+            sys.exit(1)
 
     def start(self, midi_controller):
         print(
