@@ -340,6 +340,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#p44d5-wont-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -366,12 +378,39 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#midi-configuration-loaded-but-some-pads-are-not-recognized" class="md-nav__link">
     <span class="md-ellipsis">
       
         MIDI configuration loaded but some pads are not recognized
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alsa-dependency-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alsa dependency missing
       
     </span>
   </a>
@@ -579,6 +618,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#p44d5-wont-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -605,12 +656,39 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#midi-configuration-loaded-but-some-pads-are-not-recognized" class="md-nav__link">
     <span class="md-ellipsis">
       
         MIDI configuration loaded but some pads are not recognized
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alsa-dependency-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alsa dependency missing
       
     </span>
   </a>
@@ -636,7 +714,8 @@
 
 <h1 id="trouble-shooting">Trouble shooting</h1>
 <p>If you are faced with an issue that is not solved by the solutions below, please file an issue in <a href="https://github.com/TSS-22/P44D5/issues">P44D5 github repository</a>.</p>
-<h2 id="p44d5-wont-start">P44D5 won't start</h2>
+<h2 id="general">General</h2>
+<h3 id="p44d5-wont-start">P44D5 won't start</h3>
 <p>Make sure that the <code>default.cnfmidi</code> is in its <code>./configurations/</code> folder. If it is missing redownload it from our <a href="https://github.com/TSS-22/P44D5">github</a>, or create a new one as follow, ad be sure to place it in the <code>./configurations/</code> folder:</p>
 <div class="language-json highlight"><span class="filename">default.cnfmidi</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nt">&quot;pad_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;note&quot;</span><span class="p">,</span>
@@ -655,11 +734,15 @@
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;last_connected_midi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P44D5_virt 2&quot;</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="on-windows">On windows</h3>
+<h4 id="on-windows">On windows</h4>
 <p>Additionally, make sure you have <a href="../01-installation/#creating-virtual-midi-ports">created the virtual midi port.</a> and that this port is up and running <strong>before</strong> starting P44D5.</p>
-<h2 id="midi-configuration-loaded-but-some-pads-are-not-recognized">MIDI configuration loaded but some pads are not recognized</h2>
+<h3 id="midi-configuration-loaded-but-some-pads-are-not-recognized">MIDI configuration loaded but some pads are not recognized</h3>
 <p>At the moment, when <a href="../usage/01-configurations/#create-a-midi-configuration">creating a new MIDI configuration</a>, the pad setup pipeline is a bit finecky and might not detect 100% of the pad pressed event when they happen. </p>
 <p>The simplest solution is to recreate the configuration and be careful to press the pads multiple times before validating the pad <a href="../usage/01-configurations/#setup-the-pads">pop-up setup</a>.</p>
+<h2 id="linux">Linux</h2>
+<h2 id="alsa-dependency-missing">Alsa dependency missing</h2>
+<p>Install the following package:</p>
+<p><code>sudo apt-get install libasound2-dev</code></p>
 
 
 
