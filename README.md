@@ -34,7 +34,7 @@ Launch a terminal in the folder where P44D5 is to be installed and enter the fol
 ```
 git clone https://github.com/TSS-22/P44D5.git
 cd P44D5
-pip install -r requirement.txt
+pip install -r requirements.txt
 py ./P44D5.py
 ```
 Or you can download the latest release available, and simply unzip it in the folder where the program is ot be installed and launch `P44D5.exe`. The usage of a third party software to create a virtual MIDI output is still needed at the moment.
@@ -50,7 +50,7 @@ Launch a terminal in the folder where P44D5 is to be installed and enter the fol
 ```
 git clone https://github.com/TSS-22/P44D5.git
 cd P44D5
-pip install -r requirement.txt
+pip install -r requirements.txt
 py ./P44D5.py
 ```
 
